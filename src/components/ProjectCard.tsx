@@ -30,12 +30,12 @@ export default function ProjectCard({
       >
         <div className="grid lg:grid-cols-2 h-full">
           <div className="relative h-full">
-            <Image
+            {/* <Image
               src={project.image}
               alt={project.title}
               fill
               className="object-cover"
-            />
+            /> */}
           </div>
 
           <div className="p-10 lg:p-16 flex flex-col justify-center">

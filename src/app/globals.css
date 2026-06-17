@@ -7,9 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-nunito);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,34 +47,22 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* --- Custom Portfolio Theme Colors --- */
-
-  /* Primary background — the very dark navy base (#050816) */
   --color-bg-primary: var(--bg-primary);
-
-  /* Translucent surface layers for cards, containers, and overlays */
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
   --color-surface-raised: var(--surface-raised);
   --color-surface-border: var(--surface-border);
-
-  /* Brand blue accent palette */
   --color-brand-300: var(--brand-300);
   --color-brand-400: var(--brand-400);
   --color-brand-500: var(--brand-500);
   --color-brand-600: var(--brand-600);
   --color-brand-700: var(--brand-700);
-
-  /* Text hierarchy */
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-text-tertiary: var(--text-tertiary);
-
-  /* Decorative masked text (huge background headings) */
   --color-text-mask: var(--text-mask);
   --color-text-mask-light: var(--text-mask-light);
   --color-text-mask-medium: var(--text-mask-medium);
-
-  /* Secondary accent colors for gradients, glows, and decorative elements */
   --color-accent-green: var(--accent-green);
   --color-accent-cyan: var(--accent-cyan);
   --color-accent-emerald: var(--accent-emerald);
@@ -84,6 +71,9 @@
   --color-accent-purple-deep: var(--accent-purple-deep);
 }
 
+/* ============================================================
+   LIGHT THEME (default)
+   ============================================================ */
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -118,43 +108,34 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  /* --- Custom Portfolio Theme Values --- */
-
-  /* Background */
-  --bg-primary: #050816;
-
-  /* Surface layers */
-  --surface: oklch(1 0 0 / 5%);
-  --surface-hover: oklch(1 0 0 / 30%);
-  --surface-raised: oklch(1 0 0 / 10%);
-  --surface-border: oklch(1 0 0 / 10%);
-
-  /* Brand blue palette */
-  --brand-300: #93c5fd;
-  --brand-400: #60a5fa;
-  --brand-500: #3b82f6;
-  --brand-600: #2563eb;
-  --brand-700: #1d4ed8;
-
-  /* Text hierarchy */
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
+  /* --- Custom Portfolio Theme Values (Light) --- */
+  --bg-primary: #ffffff;
+  --surface: oklch(0 0 0 / 4%);
+  --surface-hover: oklch(0 0 0 / 8%);
+  --surface-raised: oklch(0 0 0 / 6%);
+  --surface-border: oklch(0 0 0 / 8%);
+  --brand-300: #60a5fa;
+  --brand-400: #3b82f6;
+  --brand-500: #2563eb;
+  --brand-600: #1d4ed8;
+  --brand-700: #1e40af;
+  --text-secondary: #334155;
+  --text-muted: #475569;
   --text-tertiary: #64748b;
-
-  /* Decorative mask text */
-  --text-mask: oklch(1 0 0 / 2%);
-  --text-mask-light: oklch(1 0 0 / 3%);
-  --text-mask-medium: oklch(1 0 0 / 10%);
-
-  /* Secondary accent colors */
-  --accent-green: #22c55e;
-  --accent-cyan: #06b6d4;
+  --text-mask: oklch(0 0 0 / 4%);
+  --text-mask-light: oklch(0 0 0 / 6%);
+  --text-mask-medium: oklch(0 0 0 / 10%);
+  --accent-green: #16a34a;
+  --accent-cyan: #0891b2;
   --accent-emerald: #059669;
-  --accent-pink: #ec4899;
-  --accent-purple: #a855f7;
-  --accent-purple-deep: #9333ea;
+  --accent-pink: #db2777;
+  --accent-purple: #9333ea;
+  --accent-purple-deep: #7e22ce;
 }
 
+/* ============================================================
+   DARK THEME
+   ============================================================ */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -188,7 +169,7 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  /* --- Custom Portfolio Theme Values (dark mode) --- */
+  /* --- Custom Portfolio Theme Values (Dark) --- */
   --bg-primary: #050816;
   --surface: oklch(1 0 0 / 5%);
   --surface-hover: oklch(1 0 0 / 30%);
@@ -217,10 +198,16 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+
   html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-primary);
+    color: var(--foreground);
     @apply font-sans;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--foreground);
   }
 }

@@ -11,7 +11,7 @@ import FloatingTech from "./FloatingTech";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Glow */}
       <div className="absolute inset-0">
         <div className="absolute top-20 -left-1/4 w-[300px] sm:w-[400px] md:w-[500px] h-[300px] sm:h-[400px] md:h-[500px] rounded-full bg-brand-600/20 blur-[100px] sm:blur-[150px]" />
@@ -33,16 +33,6 @@ export default function Hero() {
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="max-w-5xl">
-          {/* Tag */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 border border-surface-border bg-surface px-4 py-2 rounded-full backdrop-blur-md mb-8"
-          >
-            <span className="h-2 w-2 rounded-full bg-accent-green" />
-            Available for opportunities
-          </motion.div>
 
           {/* Name */}
           <motion.h2
@@ -65,7 +55,7 @@ export default function Hero() {
             transition={{ delay: 0.15 }}
             className="mt-4 sm:mt-6 text-xl sm:text-2xl md:text-4xl font-semibold text-text-secondary"
           >
-            Junior Software Developer
+            Software Developer
           </motion.h3>
 
           {/* Description */}
@@ -99,7 +89,7 @@ export default function Hero() {
             ].map((tech) => (
               <div
                 key={tech}
-                className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-300 text-sm sm:text-base"
+                className="px-3 sm:px-4 lg:hidden py-1.5 sm:py-2 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-300 text-sm sm:text-base"
               >
                 {tech}
               </div>
@@ -110,7 +100,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 0.6 }}
             className="flex flex-wrap gap-3 sm:gap-4 mt-10 sm:mt-12"
           >
             <a

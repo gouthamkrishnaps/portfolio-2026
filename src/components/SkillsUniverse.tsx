@@ -4,6 +4,17 @@ import { motion } from "framer-motion";
 import SkillBubble from "./SkillBubble";
 import { skills } from "../data/skills";
 
+const positions = skills.map((_, i) => {
+  const angle = (i / skills.length) * 2 * Math.PI - Math.PI / 2;
+  const r = 36;
+  return {
+    left: `${50 + r * Math.cos(angle)}%`,
+    top: `${50 + r * Math.sin(angle)}%`,
+  };
+});
+
+const ease = [0.25, 0.46, 0.45, 0.94] as const;
+
 export default function SkillsUniverse() {
   return (
     <section
@@ -28,6 +39,7 @@ export default function SkillsUniverse() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.6, ease }}
         >
           <span className="text-brand-400 uppercase tracking-[4px] text-sm">
             Technology
@@ -40,58 +52,70 @@ export default function SkillsUniverse() {
         {/* Desktop: Orbital Layout (md+) */}
         <div className="hidden md:block relative mt-24 min-h-[900px]">
           {/* Center Circle */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-72 w-72 rounded-full border border-brand-500/20 bg-brand-500/5 backdrop-blur-md flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-60 xl:size-72 rounded-full border border-brand-500/20 bg-brand-500/5 backdrop-blur-md flex items-center justify-center z-10"
+          >
             <div className="text-center">
-              <h3 className="text-4xl font-black">Goutham</h3>
-              <p className="text-text-muted mt-2">Software Engineer</p>
+              <h3 className="text-2xl xl:text-4xl font-black">Goutham</h3>
+              <p className="text-text-muted text-sm xl:text-base mt-1 xl:mt-2">Software Engineer</p>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Floating Skills - Orbital positions */}
-          <div className="absolute left-[5%] top-[5%]">
-            <SkillBubble skill={skills[0]} index={1} />
-          </div>
-          <div className="absolute right-[10%] top-[10%]">
-            <SkillBubble skill={skills[1]} index={2} />
-          </div>
-          <div className="absolute left-[15%] top-[45%]">
-            <SkillBubble skill={skills[2]} index={3} />
-          </div>
-          <div className="absolute right-[15%] top-[50%]">
-            <SkillBubble skill={skills[3]} index={4} />
-          </div>
-          <div className="absolute left-[10%] bottom-[10%]">
-            <SkillBubble skill={skills[4]} index={5} />
-          </div>
-          <div className="absolute right-[10%] bottom-[10%]">
-            <SkillBubble skill={skills[5]} index={6} />
-          </div>
-          <div className="absolute left-[40%] bottom-[2%]">
-            <SkillBubble skill={skills[6]} index={7} />
-          </div>
-          <div className="absolute left-[40%] top-[2%]">
-            <SkillBubble skill={skills[7]} index={8} />
-          </div>
-          <div className="absolute right-[40%] bottom-[5%]">
-            <SkillBubble skill={skills[8]} index={9} />
-          </div>
+          {/* Orbital Skills */}
+          {skills.map((skill, i) => (
+            <motion.div
+              key={skill.name}
+              initial={{ opacity: 0, scale: 0.6 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.08, ease }}
+              className="absolute w-[170px] xl:w-[200px]"
+              style={{
+                left: positions[i].left,
+                top: positions[i].top,
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <SkillBubble skill={skill} index={i + 1} />
+            </motion.div>
+          ))}
         </div>
 
-        {/* Mobile: Compact Linear Layout (< md) */}
+        {/* Mobile: Compact Layout (< md) */}
         <div className="md:hidden mt-10">
-          {/* Center badge */}
-          <div className="mx-auto mb-10 h-48 w-48 rounded-full border border-brand-500/20 bg-brand-500/5 backdrop-blur-md flex items-center justify-center">
-            <div className="text-center">
-              <h3 className="text-3xl font-black">Goutham</h3>
-              <p className="text-text-muted text-sm mt-1">Software Engineer</p>
-            </div>
-          </div>
+          <div className="flex flex-col items-center gap-6">
+            {/* Center badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease }}
+              className="size-40 rounded-full border border-brand-500/20 bg-brand-500/5 backdrop-blur-md flex items-center justify-center shrink-0"
+            >
+              <div className="text-center">
+                <h3 className="text-2xl font-black">Goutham</h3>
+                <p className="text-text-muted text-xs mt-1">Software Engineer</p>
+              </div>
+            </motion.div>
 
-          {/* Skills grid */}
-          <div className="flex flex-wrap justify-center gap-4">
-            {skills.map((skill, index) => (
-              <SkillBubble key={skill.name} skill={skill} index={index + 1} />
-            ))}
+            {/* Skills grid */}
+            <div className="grid grid-cols-2 gap-4 w-full max-w-md">
+              {skills.map((skill, i) => (
+                <motion.div
+                  key={skill.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{ duration: 0.5, delay: i * 0.06, ease }}
+                >
+                  <SkillBubble skill={skill} index={i + 1} />
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

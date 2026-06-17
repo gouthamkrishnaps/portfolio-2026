@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Bebas_Neue, Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
+import ThemeProvider from "../components/ThemeProvider";
+import Navbar from "../components/Navbar";
 import ScrollProgress from "../components/ScrollProgress";
 
-const bebas = Bebas_Neue({
+const nunito = Nunito({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-bebas",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-nunito",
 });
 
 export const metadata = {
@@ -28,10 +24,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebas.variable} ${inter.variable} h-full antialiased`}
+      className={`${nunito.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}
-        <ScrollProgress />
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider>
+          <Navbar />
+          {children}
+          <ScrollProgress />
+        </ThemeProvider>
       </body>
 
     </html>

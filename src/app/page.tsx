@@ -11,7 +11,7 @@ import SkillsUniverse from "../components/SkillsUniverse";
 
 export default function Home() {
   return (
-    <main className="bg-bg-primary min-h-screen text-white overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden">
       <Hero />
       <About />
       <Experience />

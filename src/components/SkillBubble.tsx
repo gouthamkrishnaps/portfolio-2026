@@ -19,7 +19,7 @@ export default function SkillBubble({
   return (
     <motion.div
       animate={{
-        y: [0, -20, 0],
+        y: [0, -10, 0],
       }}
       transition={{
         duration: 4 + index,
@@ -33,7 +33,7 @@ export default function SkillBubble({
       >
         <div
           className="
-          w-[200px] sm:w-[220px]
+          w-full
           rounded-[30px]
           border border-surface-border
           bg-surface
@@ -41,15 +41,15 @@ export default function SkillBubble({
           p-5 sm:p-6
           cursor-pointer"
         >
-          <h3 className="text-xl font-bold">
+          <h3 className="text-lg sm:text-xl font-bold">
             {skill.name}
           </h3>
 
-          <p className="text-text-muted mt-1">
+          <p className="text-text-muted mt-1 text-sm sm:text-base">
             {skill.years} Experience
           </p>
 
-          <div className="mt-5 h-2 rounded-full bg-surface-raised">
+          <div className="mt-4 sm:mt-5 h-1.5 sm:h-2 rounded-full bg-surface-raised">
             <div
               style={{
                 width: `${skill.level}%`,
@@ -58,7 +58,7 @@ export default function SkillBubble({
             />
           </div>
 
-          <span className="mt-3 block text-brand-400">
+          <span className="mt-2 sm:mt-3 block text-brand-400 text-sm sm:text-base">
             {skill.level}%
           </span>
         </div>

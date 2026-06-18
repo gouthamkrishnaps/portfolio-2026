@@ -1,128 +1,117 @@
+import PermatechImage from "@/images/assets/permatech.png";
+import AvumyImage from "@/images/assets/avumy.png";
+import DarlingsImage from "@/images/assets/darlings.png";
+import EattakImage from "@/images/assets/eattak.png";
+
 export const featuredProjects = [
   {
     id: "01",
     title: "Permatech Roofing",
     category: "Enterprise eCommerce",
-    image: "/projects/permatech.jpg",
-
+    image: PermatechImage,
     description:
       "Developed scalable eCommerce experiences including bundle pricing, checkout optimization, product filtering and customer pricing.",
-
     technologies: [
       "Next.js",
       "TypeScript",
       "GraphQL",
-      "Apollo",
-      "Tailwind",
+      "Apollo Client",
+      "Tailwind CSS",
     ],
-
     highlights: [
-      "Bundle Products",
-      "Checkout Flow",
-      "Customer Pricing",
-      "Product Listing",
+      "Dynamic Bundle Pricing",
+      "Custom Checkout Funnels",
+      "B2B Customer Tiers",
+      "High-Performance Listings",
     ],
   },
-
   {
     id: "02",
     title: "Rubberized Roofing",
     category: "B2B Commerce",
-
-    image: "/projects/rubberized.jpg",
-
+    image: EattakImage,
     description:
-      "Built modern roofing commerce platform with responsive interfaces and optimized ordering workflows.",
-
+      "Built a modern roofing commerce platform featuring real-time quote generation, responsive interfaces, and optimized B2B workflows.",
     technologies: [
       "React",
       "Next.js",
       "GraphQL",
-      "Magento",
+      "Magento API",
+      "Tailwind CSS",
     ],
-
     highlights: [
-      "Responsive UI",
-      "Order Management",
-      "Checkout Optimization",
-      "Performance",
+      "Responsive Quotation UI",
+      "ERP Order Integration",
+      "Optimized Checkout Flows",
+      "Sub-second Load Times",
     ],
   },
-
   {
     id: "03",
-    title: "Avumy",
+    title: "Avumy Space",
     category: "Booking Platform",
-
-    image: "/projects/avumy.jpg",
-
+    image: AvumyImage,
     description:
-      "Event space and stay booking platform built with Next.js and React.",
-
+      "A premium event space and property stay booking platform built to deliver visual excellence and frictionless user reservations.",
     technologies: [
       "React",
       "Next.js",
-      "REST API",
-      "Tailwind",
+      "REST APIs",
+      "Framer Motion",
+      "Tailwind CSS",
     ],
-
     highlights: [
-      "Booking System",
-      "Property Listings",
-      "Responsive Design",
+      "Interactive Booking System",
+      "Dynamic Property Filters",
+      "Visual Map Integration",
+      "Glassmorphic Dashboards",
     ],
   },
-
   {
     id: "04",
     title: "Darlings of Chelsea",
-
-    category: "Furniture eCommerce",
-
-    image: "/projects/doc.jpg",
-
+    category: "Luxury Furniture eCommerce",
+    image: DarlingsImage,
     description:
-      "Luxury furniture eCommerce platform with Cylindo 3D integration.",
-
+      "High-end luxury furniture eCommerce platform integrating Cylindo 3D assets to enable dynamic product configuration and material inspection.",
     technologies: [
       "Next.js",
       "SCSS",
-      "React",
-      "Cylindo 3D",
+      "React 19",
+      "Cylindo 3D WebGL",
     ],
-
     highlights: [
       "3D Product Configurator",
-      "Commerce",
-      "Performance",
+      "High-Fidelity Material Swatches",
+      "Sleek Layout Interactions",
+      "Advanced Render Caching",
     ],
   },
 ];
-
 
 export const projects = [
   {
     number: "01",
     title: "Permatech Roofing",
     subtitle: "Enterprise Commerce Platform",
-    image: "/projects/permatech.jpg",
+    image: PermatechImage,
   },
   {
     number: "02",
     title: "Rubberized Roofing",
     subtitle: "B2B Commerce Platform",
-    image: "/projects/rubberized.jpg",
+    image: EattakImage,
   },
   {
     number: "03",
-    title: "Avumy",
+    title: "Avumy Space",
     subtitle: "Property Booking Platform",
-    image: "/projects/avumy.jpg",
+    image: AvumyImage,
   },
   {
     number: "04",
     title: "Darlings of Chelsea",
-    subtitle: "Furniture Commerce",
-    image: "/projects/doc.jpg",
+    subtitle: "Luxury Furniture eCommerce",
+    image: DarlingsImage,
   },
 ];

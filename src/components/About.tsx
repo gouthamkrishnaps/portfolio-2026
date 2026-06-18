@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Tilt from "react-parallax-tilt";
-import Profileimage from "@/images/assets/1000474333.jpg"
+import Profileimage from "@/images/assets/1000474333.jpg";
+import CounterCard from "./CounterCard";
 
 const stats = [
   {
@@ -12,7 +13,7 @@ const stats = [
   },
   {
     value: "20+",
-    label: "Projects",
+    label: "Projects Completed",
   },
   {
     value: "5+",
@@ -26,91 +27,105 @@ const stats = [
 
 export default function About() {
   return (
-    <section id="about" className="relative py-20 sm:py-32 bg-bg-primary">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <h1 className="absolute -left-10 top-10 sm:top-20 sm:left-0 text-[120px] sm:text-[180px] lg:text-[280px] font-black text-text-mask leading-none select-none">
-          ABOUT
-        </h1>
+    <section id="about" className="relative py-20 sm:py-32 bg-bg-primary overflow-hidden">
+      {/* Decorative blurred background shapes */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-1/4 -right-1/4 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] rounded-full bg-indigo-500/10 blur-[130px]" />
+        <div className="absolute top-1/2 -left-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-cyan-500/10 blur-[120px]" />
       </div>
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
-          {/* Profile Image */}
-          <motion.div
-            initial={{ opacity: 0, x: -80 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-brand-600/20 blur-[60px] sm:blur-[80px] rounded-full" />
 
+      {/* Huge Background Mask Text */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+        <h2 className="absolute -left-10 top-10 text-[100px] sm:text-[180px] lg:text-[250px] font-black text-text-mask tracking-widest leading-none">
+          ABOUT
+        </h2>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 relative z-10">
+        <div className="grid lg:grid-cols-12 gap-12 sm:gap-16 items-center">
+          
+          {/* Profile Image Column */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="lg:col-span-5 relative group"
+          >
+            {/* Glowing border outline behind image */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-[30px] blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+            
             <Tilt
-              tiltMaxAngleX={10}
-              tiltMaxAngleY={10}
+              tiltMaxAngleX={6}
+              tiltMaxAngleY={6}
               perspective={1500}
-              scale={1.03}
+              scale={1.02}
               glareEnable
-              glareMaxOpacity={0.12}
-              className="relative"
+              glareMaxOpacity={0.08}
+              className="relative rounded-[30px] border border-surface-border overflow-hidden bg-surface/30 backdrop-blur-md shadow-2xl"
             >
               <Image
                 src={Profileimage}
-                alt="Goutham"
-                width={700}
-                height={900}
-                className="w-full h-auto object-cover rounded-2xl"
+                alt="Goutham Krishna"
+                width={600}
+                height={800}
+                className="w-full h-auto object-cover rounded-[30px] transition-transform duration-700 group-hover:scale-103"
+                priority
               />
             </Tilt>
           </motion.div>
 
-          {/* Content */}
+          {/* About Content Column */}
           <motion.div
-            initial={{ opacity: 0, x: 80 }}
+            initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="lg:col-span-7"
           >
-            <span className="text-brand-400 uppercase tracking-[4px] text-sm">
-              About Me
+            <span className="text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
+              Discover My Story
             </span>
 
-            <h2 className="mt-3 sm:mt-4 text-4xl sm:text-5xl md:text-6xl font-black leading-none">
+            <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-black leading-none uppercase tracking-tight">
               Building Modern
               <br />
-              Digital Products
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">
+                Digital Products
+              </span>
             </h2>
 
-            <p className="mt-6 sm:mt-8 text-text-muted text-base sm:text-lg leading-relaxed">
-              I'm Goutham Krishna P S, a Junior Software Developer specializing
-              in React, Next.js, TypeScript, GraphQL and modern frontend
-              architecture.
+            <p className="mt-6 text-text-secondary text-base sm:text-lg leading-relaxed">
+              I'm Goutham Krishna P S, a passionate and results-driven Software Developer. 
+              My focus is on crafting clean, modular React, Next.js, and TypeScript architectures 
+              and implementing high-end frontend experiences that are engaging and highly performant.
             </p>
 
-            <p className="mt-4 sm:mt-6 text-text-muted text-base sm:text-lg leading-relaxed">
-              Currently working at ICodeBees, developing scalable eCommerce
-              platforms and enterprise applications. I've contributed to
-              projects such as Avumy, Darlings of Chelsea, Permatech, Rubberized
-              and various custom web solutions.
+            <p className="mt-4 text-text-secondary text-base sm:text-lg leading-relaxed">
+              Currently working at <strong>ICodeBees</strong>, where I construct complex, enterprise-level 
+              e-commerce portals and interactive SaaS interfaces. I have contributed to custom features for 
+              major brands like <em>Avumy</em>, <em>Darlings of Chelsea</em>, <em>Permatech</em>, and <em>Rubberized</em>.
             </p>
 
-            <p className="mt-4 sm:mt-6 text-text-muted text-base sm:text-lg leading-relaxed">
-              My focus is creating fast, responsive, accessible, and
-              user-centric digital experiences while maintaining clean, scalable
-              code architecture.
+            <p className="mt-4 text-text-secondary text-base sm:text-lg leading-relaxed">
+              My engineering philosophy revolves around pixel-perfect accuracy, optimization (Core Web Vitals), 
+              responsive fluidity, and pushing the boundaries of what is possible in the browser.
             </p>
 
-            <div className="flex flex-wrap gap-2 sm:gap-3 mt-8 sm:mt-10">
+            {/* Core Tech Stack Pills */}
+            <div className="flex flex-wrap gap-2.5 mt-8">
               {[
                 "Next.js",
                 "React",
                 "TypeScript",
                 "GraphQL",
+                "Three.js",
+                "Tailwind CSS",
                 "Node.js",
-                "Tailwind",
               ].map((item) => (
                 <span
                   key={item}
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-brand-500/20 bg-brand-500/10 text-brand-300 text-sm sm:text-base"
+                  className="px-4 py-2 rounded-full border border-cyan-500/25 bg-cyan-500/5 text-cyan-600 dark:text-cyan-300 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:text-cyan-700 dark:hover:text-white cursor-default"
                 >
                   {item}
                 </span>
@@ -119,28 +134,14 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-16 sm:mt-24">
-          {stats.map((item, index) => (
-            <motion.div
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-20 sm:mt-28">
+          {stats.map((item) => (
+            <CounterCard
               key={item.label}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                delay: index * 0.1,
-              }}
-              whileHover={{
-                y: -10,
-              }}
-              className="rounded-3xl border border-surface-border bg-surface backdrop-blur-md p-6 sm:p-8"
-            >
-              <h3 className="text-4xl sm:text-5xl font-black text-brand-500">
-                {item.value}
-              </h3>
-
-              <p className="mt-3 text-text-muted">{item.label}</p>
-            </motion.div>
+              value={item.value}
+              label={item.label}
+            />
           ))}
         </div>
       </div>

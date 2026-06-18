@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Nunito } from "next/font/google";
+import { Nunito, Outfit } from "next/font/google";
 import ThemeProvider from "../components/ThemeProvider";
 import Navbar from "../components/Navbar";
 import ScrollProgress from "../components/ScrollProgress";
+import CustomCursor from "../components/CustomCursor";
 
 const nunito = Nunito({
   subsets: ["latin"],
   variable: "--font-nunito",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
 });
 
 export const metadata = {
@@ -24,17 +30,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${nunito.variable} h-full antialiased`}
+      className={`${nunito.variable} ${outfit.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-bg-primary text-foreground">
         <ThemeProvider>
+          <CustomCursor />
           <Navbar />
           {children}
           <ScrollProgress />
         </ThemeProvider>
       </body>
-
     </html>
   );
 }

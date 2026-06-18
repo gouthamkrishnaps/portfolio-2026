@@ -69,6 +69,19 @@
   --color-accent-pink: var(--accent-pink);
   --color-accent-purple: var(--accent-purple);
   --color-accent-purple-deep: var(--accent-purple-deep);
+
+  --color-cyan-300: var(--cyan-300);
+  --color-cyan-400: var(--cyan-400);
+  --color-cyan-500: var(--cyan-500);
+  --color-indigo-400: var(--indigo-400);
+  --color-indigo-500: var(--indigo-500);
+  --color-indigo-600: var(--indigo-600);
+  --color-purple-400: var(--purple-400);
+  --color-purple-500: var(--purple-500);
+  --color-purple-600: var(--purple-600);
+  --color-emerald-500: var(--emerald-500);
+  --color-teal-500: var(--teal-500);
+  --color-green-500: var(--green-500);
 }
 
 /* ============================================================
@@ -131,6 +144,22 @@
   --accent-pink: #db2777;
   --accent-purple: #9333ea;
   --accent-purple-deep: #7e22ce;
+  --glow-1: rgba(6, 182, 212, 0.4);
+  --glow-2: rgba(147, 51, 234, 0.4);
+  --grid-color: rgba(6, 182, 212, 0.035);
+
+  --cyan-300: #67e8f9;
+  --cyan-400: #22d3ee;
+  --cyan-500: #06b6d4;
+  --indigo-400: #818cf8;
+  --indigo-500: #6366f1;
+  --indigo-600: #4f46e5;
+  --purple-400: #c084fc;
+  --purple-500: #a855f7;
+  --purple-600: #9333ea;
+  --emerald-500: #10b981;
+  --teal-500: #14b8a6;
+  --green-500: #22c55e;
 }
 
 /* ============================================================
@@ -169,29 +198,45 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  /* --- Custom Portfolio Theme Values (Dark) --- */
-  --bg-primary: #050816;
-  --surface: oklch(1 0 0 / 5%);
-  --surface-hover: oklch(1 0 0 / 30%);
-  --surface-raised: oklch(1 0 0 / 10%);
-  --surface-border: oklch(1 0 0 / 10%);
-  --brand-300: #93c5fd;
-  --brand-400: #60a5fa;
-  --brand-500: #3b82f6;
-  --brand-600: #2563eb;
-  --brand-700: #1d4ed8;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --text-tertiary: #64748b;
-  --text-mask: oklch(1 0 0 / 2%);
-  --text-mask-light: oklch(1 0 0 / 3%);
-  --text-mask-medium: oklch(1 0 0 / 10%);
-  --accent-green: #22c55e;
-  --accent-cyan: #06b6d4;
-  --accent-emerald: #059669;
-  --accent-pink: #ec4899;
-  --accent-purple: #a855f7;
-  --accent-purple-deep: #9333ea;
+  /* --- Custom Portfolio Theme Values (Dark - Black & Orange) --- */
+  --bg-primary: #050505;
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-hover: rgba(255, 90, 0, 0.08);
+  --surface-raised: rgba(255, 255, 255, 0.05);
+  --surface-border: rgba(255, 90, 0, 0.12);
+  --brand-300: #fdba74;
+  --brand-400: #fb923c;
+  --brand-500: #f97316;
+  --brand-600: #ea580c;
+  --brand-700: #c2410c;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --text-tertiary: #71717a;
+  --text-mask: rgba(255, 90, 0, 0.01);
+  --text-mask-light: rgba(255, 90, 0, 0.02);
+  --text-mask-medium: rgba(255, 90, 0, 0.06);
+  --accent-green: #ea580c;
+  --accent-cyan: #f97316;
+  --accent-emerald: #d97706;
+  --accent-pink: #f43f5e;
+  --accent-purple: #f97316;
+  --accent-purple-deep: #ea580c;
+  --glow-1: rgba(249, 115, 22, 0.4);
+  --glow-2: rgba(234, 88, 12, 0.4);
+  --grid-color: rgba(249, 115, 22, 0.035);
+
+  --cyan-300: #ffedd5;
+  --cyan-400: #fb923c;
+  --cyan-500: #f97316;
+  --indigo-400: #ea580c;
+  --indigo-500: #c2410c;
+  --indigo-600: #9a3412;
+  --purple-400: #fdba74;
+  --purple-500: #ea580c;
+  --purple-600: #7c2d12;
+  --emerald-500: #ea580c;
+  --teal-500: #d97706;
+  --green-500: #f59e0b;
 }
 
 @layer base {
@@ -209,5 +254,134 @@
   body {
     background-color: var(--bg-primary);
     color: var(--foreground);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-outfit), sans-serif;
+  }
+
+  /* Hide system cursor on desktop screens to allow CustomCursor to take over */
+  @media (min-width: 768px) {
+    html, body, a, button, input, textarea, select, [role="button"], .cursor-pointer {
+      cursor: none !important;
+    }
   }
 }
+
+/* Custom Utilities for Premium 6-Year Dev Portfolio */
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow: 0 12px 40px 0 rgba(6, 182, 212, 0.08);
+}
+
+.dark .glass-panel {
+  background: rgba(10, 10, 20, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.dark .glass-panel:hover {
+  border-color: rgba(6, 182, 212, 0.2);
+  box-shadow: 0 12px 40px 0 rgba(6, 182, 212, 0.1);
+}
+
+.mobile-bg-radial {
+  background: radial-gradient(circle at 50% 50%, #f0f4ff 0%, #ffffff 100%);
+}
+
+.dark .mobile-bg-radial {
+  background: radial-gradient(circle at 50% 50%, #08071a 0%, #020205 100%);
+}
+
+.text-glow {
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.2), 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+.dark .text-glow {
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.4), 0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.text-glow-purple {
+  text-shadow: 0 0 10px rgba(147, 51, 234, 0.2), 0 0 20px rgba(147, 51, 234, 0.1);
+}
+
+.dark .text-glow-purple {
+  text-shadow: 0 0 10px rgba(147, 51, 234, 0.4), 0 0 20px rgba(147, 51, 234, 0.2);
+}
+
+.glowing-border-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to right, rgba(6, 182, 212, 0.4), rgba(147, 51, 234, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.glowing-border-parent:hover .glowing-border-glow {
+  opacity: 1;
+}
+
+/* Modern Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #030308;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e1b4b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #312e81;
+}
+
+/* Pulse animation for pulsing badges */
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 12px 4px rgba(34, 197, 94, 0.3);
+  }
+}
+
+.pulse-badge {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+

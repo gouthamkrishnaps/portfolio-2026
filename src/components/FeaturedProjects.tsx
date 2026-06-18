@@ -1,142 +1,260 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
 import { featuredProjects } from "../data/projects";
 import Tilt from "react-parallax-tilt";
 
 export default function FeaturedProjects() {
-    return (
-        <section
-            id="projects"
-            className="relative py-20 sm:py-32 bg-bg-primary"
-        >
-            {/* Background Text */}
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeProject = featuredProjects[activeIndex];
 
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <h1 className="absolute -left-10 sm:left-0 top-10 sm:top-20 text-[120px] sm:text-[180px] lg:text-[280px] font-black text-text-mask select-none">
-                    WORK
-                </h1>
-            </div>
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % featuredProjects.length);
+  };
 
-            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
-                <div>
-                    <span className="text-brand-400 uppercase tracking-[4px] text-sm">
-                        Featured Projects
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length);
+  };
+
+  return (
+    <section
+      id="projects"
+      className="relative min-h-screen py-16 sm:py-24 flex items-center justify-center bg-bg-primary overflow-hidden"
+    >
+      {/* Background spotlights */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 -right-1/4 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full bg-cyan-500/5 blur-[130px]" />
+        <div className="absolute bottom-1/4 -left-1/4 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full bg-purple-500/5 blur-[130px]" />
+      </div>
+
+      {/* Huge Background Mask Text */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+        <h2 className="absolute -left-10 top-10 text-[100px] sm:text-[180px] lg:text-[250px] font-black text-text-mask tracking-widest leading-none">
+          PORTFOLIO
+        </h2>
+      </div>
+
+      {/* Scroll-linked Section Reveal wrapper */}
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-120px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 relative z-10 w-full flex flex-col justify-between min-h-[80vh]"
+      >
+        
+        {/* Header Block */}
+        <div className="text-center sm:text-left mb-6 sm:mb-8">
+          <span className="text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
+            Featured Projects
+          </span>
+          <h2 className="mt-1.5 text-4xl sm:text-5xl font-black leading-none uppercase tracking-tight">
+            Selected Work
+          </h2>
+        </div>
+
+        {/* ============================================================
+           UPPER SECTION: Active Project Detailed Showcase
+           ============================================================ */}
+        <div className="flex-1 flex items-center justify-center py-4">
+          <div className="w-full glass-panel rounded-[32px] p-6 sm:p-8 lg:p-10 border border-surface-border glowing-border-parent relative">
+            <div className="glowing-border-glow" />
+            
+            <div className="grid lg:grid-cols-12 gap-8 items-center">
+              
+              {/* Details grid column */}
+              <div className="lg:col-span-5 flex flex-col justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, x: -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 15 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <span className="text-cyan-400 text-xs sm:text-sm font-bold uppercase tracking-widest">
+                      {activeProject.category}
                     </span>
+                    <h3 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white uppercase mt-1 tracking-tight">
+                      {activeProject.title}
+                    </h3>
+                    <p className="text-text-secondary mt-4 text-sm sm:text-base leading-relaxed">
+                      {activeProject.description}
+                    </p>
 
-                    <h2 className="mt-3 sm:mt-4 text-4xl sm:text-5xl md:text-6xl font-black">
-                        Selected Work
-                    </h2>
-                </div>
-
-                <div className="space-y-20 sm:space-y-32 mt-16 sm:mt-24">
-                    {featuredProjects.map((project, index) => (
-                        <motion.div
-                            key={project.id}
-                            initial={{
-                                opacity: 0,
-                                y: 100,
-                            }}
-                            whileInView={{
-                                opacity: 1,
-                                y: 0,
-                            }}
-                            viewport={{ once: true }}
-                            transition={{
-                                duration: 0.8,
-                            }}
-                            className={`grid lg:grid-cols-2 gap-8 sm:gap-12 items-center ${index % 2 === 1 ? "lg:flex-row-reverse" : ""
-                                }`}
+                    {/* Highlights Bullet List */}
+                    <div className="grid grid-cols-2 gap-2.5 mt-5">
+                      {activeProject.highlights.map((item) => (
+                        <div
+                          key={item}
+                          className="flex items-center gap-2 p-2.5 rounded-xl bg-surface/30 border border-surface-border/50 text-text-secondary text-xs font-semibold"
                         >
-                            {/* Image */}
+                          <CheckCircle2 className="text-cyan-400 shrink-0" size={12} />
+                          <span className="truncate">{item}</span>
+                        </div>
+                      ))}
+                    </div>
 
-                            <Tilt
-                                tiltMaxAngleX={8}
-                                tiltMaxAngleY={8}
-                                perspective={1200}
-                                glareEnable={true}
-                                glareMaxOpacity={0.15}
-                                scale={1.02}
-                                transitionSpeed={1500}
-                                className="relative group"
-                            >
-                                <div className="absolute inset-0 bg-brand-500/20 blur-3xl" />
+                    {/* Technologies pills */}
+                    <div className="flex flex-wrap gap-1.5 mt-5">
+                      {activeProject.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2.5 py-1 rounded-md border border-cyan-500/20 bg-cyan-500/5 text-cyan-600 dark:text-cyan-300 text-[10px] sm:text-xs font-bold"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
 
-                                <div className="relative overflow-hidden rounded-[30px] border border-surface-border">
-                                    <Image
-                                        src={project.image}
-                                        alt={project.title}
-                                        width={1400}
-                                        height={1000}
-                                        className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
-                                    />
-                                </div>
-                            </Tilt>
+                    {/* CTA Buttons */}
+                    <div className="flex flex-wrap gap-3 mt-6">
+                      <button
+                        suppressHydrationWarning
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-indigo-500/10"
+                      >
+                        Case Study
+                        <ArrowUpRight size={14} />
+                      </button>
 
-                            {/* Content */}
+                      <button
+                        suppressHydrationWarning
+                        className="px-5 py-2.5 rounded-lg border border-surface-border bg-surface/30 hover:bg-surface/60 text-slate-900 dark:text-white font-bold text-xs sm:text-sm transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-400 hover:-translate-y-0.5"
+                      >
+                        Live Demo
+                      </button>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
 
-                            <div>
-                                <span className="text-[60px] sm:text-[80px] md:text-[120px] font-black text-text-mask-medium leading-none">
-                                    {project.id}
-                                </span>
-
-                                <p className="text-brand-400 uppercase tracking-widest">
-                                    {project.category}
-                                </p>
-
-                                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black mt-2 sm:mt-3">
-                                    {project.title}
-                                </h3>
-
-                                <p className="text-text-muted mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed">
-                                    {project.description}
-                                </p>
-
-                                {/* Technologies */}
-
-                                <div className="flex flex-wrap gap-2 sm:gap-3 mt-6 sm:mt-8">
-                                    {project.technologies.map((tech) => (
-                                        <span
-                                            key={tech}
-                                            className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-brand-500/20 bg-brand-500/10 text-brand-300 text-sm sm:text-base"
-                                        >
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                {/* Features */}
-
-                                <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6 sm:mt-8">
-                                    {project.highlights.map((item) => (
-                                        <div
-                                            key={item}
-                                            className="bg-surface border border-surface-border rounded-xl p-3 sm:p-4 text-sm sm:text-base"
-                                        >
-                                            {item}
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Buttons */}
-
-                                <div className="flex flex-wrap gap-3 sm:gap-4 mt-8 sm:mt-10">
-                                    <button className="bg-brand-600 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium flex items-center gap-2 text-sm sm:text-base">
-                                        View Case Study
-                                        <ArrowUpRight size={16} className="sm:size-[18px]" />
-                                    </button>
-
-                                    <button className="border border-surface-border px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base">
-                                        Live Demo
-                                    </button>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+              {/* Large Showcase Mockup Column (Shared layout image morph) */}
+              <div className="lg:col-span-7 relative flex items-center justify-center h-full min-h-[240px] sm:min-h-[360px]">
+                <div className="absolute inset-0 bg-cyan-500/5 rounded-2xl blur-xl pointer-events-none" />
+                
+                <Tilt
+                  tiltMaxAngleX={4}
+                  tiltMaxAngleY={4}
+                  perspective={1200}
+                  glareEnable
+                  glareMaxOpacity={0.05}
+                  scale={1.01}
+                  className="relative rounded-2xl border border-surface-border overflow-hidden bg-surface/30 shadow-2xl w-full h-[220px] sm:h-[350px] md:h-[380px]"
+                >
+                  <AnimatePresence mode="popLayout">
+                    <motion.div
+                      key={activeIndex}
+                      layoutId={`project-img-${activeProject.id}`}
+                      className="absolute inset-0 w-full h-full"
+                      transition={{
+                        type: "spring",
+                        stiffness: 220,
+                        damping: 26,
+                      }}
+                    >
+                      <Image
+                        src={activeProject.image}
+                        alt={activeProject.title}
+                        fill
+                        className="object-cover"
+                        placeholder="blur"
+                        priority
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </Tilt>
+              </div>
             </div>
-        </section>
-    );
+          </div>
+        </div>
+
+        {/* ============================================================
+           LOWER SECTION: Horizontal Ribbon Project Switcher
+           ============================================================ */}
+        <div className="mt-8 flex flex-col gap-4">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-text-tertiary px-2">
+            <span>NAVIGATE SHOWCASE</span>
+            <div className="flex gap-2.5">
+              <button
+                onClick={handlePrev}
+                suppressHydrationWarning
+                className="p-1.5 rounded-full border border-surface-border bg-surface/30 hover:bg-surface/85 hover:text-cyan-500 dark:hover:text-cyan-400 text-slate-900 dark:text-white transition-colors"
+                aria-label="Previous project"
+              >
+                <ChevronLeft size={14} />
+              </button>
+              <button
+                onClick={handleNext}
+                suppressHydrationWarning
+                className="p-1.5 rounded-full border border-surface-border bg-surface/30 hover:bg-surface/85 hover:text-cyan-500 dark:hover:text-cyan-400 text-slate-900 dark:text-white transition-colors"
+                aria-label="Next project"
+              >
+                <ChevronRight size={14} />
+              </button>
+            </div>
+          </div>
+
+          {/* Horizontal scrollbar carousel track */}
+          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory">
+            {featuredProjects.map((project, idx) => {
+              const isActive = idx === activeIndex;
+              return (
+                <button
+                  key={project.id}
+                  onClick={() => setActiveIndex(idx)}
+                  suppressHydrationWarning
+                  className={`flex-shrink-0 snap-start w-[240px] sm:w-[280px] flex items-center gap-4 p-3 rounded-2xl border text-left transition-all duration-300 relative ${
+                    isActive 
+                      ? "border-cyan-500/50 bg-cyan-500/5 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] scale-[1.02]" 
+                      : "border-surface-border bg-surface/10 hover:bg-surface/35 text-text-muted hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  {/* Miniature Thumbnail (Shared layout image coordinate start) */}
+                  <div className="w-16 h-11 rounded-lg overflow-hidden relative bg-black/45 border border-surface-border shrink-0">
+                    {!isActive ? (
+                      <motion.div
+                        layoutId={`project-img-${project.id}`}
+                        className="absolute inset-0 w-full h-full"
+                        transition={{
+                          type: "spring",
+                          stiffness: 220,
+                          damping: 26,
+                        }}
+                      >
+                        <Image
+                          src={project.image}
+                          alt=""
+                          fill
+                          className="object-cover opacity-80"
+                          sizes="64px"
+                        />
+                      </motion.div>
+                    ) : (
+                      // Render empty track placeholder when flying, to prevent layout collapses
+                      <div className="absolute inset-0 bg-black/60 w-full h-full" />
+                    )}
+                  </div>
+
+                  <div className="min-w-0">
+                    <span className={`block text-[10px] uppercase font-bold tracking-widest leading-none mb-1 ${
+                      isActive ? "text-cyan-600 dark:text-cyan-300" : "text-text-tertiary"
+                    }`}>
+                      {project.id} // {project.category.split(" ")[0]}
+                    </span>
+                    <span className="block text-sm font-black uppercase tracking-wide truncate">
+                      {project.title}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+      </motion.div>
+    </section>
+  );
 }

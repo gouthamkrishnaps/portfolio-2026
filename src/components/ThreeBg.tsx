@@ -48,10 +48,9 @@ export default function ThreeBg() {
     const velocities = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
 
-    const isDark = document.documentElement.classList.contains("dark");
-    const color1 = isDark ? new THREE.Color(0xf97316) : new THREE.Color(0x06b6d4); // Orange / Cyan
-    const color2 = isDark ? new THREE.Color(0x7c2d12) : new THREE.Color(0x9333ea); // Deep red-orange / Purple
-    const color3 = isDark ? new THREE.Color(0xeab308) : new THREE.Color(0x4f46e5); // Gold / Indigo
+    const color1 = new THREE.Color(0x06b6d4); // Cyan
+    const color2 = new THREE.Color(0x9333ea); // Purple
+    const color3 = new THREE.Color(0x4f46e5); // Indigo
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;

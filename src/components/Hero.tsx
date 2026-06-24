@@ -138,7 +138,7 @@ export default function Hero() {
 
           {/* Role subtitle */}
           <h2 className="mt-6 text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-[8px] sm:tracking-[12px] text-text-muted">
-            Senior Frontend Engineer
+            Software Engineer
           </h2>
 
           {/* Intro Description */}

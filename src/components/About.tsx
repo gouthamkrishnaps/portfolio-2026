@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Tilt from "react-parallax-tilt";
-import Profileimage from "@/images/assets/1000474333.jpg";
+import Profileimage from "@/images/assets/generatedimage.png";
 import CounterCard from "./CounterCard";
 
 const stats = [

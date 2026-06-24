@@ -11,7 +11,8 @@ import {
 const experiences = [
   {
     title: "Junior Software Developer",
-    company: "ICodeBees",
+    company: "ICodeBees Private Limited",
+    location: "Infopark Kochi",
     period: "Aug 2024 - Present",
     icon: Briefcase,
     color: "from-cyan-500/10 via-blue-500/5 to-indigo-500/10 border-cyan-500/20 text-cyan-400",
@@ -21,7 +22,8 @@ const experiences = [
   },
   {
     title: "Software Developer Intern",
-    company: "Mykare Health",
+    company: "Mykare.ai",
+    location: "KSUM Kalamassery",
     period: "Jun 2024 - Jul 2024",
     icon: Building2,
     color: "from-purple-500/10 via-pink-500/5 to-pink-500/10 border-purple-500/20 text-purple-400",
@@ -32,6 +34,7 @@ const experiences = [
   {
     title: "MERN Stack Intern",
     company: "Luminar Technolab",
+    location: "Kakkanad Kochi",
     period: "Jul 2023 - Mar 2024",
     icon: GraduationCap,
     color: "from-emerald-500/10 via-teal-500/5 to-green-500/10 border-emerald-500/20 text-emerald-400",
@@ -133,14 +136,19 @@ export default function Experience() {
                         <Icon size={20} className={item.color.split(" ").pop()} />
                       </div>
 
-                      <div className="min-w-0">
-                        <h3 className="text-xl sm:text-2xl font-black truncate tracking-wide text-slate-900 dark:text-white">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-xl sm:text-2xl font-black tracking-wide text-slate-900 dark:text-white">
                           {item.title}
                         </h3>
 
-                        <p className="text-cyan-400 text-sm sm:text-base font-bold truncate">
-                          {item.company}
-                        </p>
+                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                          <p className="text-cyan-400 text-sm sm:text-base font-bold">
+                            {item.company}
+                          </p>
+                          <span className="text-[10px] sm:text-xs text-text-muted font-bold">
+                            • {item.location}
+                          </span>
+                        </div>
                       </div>
                     </div>
 

@@ -4,8 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
+import ProjectShowcase3D from "./ProjectShowcase3D";
 import { featuredProjects } from "../data/projects";
-import Tilt from "react-parallax-tilt";
 
 export default function FeaturedProjects() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -114,14 +114,6 @@ export default function FeaturedProjects() {
                     <div className="flex flex-wrap gap-3 mt-6">
                       <button
                         suppressHydrationWarning
-                        className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-indigo-500/10"
-                      >
-                        Case Study
-                        <ArrowUpRight size={14} />
-                      </button>
-
-                      <button
-                        suppressHydrationWarning
                         className="px-5 py-2.5 rounded-lg border border-surface-border bg-surface/30 hover:bg-surface/60 text-slate-900 dark:text-white font-bold text-xs sm:text-sm transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-400 hover:-translate-y-0.5"
                       >
                         Live Demo
@@ -131,41 +123,9 @@ export default function FeaturedProjects() {
                 </AnimatePresence>
               </div>
 
-              {/* Large Showcase Mockup Column (Shared layout image morph) */}
-              <div className="lg:col-span-7 relative flex items-center justify-center h-full min-h-[240px] sm:min-h-[360px]">
-                <div className="absolute inset-0 bg-cyan-500/5 rounded-2xl blur-xl pointer-events-none" />
-                
-                <Tilt
-                  tiltMaxAngleX={4}
-                  tiltMaxAngleY={4}
-                  perspective={1200}
-                  glareEnable
-                  glareMaxOpacity={0.05}
-                  scale={1.01}
-                  className="relative rounded-2xl border border-surface-border overflow-hidden bg-surface/30 shadow-2xl w-full h-[220px] sm:h-[350px] md:h-[380px]"
-                >
-                  <AnimatePresence mode="popLayout">
-                    <motion.div
-                      key={activeIndex}
-                      layoutId={`project-img-${activeProject.id}`}
-                      className="absolute inset-0 w-full h-full"
-                      transition={{
-                        type: "spring",
-                        stiffness: 220,
-                        damping: 26,
-                      }}
-                    >
-                      <Image
-                        src={activeProject.image}
-                        alt={activeProject.title}
-                        fill
-                        className="object-cover"
-                        placeholder="blur"
-                        priority
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </Tilt>
+              {/* Large Showcase Mockup Column (Dynamic 3D Holographic Projector) */}
+              <div className="lg:col-span-7 relative flex items-center justify-center h-full min-h-[340px] sm:min-h-[450px] md:min-h-[500px] lg:min-h-[580px] xl:min-h-[650px] w-full">
+                <ProjectShowcase3D imageUrl={activeProject.image.src} title={activeProject.title} />
               </div>
             </div>
           </div>
@@ -198,7 +158,7 @@ export default function FeaturedProjects() {
           </div>
 
           {/* Horizontal scrollbar carousel track */}
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory">
+          <div className="flex gap-4 overflow-x-auto pt-3 pb-4 px-2 -mx-2 scrollbar-none snap-x snap-mandatory">
             {featuredProjects.map((project, idx) => {
               const isActive = idx === activeIndex;
               return (

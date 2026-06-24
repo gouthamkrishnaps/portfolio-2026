@@ -2,15 +2,39 @@ import PermatechImage from "@/images/assets/permatech.png";
 import AvumyImage from "@/images/assets/avumy.png";
 import DarlingsImage from "@/images/assets/darlings.png";
 import EattakImage from "@/images/assets/eattak.png";
+import PendriveImage from "@/images/assets/pendrive.png";
+import JBSushiImage from "@/images/assets/sushi.png";
 
 export const featuredProjects = [
   {
     id: "01",
+    title: "Darlings of Chelsea",
+    category: "Luxury Furniture eCommerce",
+    image: DarlingsImage,
+    url: "https://www.darlingsofchelsea.co.uk/",
+    description:
+      "Enhanced a premium furniture eCommerce platform with modern UI improvements, performance optimizations, and Cylindo 3D product visualization integration.",
+    technologies: [
+      "Next.js",
+      "React 19",
+      "SCSS",
+      "Cylindo 3D WebGL",
+    ],
+    highlights: [
+      "3D Product Configurator",
+      "Material Visualization",
+      "Performance Optimization",
+      "Modern UI Enhancements",
+    ],
+  },
+  {
+    id: "02",
     title: "Permatech Roofing",
     category: "Enterprise eCommerce",
     image: PermatechImage,
+    url: "https://permatech-ui.icodebdev.com/",
     description:
-      "Developed scalable eCommerce experiences including bundle pricing, checkout optimization, product filtering and customer pricing.",
+      "Developed scalable B2B eCommerce solutions including bundle pricing, customer-specific pricing, checkout workflows, and product management.",
     technologies: [
       "Next.js",
       "TypeScript",
@@ -19,40 +43,42 @@ export const featuredProjects = [
       "Tailwind CSS",
     ],
     highlights: [
-      "Dynamic Bundle Pricing",
-      "Custom Checkout Funnels",
-      "B2B Customer Tiers",
-      "High-Performance Listings",
-    ],
-  },
-  {
-    id: "02",
-    title: "Rubberized Roofing",
-    category: "B2B Commerce",
-    image: EattakImage,
-    description:
-      "Built a modern roofing commerce platform featuring real-time quote generation, responsive interfaces, and optimized B2B workflows.",
-    technologies: [
-      "React",
-      "Next.js",
-      "GraphQL",
-      "Magento API",
-      "Tailwind CSS",
-    ],
-    highlights: [
-      "Responsive Quotation UI",
-      "ERP Order Integration",
-      "Optimized Checkout Flows",
-      "Sub-second Load Times",
+      "Bundle Pricing Logic",
+      "Contractor Workflows",
+      "Custom Checkout",
+      "Magento Integration",
     ],
   },
   {
     id: "03",
-    title: "Avumy Space",
-    category: "Booking Platform",
-    image: AvumyImage,
+    title: "EatTak",
+    category: "Food Delivery Platform",
+    image: EattakImage,
+    url: "https://eattak.com/",
     description:
-      "A premium event space and property stay booking platform built to deliver visual excellence and frictionless user reservations.",
+      "Developed a Swiggy-style food ordering platform featuring restaurant discovery, online ordering, live order management, and customer-focused experiences.",
+    technologies: [
+      "React",
+      "Next.js",
+      "Node.js",
+      "REST APIs",
+      "Tailwind CSS",
+    ],
+    highlights: [
+      "Food Ordering System",
+      "Restaurant Listings",
+      "Order Management",
+      "Mobile-First Design",
+    ],
+  },
+  {
+    id: "04",
+    title: "Avumy Space",
+    category: "Property & Event Booking",
+    image: AvumyImage,
+    url: "https://www.avumy.com/",
+    description:
+      "Created a property and event booking platform enabling users to discover, book, and manage spaces through an intuitive experience.",
     technologies: [
       "React",
       "Next.js",
@@ -61,30 +87,53 @@ export const featuredProjects = [
       "Tailwind CSS",
     ],
     highlights: [
-      "Interactive Booking System",
-      "Dynamic Property Filters",
-      "Visual Map Integration",
-      "Glassmorphic Dashboards",
+      "Property Booking",
+      "Event Space Listings",
+      "Advanced Search Filters",
+      "Interactive User Experience",
     ],
   },
   {
-    id: "04",
-    title: "Darlings of Chelsea",
-    category: "Luxury Furniture eCommerce",
-    image: DarlingsImage,
+    id: "05",
+    title: "Pendrive",
+    category: "Cloud File Sharing Platform",
+    image: PendriveImage,
+    url: "https://pendrive.me/",
     description:
-      "High-end luxury furniture eCommerce platform integrating Cylindo 3D assets to enable dynamic product configuration and material inspection.",
+      "Developed a virtual file-sharing and storage platform that enables users to securely upload, organize, manage, and share digital content through a modern cloud-based experience.",
     technologies: [
       "Next.js",
-      "SCSS",
-      "React 19",
-      "Cylindo 3D WebGL",
+      "React",
+      "Node.js",
+      "MySQL",
+      "Tailwind CSS",
     ],
     highlights: [
-      "3D Product Configurator",
-      "High-Fidelity Material Swatches",
-      "Sleek Layout Interactions",
-      "Advanced Render Caching",
+      "Secure File Sharing",
+      "Virtual Storage Management",
+      "User Access Controls",
+      "Cross-Platform Experience",
+    ],
+  },
+  {
+    id: "06",
+    title: "JB Sushi",
+    category: "Restaurant Ordering Platform",
+    image: JBSushiImage,
+    url: "https://www.jbsushi.com/",
+    description:
+      "Built a modern restaurant ordering experience with menu management, online ordering, and optimized customer interactions.",
+    technologies: [
+      "Next.js",
+      "React",
+      "REST APIs",
+      "Tailwind CSS",
+    ],
+    highlights: [
+      "Online Ordering",
+      "Menu Management",
+      "Responsive Experience",
+      "Customer Engagement",
     ],
   },
 ];
@@ -92,26 +141,44 @@ export const featuredProjects = [
 export const projects = [
   {
     number: "01",
-    title: "Permatech Roofing",
-    subtitle: "Enterprise Commerce Platform",
-    image: PermatechImage,
-  },
-  {
-    number: "02",
-    title: "Rubberized Roofing",
-    subtitle: "B2B Commerce Platform",
-    image: EattakImage,
-  },
-  {
-    number: "03",
-    title: "Avumy Space",
-    subtitle: "Property Booking Platform",
-    image: AvumyImage,
-  },
-  {
-    number: "04",
     title: "Darlings of Chelsea",
     subtitle: "Luxury Furniture eCommerce",
     image: DarlingsImage,
+    url: "https://www.darlingsofchelsea.co.uk/",
+  },
+  {
+    number: "02",
+    title: "Permatech Roofing",
+    subtitle: "Enterprise Commerce Platform",
+    image: PermatechImage,
+    url: "https://permatech-ui.icodebdev.com/",
+  },
+  {
+    number: "03",
+    title: "EatTak",
+    subtitle: "Food Delivery Platform",
+    image: EattakImage,
+    url: "https://eattak.com/",
+  },
+  {
+    number: "04",
+    title: "Avumy Space",
+    subtitle: "Property Booking Platform",
+    image: AvumyImage,
+    url: "https://www.avumy.com/",
+  },
+  {
+    number: "05",
+    title: "Pendrive",
+    subtitle: "Cloud File Sharing Platform",
+    image: PendriveImage,
+    url: "https://pendrive.me/",
+  },
+  {
+    number: "06",
+    title: "JB Sushi",
+    subtitle: "Restaurant Ordering Platform",
+    image: JBSushiImage,
+    url: "https://www.jbsushi.com/",
   },
 ];

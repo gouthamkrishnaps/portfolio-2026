@@ -112,12 +112,15 @@ export default function FeaturedProjects() {
 
                     {/* CTA Buttons */}
                     <div className="flex flex-wrap gap-3 mt-6">
-                      <button
+                      <a
+                        href={activeProject.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         suppressHydrationWarning
                         className="px-5 py-2.5 rounded-lg border border-surface-border bg-surface/30 hover:bg-surface/60 text-slate-900 dark:text-white font-bold text-xs sm:text-sm transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-400 hover:-translate-y-0.5"
                       >
                         Live Demo
-                      </button>
+                      </a>
                     </div>
                   </motion.div>
                 </AnimatePresence>

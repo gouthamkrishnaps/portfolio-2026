@@ -51,7 +51,7 @@ export default function Achievements() {
           {[
             { value: "20+", label: "Projects Delivered" },
             { value: "5+", label: "Production Applications" },
-            { value: "10+", label: "Technologies Mastered" },
+            { value: "20+", label: "Technologies Mastered" },
             { value: "100%", label: "Responsive Experiences" },
           ].map((item, i) => (
             <motion.div

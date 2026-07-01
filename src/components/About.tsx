@@ -20,7 +20,7 @@ const stats = [
     label: "Companies & Clients",
   },
   {
-    value: "10+",
+    value: "20+",
     label: "Technologies",
   },
 ];

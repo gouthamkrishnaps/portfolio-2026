@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Moon, Sun, Menu, X, Download } from "lucide-react";
+import { Moon, Sun, Menu, X, Download, GitBranch } from "lucide-react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const navLinks = [
   { label: "Home", href: "#home", id: "home" },
@@ -15,7 +17,9 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const { theme, setTheme, resolvedTheme } = useTheme();
+
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,6 +56,8 @@ export default function Navbar() {
   function toggleTheme() {
     setTheme(isDark ? "light" : "dark");
   }
+
+  if (pathname === "/sandbox") return null;
 
   return (
     <header 
@@ -124,6 +130,15 @@ export default function Navbar() {
               Resume
             </a>
 
+            {/* Git Sandbox button */}
+            <Link
+              href="/sandbox"
+              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:border-purple-500/60"
+            >
+              <GitBranch size={12} className="animate-pulse" />
+              Git Sandbox
+            </Link>
+
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -164,6 +179,15 @@ export default function Navbar() {
             </div>
 
             <hr className="border-surface-border my-1" />
+
+            <Link
+              href="/sandbox"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl bg-neutral-900 border border-neutral-850 hover:bg-neutral-800 text-cyan-400 font-bold text-sm uppercase tracking-wider transition-colors mb-2"
+            >
+              <GitBranch size={14} className="text-purple-400 animate-pulse" />
+              Try Git Sandbox
+            </Link>
 
             <a
               href="/resume/Goutham_Krishna_PS.pdf"

@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Preloader from "./Preloader";
 
-export default function ThemeProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function ThemeLoader({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,16 +34,28 @@ export default function ThemeProvider({
   };
 
   return (
+    <>
+      {loading && <Preloader onComplete={handleComplete} />}
+      <div className={loading ? "opacity-0" : "opacity-100 transition-opacity duration-700 font-sans"}>
+        {children}
+      </div>
+    </>
+  );
+}
+
+export default function ThemeProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
     <NextThemesProvider
       attribute="class"
       defaultTheme="dark"
       enableSystem
       disableTransitionOnChange
     >
-      {loading && <Preloader onComplete={handleComplete} />}
-      <div className={loading ? "opacity-0" : "opacity-100 transition-opacity duration-700"}>
-        {children}
-      </div>
+      <ThemeLoader>{children}</ThemeLoader>
     </NextThemesProvider>
   );
 }

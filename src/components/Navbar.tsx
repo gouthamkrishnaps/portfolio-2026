@@ -130,7 +130,7 @@ export default function Navbar() {
               Resume
             </a>
 
-            {/* Git Sandbox button */}
+            {/* Git Sandbox button - Commented out
             <Link
               href="/sandbox"
               className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:border-purple-500/60"
@@ -138,6 +138,7 @@ export default function Navbar() {
               <GitBranch size={12} className="animate-pulse" />
               Git Sandbox
             </Link>
+            */}
 
             {/* Mobile Menu Button */}
             <button
@@ -178,6 +179,7 @@ export default function Navbar() {
               ))}
             </div>
 
+            {/* Commented out Git Sandbox mobile link
             <hr className="border-surface-border my-1" />
 
             <Link
@@ -188,6 +190,7 @@ export default function Navbar() {
               <GitBranch size={14} className="text-purple-400 animate-pulse" />
               Try Git Sandbox
             </Link>
+            */}
 
             <a
               href="/resume/Goutham_Krishna_PS.pdf"

@@ -4,7 +4,7 @@ import DarlingsImage from "@/images/assets/darlings.png";
 import EattakImage from "@/images/assets/eattak.png";
 import PendriveImage from "@/images/assets/pendrive.png";
 import JBSushiImage from "@/images/assets/sushi.png";
-import GitSandboxImage from "@/images/assets/git_sandbox.png";
+// import GitSandboxImage from "@/images/assets/git_sandbox.png";
 
 export const featuredProjects = [
   {
@@ -140,6 +140,7 @@ export const featuredProjects = [
 ];
 
 export const projects = [
+  /* Commented out Git Sandbox project card
   {
     number: "00",
     title: "Collaborative Git Visualizer",
@@ -147,6 +148,7 @@ export const projects = [
     image: GitSandboxImage,
     url: "/sandbox",
   },
+  */
   {
     number: "01",
     title: "Darlings of Chelsea",

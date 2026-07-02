@@ -5,12 +5,11 @@ import { motion } from "framer-motion";
 import {
   Mail,
   ArrowDown,
-  GitFork,
-  Link2,
   Terminal,
   Activity,
   Cpu,
 } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import FloatingTech from "./FloatingTech";
 
@@ -79,7 +78,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-primary pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-primary pt-20 pb-24 sm:pb-8"
     >
       {/* WebGL Swirling Cosmic Flow Field */}
       <ThreeBg />
@@ -137,18 +136,18 @@ export default function Hero() {
           </h1>
 
           {/* Role subtitle */}
-          <h2 className="mt-6 text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-[8px] sm:tracking-[12px] text-text-muted">
+          <h2 className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-[8px] sm:tracking-[12px] text-text-muted">
             Software Engineer
           </h2>
 
           {/* Intro Description */}
-          <p className="mt-8 max-w-xl text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
+          <p className="mt-5 sm:mt-8 max-w-xl text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
             Architecting interactive browser installations, complex e-commerce engines,
             and lightweight mathematical UI layouts. Transforming vectors into code.
           </p>
 
           {/* Actions button strip */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 sm:mt-10 w-full sm:w-auto">
             <a
               href="#projects"
               className="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-xl shadow-indigo-500/10 hover:shadow-indigo-500/30 hover:-translate-y-0.5 active:translate-y-0"
@@ -165,10 +164,10 @@ export default function Hero() {
           </div>
 
           {/* Social icons row */}
-          <div className="flex items-center gap-5 mt-10">
+          <div className="flex items-center gap-4 sm:gap-5 mt-6 sm:mt-10">
             {[
-              { icon: GitFork, href: "https://github.com/gouthamkrishnaps", label: "GitHub" },
-              { icon: Link2, href: "https://linkedin.com/in/gouthamkrishnaps", label: "LinkedIn" },
+              { icon: FaGithub, href: "https://github.com/gouthamkrishnaps", label: "GitHub" },
+              { icon: FaLinkedin, href: "https://linkedin.com/in/gouthamkrishnaps", label: "LinkedIn" },
               { icon: Mail, href: "mailto:gouthamkrishnaps02@gmail.com", label: "Email" },
             ].map((social, idx) => {
               const Icon = social.icon;
@@ -178,8 +177,9 @@ export default function Hero() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3.5 rounded-full bg-surface/20 border border-surface-border hover:border-cyan-500/40 hover:bg-surface/80 hover:text-cyan-400 text-text-muted transition-all duration-300"
+                  className="p-2.5 sm:p-3.5 rounded-full bg-surface/20 border border-surface-border hover:border-cyan-500/40 hover:bg-surface/80 hover:text-cyan-400 text-text-muted transition-all duration-300"
                   aria-label={social.label}
+                  id={`social-link-${social.label.toLowerCase()}`}
                 >
                   <Icon size={18} />
                 </a>
@@ -198,7 +198,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={isIntroFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="absolute bottom-5 inset-x-0 px-6 sm:px-12 w-full flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-4 pointer-events-none select-none text-[10px] sm:text-xs font-mono text-text-tertiary uppercase tracking-wider"
+        className="absolute bottom-3 sm:bottom-5 inset-x-0 px-6 sm:px-12 w-full flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 pointer-events-none select-none text-[10px] sm:text-xs font-mono text-text-tertiary uppercase tracking-wider"
       >
         {/* Left side telemetry metrics */}
         <div className="flex items-center gap-4">

@@ -2,6 +2,28 @@
 
 import { motion } from "framer-motion";
 import Skills3D from "./Skills3D";
+import { FaReact, FaNodeJs, FaHtml5, FaSass, FaGithub } from "react-icons/fa";
+import { SiNextdotjs, SiTypescript, SiTailwindcss, SiExpress, SiGraphql, SiApollographql, SiMongodb, SiMysql } from "react-icons/si";
+import { TbApi } from "react-icons/tb";
+import { VscAzureDevops } from "react-icons/vsc";
+
+const skillsMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  "React 19": FaReact,
+  "Next.js 16": SiNextdotjs,
+  "TypeScript": SiTypescript,
+  "HTML5/CSS3": FaHtml5,
+  "SCSS": FaSass,
+  "Tailwind CSS": SiTailwindcss,
+  "Node.js": FaNodeJs,
+  "Express.js": SiExpress,
+  "GraphQL": SiGraphql,
+  "Apollo Client": SiApollographql,
+  "REST APIs": TbApi,
+  "MongoDB": SiMongodb,
+  "MySQL": SiMysql,
+  "Azure Devops": VscAzureDevops,
+  "Git / GitHub": FaGithub,
+};
 
 const skillCategories = [
   {
@@ -87,14 +109,18 @@ export default function SkillsUniverse() {
                 </h3>
                 
                 <div className="flex flex-wrap gap-2">
-                  {cat.skills.map((item) => (
-                    <span
-                      key={item}
-                      className={`px-3 py-1.5 rounded-lg border text-xs font-semibold ${cat.color}`}
-                    >
-                      {item}
-                    </span>
-                  ))}
+                  {cat.skills.map((item) => {
+                    const Icon = skillsMap[item];
+                    return (
+                      <span
+                        key={item}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold ${cat.color}`}
+                      >
+                        {Icon && <Icon className="w-3.5 h-3.5" />}
+                        <span>{item}</span>
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             ))}

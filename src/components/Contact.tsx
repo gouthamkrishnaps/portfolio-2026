@@ -7,26 +7,80 @@ import {
   Phone,
   Download,
   ArrowUpRight,
-  Link2,
-  GitFork,
   Send,
 } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API request
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      setFormState({ name: "", email: "", message: "" });
-      setTimeout(() => setSubmitted(false), 5000);
-    }, 1500);
+    setSubmitError(null);
+
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
+
+    if (!serviceId || !templateId || !publicKey) {
+      console.warn("EmailJS credentials missing. Simulating submission in development.");
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setSubmitted(true);
+        setFormState({ name: "", email: "", message: "" });
+        setTimeout(() => setSubmitted(false), 5000);
+      }, 1500);
+      return;
+    }
+
+    const templateParams = {
+      // Name conventions
+      from_name: formState.name,
+      user_name: formState.name,
+      name: formState.name,
+
+      // Email conventions
+      reply_to: formState.email,
+      from_email: formState.email,
+      user_email: formState.email,
+      email: formState.email,
+
+      // Message conventions
+      message: formState.message,
+      user_message: formState.message,
+      msg: formState.message,
+
+      // Recipient / Metadata
+      to_name: "Goutham Krishna P S",
+    };
+
+    emailjs
+      .send(serviceId, templateId, templateParams, publicKey)
+      .then(
+        () => {
+          setIsSubmitting(false);
+          setSubmitted(true);
+          setFormState({ name: "", email: "", message: "" });
+          setTimeout(() => setSubmitted(false), 5000);
+        },
+        (err) => {
+          console.error("EmailJS Error Details:", err);
+          setIsSubmitting(false);
+          
+          // Extract message if it exists
+          const errorMsg = err && typeof err === "object" && ("text" in err || "message" in err)
+            ? (err.text || (err as any).message)
+            : JSON.stringify(err);
+
+          setSubmitError(`Failed to send message: ${errorMsg || "Please try again."}`);
+          setTimeout(() => setSubmitError(null), 5000);
+        }
+      );
   };
 
   return (
@@ -107,8 +161,8 @@ export default function Contact() {
               {[
                 { icon: Mail, label: "Email", val: "gouthamkrishnaps02@gmail.com", href: "mailto:gouthamkrishnaps02@gmail.com", download: false },
                 { icon: Phone, label: "Phone", val: "+91 9746594311", href: "tel:+919746594311", download: false },
-                { icon: Link2, label: "LinkedIn", val: "gouthamkrishnaps", href: "https://linkedin.com/in/gouthamkrishnaps", download: false },
-                { icon: GitFork, label: "GitHub", val: "gouthamkrishnaps", href: "https://github.com/gouthamkrishnaps", download: false },
+                { icon: FaLinkedin, label: "LinkedIn", val: "gouthamkrishnaps", href: "https://linkedin.com/in/gouthamkrishnaps", download: false },
+                { icon: FaGithub, label: "GitHub", val: "gouthamkrishnaps", href: "https://github.com/gouthamkrishnaps", download: false },
                 { icon: Download, label: "Resume", val: "Download PDF", href: "/resume/Goutham_Krishna_PS.pdf", download: true },
               ].map((link, idx) => {
                 const Icon = link.icon;
@@ -208,23 +262,31 @@ export default function Contact() {
                 </div>
 
                 {/* Submit button */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  suppressHydrationWarning
-                  className="w-full flex items-center justify-center gap-2.5 px-8 py-4.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 disabled:opacity-50"
-                >
-                  {isSubmitting ? (
-                    "Sending Message..."
-                  ) : submitted ? (
-                    "Message Sent Successfully!"
-                  ) : (
-                    <>
-                      Send Message
-                      <Send size={14} />
-                    </>
+                <div className="relative">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    suppressHydrationWarning
+                    className="w-full flex items-center justify-center gap-2.5 px-8 py-4.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      "Sending Message..."
+                    ) : submitted ? (
+                      "Message Sent Successfully!"
+                    ) : (
+                      <>
+                        Send Message
+                        <Send size={14} />
+                      </>
+                    )}
+                  </button>
+
+                  {submitError && (
+                    <p className="text-red-400 font-mono text-xs text-center mt-3 animate-pulse uppercase tracking-wider">
+                      {submitError}
+                    </p>
                   )}
-                </button>
+                </div>
               </div>
             </form>
           </motion.div>

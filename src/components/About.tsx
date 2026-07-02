@@ -5,6 +5,18 @@ import Image from "next/image";
 import Tilt from "react-parallax-tilt";
 import Profileimage from "@/images/assets/generatedimage.png";
 import CounterCard from "./CounterCard";
+import { FaReact, FaNodeJs } from "react-icons/fa";
+import { SiNextdotjs, SiTypescript, SiGraphql, SiThreedotjs, SiTailwindcss } from "react-icons/si";
+
+const techIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  "Next.js": SiNextdotjs,
+  "React": FaReact,
+  "TypeScript": SiTypescript,
+  "GraphQL": SiGraphql,
+  "Three.js": SiThreedotjs,
+  "Tailwind CSS": SiTailwindcss,
+  "Node.js": FaNodeJs,
+};
 
 const stats = [
   {
@@ -122,14 +134,18 @@ export default function About() {
                 "Three.js",
                 "Tailwind CSS",
                 "Node.js",
-              ].map((item) => (
-                <span
-                  key={item}
-                  className="px-4 py-2 rounded-full border border-cyan-500/25 bg-cyan-500/5 text-cyan-600 dark:text-cyan-300 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:text-cyan-700 dark:hover:text-white cursor-default"
-                >
-                  {item}
-                </span>
-              ))}
+              ].map((item) => {
+                const Icon = techIcons[item];
+                return (
+                  <span
+                    key={item}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/25 bg-cyan-500/5 text-cyan-600 dark:text-cyan-300 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:text-cyan-700 dark:hover:text-white cursor-default group"
+                  >
+                    {Icon && <Icon className="w-4 h-4 text-cyan-500/80 group-hover:text-cyan-400 transition-colors" />}
+                    <span>{item}</span>
+                  </span>
+                );
+              })}
             </div>
           </motion.div>
         </div>

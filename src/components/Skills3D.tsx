@@ -2,6 +2,21 @@
 
 import { useEffect, useRef, useState } from "react";
 import { skills } from "../data/skills";
+import { FaReact, FaNodeJs } from "react-icons/fa";
+import { SiNextdotjs, SiTypescript, SiGraphql, SiMongodb, SiMysql, SiTailwindcss } from "react-icons/si";
+import { VscAzure } from "react-icons/vsc";
+
+const orbitIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  "Next.js": SiNextdotjs,
+  "React": FaReact,
+  "TypeScript": SiTypescript,
+  "GraphQL": SiGraphql,
+  "Node.js": FaNodeJs,
+  "MongoDB": SiMongodb,
+  "MySQL": SiMysql,
+  "Tailwind": SiTailwindcss,
+  "Azure": VscAzure,
+};
 
 interface Point3D {
   x: number;
@@ -224,23 +239,27 @@ export default function Skills3D() {
         <div className="absolute w-24 h-24 sm:w-36 sm:h-36 rounded-full bg-cyan-500/10 border border-cyan-500/20 blur-xl pointer-events-none" />
 
         {/* 3D Orbit Points */}
-        {skills.map((skill, idx) => (
-          <div
-            key={skill.name}
-            ref={(el) => {
-              elementRefs.current[idx] = el;
-            }}
-            className="absolute transition-shadow duration-300 pointer-events-auto"
-            style={{
-              willChange: "transform, opacity",
-            }}
-          >
-            {/* Tag Design - Matches original UI precisely */}
-            <div className="glass-panel px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-surface-border text-xs sm:text-sm font-bold tracking-wide text-slate-800 dark:text-white hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-              {skill.name}
+        {skills.map((skill, idx) => {
+          const Icon = orbitIcons[skill.name];
+          return (
+            <div
+              key={skill.name}
+              ref={(el) => {
+                elementRefs.current[idx] = el;
+              }}
+              className="absolute transition-shadow duration-300 pointer-events-auto group"
+              style={{
+                willChange: "transform, opacity",
+              }}
+            >
+              {/* Tag Design - Matches original UI precisely */}
+              <div className="glass-panel flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-surface-border text-xs sm:text-sm font-bold tracking-wide text-slate-800 dark:text-white hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                {Icon && <Icon className="w-4 h-4 text-cyan-500/80 dark:text-cyan-400/80 group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors" />}
+                <span>{skill.name}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

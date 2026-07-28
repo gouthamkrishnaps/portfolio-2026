@@ -122,14 +122,13 @@ export default function Hero() {
             x: parallax.x * 10,
             y: parallax.y * 10,
           }}
-          className="text-center max-w-3xl flex flex-col items-center"
+          className="text-center w-full max-w-5xl flex flex-col items-center"
         >
 
 
           {/* Master Name Header */}
-          <h1 className="text-6xl sm:text-8xl md:text-[100px] font-black uppercase tracking-tight leading-[0.95] text-slate-900 dark:text-white">
-            Goutham
-            <br />
+          <h1 className="w-full text-[7.5vw] sm:text-[6.5vw] md:text-[6vw] lg:text-[80px] font-black uppercase tracking-tight leading-[0.95] text-slate-900 dark:text-white whitespace-nowrap text-center">
+            Goutham{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500 text-glow">
               Krishna P S
             </span>

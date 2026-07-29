@@ -9,8 +9,8 @@ export default function ThreeBg() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Performance Optimization: Disable on mobile screens to save battery
-    if (window.innerWidth < 768) {
+    // Performance Optimization: Disable on small mobile screens to save battery/resources
+    if (window.innerWidth < 480) {
       containerRef.current.classList.add("mobile-bg-radial");
       return;
     }
@@ -20,81 +20,102 @@ export default function ThreeBg() {
     // Scene Setup
     const scene = new THREE.Scene();
     
+    // Camera & Renderer size fallback (handles early mount/hydration layout)
+    const initialWidth = container.clientWidth || window.innerWidth;
+    const initialHeight = container.clientHeight || window.innerHeight;
+
     // Camera
     const camera = new THREE.PerspectiveCamera(
       60,
-      container.clientWidth / container.clientHeight,
+      initialWidth / initialHeight,
       0.1,
-      1000
+      100
     );
     camera.position.z = 10;
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(initialWidth, initialHeight);
     container.appendChild(renderer.domElement);
 
-    // Group
+    // Main Group
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
-    // --- Create Particle Flow Field ---
-    const count = 1500;
-    const geometry = new THREE.BufferGeometry();
-    
-    const positions = new Float32Array(count * 3);
-    const origins = new Float32Array(count * 3);
-    const velocities = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
+    // --- Plexus Network Configuration ---
+    const particleCount = 170;
+    const maxConnections = 1200;
+    const connectionThreshold = 2.8;
 
-    const color1 = new THREE.Color(0x06b6d4); // Cyan
-    const color2 = new THREE.Color(0x9333ea); // Purple
-    const color3 = new THREE.Color(0x4f46e5); // Indigo
+    // Bounds for motion
+    const xRange = 16;
+    const yRange = 10;
+    const zRange = 4;
 
-    for (let i = 0; i < count; i++) {
+    // Buffers for points
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = new Float32Array(particleCount * 3);
+    const pointsColors = new Float32Array(particleCount * 3);
+
+    // Theme Color Palette
+    const colorCyan = new THREE.Color(0x06b6d4);   // Cyan
+    const colorIndigo = new THREE.Color(0x4f46e5); // Indigo
+    const colorPurple = new THREE.Color(0x9333ea); // Purple
+
+    // Initialize Particle coordinates and attributes
+    for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
       
-      // Form a spiral disk distribution (galaxy layout)
-      const theta = Math.random() * Math.PI * 2;
-      const radius = Math.pow(Math.random(), 1.5) * 8 + 0.5; // denser in the center
-      
-      const x = Math.cos(theta) * radius;
-      const y = Math.sin(theta) * radius;
-      const z = (Math.random() - 0.5) * 3; // depth
+      positions[i3] = (Math.random() - 0.5) * xRange;
+      positions[i3 + 1] = (Math.random() - 0.5) * yRange;
+      positions[i3 + 2] = (Math.random() - 0.5) * zRange;
 
-      positions[i3] = x;
-      positions[i3 + 1] = y;
-      positions[i3 + 2] = z;
+      velocities[i3] = (Math.random() - 0.5) * 0.012;
+      velocities[i3 + 1] = (Math.random() - 0.5) * 0.012;
+      velocities[i3 + 2] = (Math.random() - 0.5) * 0.006;
 
-      origins[i3] = x;
-      origins[i3 + 1] = y;
-      origins[i3 + 2] = z;
-
-      velocities[i3] = 0;
-      velocities[i3 + 1] = 0;
-      velocities[i3 + 2] = 0;
-
-      // Color mapping based on distance from center
-      const ratio = radius / 8.5;
+      // Color mapping: generate gradients across particles
+      const t = Math.random();
       const mixedColor = new THREE.Color();
-      if (ratio < 0.4) {
-        mixedColor.lerpColors(color1, color3, ratio / 0.4);
+      if (t < 0.5) {
+        mixedColor.lerpColors(colorCyan, colorIndigo, t * 2);
       } else {
-        mixedColor.lerpColors(color3, color2, (ratio - 0.4) / 0.6);
+        mixedColor.lerpColors(colorIndigo, colorPurple, (t - 0.5) * 2);
       }
-
-      colors[i3] = mixedColor.r;
-      colors[i3 + 1] = mixedColor.g;
-      colors[i3 + 2] = mixedColor.b;
+      
+      pointsColors[i3] = mixedColor.r;
+      pointsColors[i3 + 1] = mixedColor.g;
+      pointsColors[i3 + 2] = mixedColor.b;
     }
 
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    // Points Geometry & Material
+    const pointsGeometry = new THREE.BufferGeometry();
+    pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    pointsGeometry.setAttribute("color", new THREE.BufferAttribute(pointsColors, 3));
 
-    // Custom Shader-like Material for Glowing Nodes
-    const material = new THREE.PointsMaterial({
-      size: 0.08,
+    // Circular glowing sprite texture
+    const createCircleTexture = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 16;
+      canvas.height = 16;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+        grad.addColorStop(0, "rgba(255, 255, 255, 1)");
+        grad.addColorStop(0.3, "rgba(255, 255, 255, 0.8)");
+        grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 16, 16);
+      }
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.needsUpdate = true;
+      return texture;
+    };
+
+    const pointsMaterial = new THREE.PointsMaterial({
+      size: 0.22,
+      map: createCircleTexture(),
       vertexColors: true,
       transparent: true,
       opacity: 0.85,
@@ -102,10 +123,29 @@ export default function ThreeBg() {
       depthWrite: false,
     });
 
-    const particles = new THREE.Points(geometry, material);
-    mainGroup.add(particles);
+    const points = new THREE.Points(pointsGeometry, pointsMaterial);
+    mainGroup.add(points);
 
-    // Mouse coordinates in NDC and projection tracking
+    // --- Connecting Lines Geometry & Material ---
+    const lineGeometry = new THREE.BufferGeometry();
+    const linePositions = new Float32Array(maxConnections * 2 * 3);
+    const lineColors = new Float32Array(maxConnections * 2 * 3);
+
+    lineGeometry.setAttribute("position", new THREE.BufferAttribute(linePositions, 3));
+    lineGeometry.setAttribute("color", new THREE.BufferAttribute(lineColors, 3));
+
+    const lineMaterial = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.28,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const lineSegments = new THREE.LineSegments(lineGeometry, lineMaterial);
+    mainGroup.add(lineSegments);
+
+    // Mouse coordinates tracking
     let targetMouseX = 0;
     let targetMouseY = 0;
     let mouseX = 0;
@@ -113,14 +153,13 @@ export default function ThreeBg() {
     const mouse3D = new THREE.Vector3(0, 0, 0);
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Convert to normalized coordinates [-1, 1]
       targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
       targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
 
-    // Resize
+    // Window Resize handler
     const handleResize = () => {
       if (!container) return;
       camera.aspect = container.clientWidth / container.clientHeight;
@@ -130,102 +169,160 @@ export default function ThreeBg() {
 
     window.addEventListener("resize", handleResize);
 
-    // Animation Loop
+    // --- Animation Frame ---
     let animationFrameId: number;
-    const clock = new THREE.Clock();
 
     const animate = () => {
-      const time = clock.getElapsedTime();
-
       // Smooth mouse coordinates LERP
-      mouseX += (targetMouseX - mouseX) * 0.1;
-      mouseY += (targetMouseY - mouseY) * 0.1;
+      mouseX += (targetMouseX - mouseX) * 0.08;
+      mouseY += (targetMouseY - mouseY) * 0.08;
+      
+      // Map mouse to 3D coords matching camera projections
+      mouse3D.set(mouseX * 9.5, mouseY * 5.5, 0);
 
-      // Project mouse pointer coordinates into 3D space at plane z=0
-      mouse3D.set(mouseX * 7.5, mouseY * 5.0, 0);
+      // Subtle group parallax tilt
+      mainGroup.rotation.y = mouseX * 0.15;
+      mainGroup.rotation.x = -mouseY * 0.15;
 
-      // Subtle group parallax rotation
-      mainGroup.rotation.z = time * 0.015;
-      mainGroup.rotation.y = mouseX * 0.4;
-      mainGroup.rotation.x = -mouseY * 0.4;
+      const posArr = positions;
+      const velArr = velocities;
 
-      const positionAttr = geometry.attributes.position;
-      const posArr = positionAttr.array as Float32Array;
+      let lineIdx = 0;
+      const linePosArr = lineGeometry.attributes.position.array as Float32Array;
+      const lineColorArr = lineGeometry.attributes.color.array as Float32Array;
 
-      // Loop through all points and apply vector physics forces
-      for (let i = 0; i < count; i++) {
+      // 1. Update particle velocities & coordinates
+      for (let i = 0; i < particleCount; i++) {
         const i3 = i * 3;
         
-        const px = posArr[i3];
-        const py = posArr[i3 + 1];
-        const pz = posArr[i3 + 2];
+        let px = posArr[i3];
+        let py = posArr[i3 + 1];
+        let pz = posArr[i3 + 2];
+        
+        let vx = velArr[i3];
+        let vy = velArr[i3 + 1];
+        let vz = velArr[i3 + 2];
 
-        const ox = origins[i3];
-        const oy = origins[i3 + 1];
-        const oz = origins[i3 + 2];
-
-        let fx = 0;
-        let fy = 0;
-        let fz = 0;
-
-        // Force 1: Natural spiral rotation force around Z axis
-        const distFromCenter = Math.sqrt(px * px + py * py) || 0.1;
-        const angle = Math.atan2(py, px);
-        // Force direction perpendicular to radius vector
-        const spiralSpeed = 0.004 / (distFromCenter * 0.3 + 0.5);
-        fx += -Math.sin(angle) * spiralSpeed;
-        fy += Math.cos(angle) * spiralSpeed;
-
-        // Force 2: Soft drift wave field
-        fx += Math.sin(time * 0.5 + py * 0.3) * 0.001;
-        fy += Math.cos(time * 0.5 + px * 0.3) * 0.001;
-
-        // Force 3: Drag & Repulsion force from Mouse
-        const dx = px - mouse3D.x;
-        const dy = py - mouse3D.y;
-        const dz = pz - mouse3D.z;
-        const distSq = dx * dx + dy * dy + dz * dz;
-        const dist = Math.sqrt(distSq) || 0.1;
-
-        if (dist < 2.5) {
-          const pushFactor = (2.5 - dist) / 2.5; // 1 at mouse, 0 at boundary
-          const forceStrength = pushFactor * 0.05;
-          
-          // Radial push away from cursor
-          fx += (dx / dist) * forceStrength;
-          fy += (dy / dist) * forceStrength;
-
-          // Vortex swirl around cursor
-          fx += (-dy / dist) * forceStrength * 2.0;
-          fy += (dx / dist) * forceStrength * 2.0;
+        // Gentle attraction to the cursor coordinates
+        const dx = mouse3D.x - px;
+        const dy = mouse3D.y - py;
+        const dz = mouse3D.z - pz;
+        const distToMouse = Math.sqrt(dx * dx + dy * dy + dz * dz) || 0.1;
+        
+        if (distToMouse < 4.0) {
+          const forceStrength = (4.0 - distToMouse) * 0.0006;
+          vx += dx * forceStrength;
+          vy += dy * forceStrength;
+          vz += dz * forceStrength;
         }
 
-        // Force 4: Spring return force to snap back to origin coordinates
-        fx += (ox - px) * 0.015;
-        fy += (oy - py) * 0.015;
-        fz += (oz - pz) * 0.015;
+        // Apply friction damping
+        vx *= 0.98;
+        vy *= 0.98;
+        vz *= 0.98;
+        
+        // Subtle drift/noise
+        vx += (Math.random() - 0.5) * 0.0008;
+        vy += (Math.random() - 0.5) * 0.0008;
+        vz += (Math.random() - 0.5) * 0.0004;
 
-        // Update velocity with friction damping (0.92)
-        velocities[i3] = velocities[i3] * 0.92 + fx;
-        velocities[i3 + 1] = velocities[i3 + 1] * 0.92 + fy;
-        velocities[i3 + 2] = velocities[i3 + 2] * 0.92 + fz;
+        px += vx;
+        py += vy;
+        pz += vz;
 
-        // Update position
-        posArr[i3] += velocities[i3];
-        posArr[i3 + 1] += velocities[i3 + 1];
-        posArr[i3 + 2] += velocities[i3 + 2];
+        // Wrap particles around borders
+        const boundaryX = xRange / 2 + 1;
+        const boundaryY = yRange / 2 + 1;
+
+        if (px > boundaryX) px = -boundaryX;
+        else if (px < -boundaryX) px = boundaryX;
+        
+        if (py > boundaryY) py = -boundaryY;
+        else if (py < -boundaryY) py = boundaryY;
+        
+        if (pz > zRange) vz = -Math.abs(vz);
+        else if (pz < -zRange) vz = Math.abs(vz);
+
+        posArr[i3] = px;
+        posArr[i3 + 1] = py;
+        posArr[i3 + 2] = pz;
+        
+        velArr[i3] = vx;
+        velArr[i3 + 1] = vy;
+        velArr[i3 + 2] = vz;
       }
 
-      positionAttr.needsUpdate = true;
+      pointsGeometry.attributes.position.needsUpdate = true;
 
-      // Render
+      // 2. Compute particle-to-particle connections for Plexus Lines
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+        const piX = posArr[i3];
+        const piY = posArr[i3 + 1];
+        const piZ = posArr[i3 + 2];
+        
+        for (let j = i + 1; j < particleCount; j++) {
+          const j3 = j * 3;
+          const pjX = posArr[j3];
+          const pjY = posArr[j3 + 1];
+          const pjZ = posArr[j3 + 2];
+          
+          const dx = piX - pjX;
+          const dy = piY - pjY;
+          const dz = piZ - pjZ;
+          const distSq = dx * dx + dy * dy + dz * dz;
+          
+          if (distSq < connectionThreshold * connectionThreshold) {
+            if (lineIdx >= maxConnections) break;
+            
+            const dist = Math.sqrt(distSq);
+            // Opacity scales up as nodes get closer
+            const proximityAlpha = 1.0 - dist / connectionThreshold;
+            
+            const lIdx = lineIdx * 6;
+            
+            // Connect coordinates of point i and point j
+            linePosArr[lIdx] = piX;
+            linePosArr[lIdx + 1] = piY;
+            linePosArr[lIdx + 2] = piZ;
+            
+            linePosArr[lIdx + 3] = pjX;
+            linePosArr[lIdx + 4] = pjY;
+            linePosArr[lIdx + 5] = pjZ;
+
+            // Gradient line calculation matching connecting nodes
+            const rA = pointsColors[i3];
+            const gA = pointsColors[i3 + 1];
+            const bA = pointsColors[i3 + 2];
+            
+            const rB = pointsColors[j3];
+            const gB = pointsColors[j3 + 1];
+            const bB = pointsColors[j3 + 2];
+            
+            lineColorArr[lIdx] = rA * proximityAlpha;
+            lineColorArr[lIdx + 1] = gA * proximityAlpha;
+            lineColorArr[lIdx + 2] = bA * proximityAlpha;
+            
+            lineColorArr[lIdx + 3] = rB * proximityAlpha;
+            lineColorArr[lIdx + 4] = gB * proximityAlpha;
+            lineColorArr[lIdx + 5] = bB * proximityAlpha;
+            
+            lineIdx++;
+          }
+        }
+      }
+
+      lineGeometry.setDrawRange(0, lineIdx * 2);
+      lineGeometry.attributes.position.needsUpdate = true;
+      lineGeometry.attributes.color.needsUpdate = true;
+
       renderer.render(scene, camera);
       animationFrameId = requestAnimationFrame(animate);
     };
 
     animate();
 
-    // Cleanup
+    // Cleanup resources on unmount
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
@@ -236,8 +333,10 @@ export default function ThreeBg() {
       }
 
       renderer.dispose();
-      geometry.dispose();
-      material.dispose();
+      pointsGeometry.dispose();
+      pointsMaterial.dispose();
+      lineGeometry.dispose();
+      lineMaterial.dispose();
     };
   }, []);
 

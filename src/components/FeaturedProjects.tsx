@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
@@ -10,6 +10,31 @@ import { featuredProjects } from "../data/projects";
 export default function FeaturedProjects() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeProject = featuredProjects[activeIndex];
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const activeChild = containerRef.current.children[activeIndex] as HTMLElement;
+      if (activeChild) {
+        const container = containerRef.current;
+        const containerWidth = container.clientWidth;
+        const childWidth = activeChild.clientWidth;
+        const childLeft = activeChild.offsetLeft;
+        
+        // Calculate the ideal scroll position to center the active child
+        let targetScrollLeft = childLeft - (containerWidth / 2) + (childWidth / 2);
+        
+        // Clamp targetScrollLeft to be between 0 and the max scroll width to prevent negative values or scrolling past the end
+        const maxScrollLeft = container.scrollWidth - containerWidth;
+        targetScrollLeft = Math.max(0, Math.min(maxScrollLeft, targetScrollLeft));
+        
+        container.scrollTo({
+          left: targetScrollLeft,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [activeIndex]);
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % featuredProjects.length);
@@ -161,7 +186,10 @@ export default function FeaturedProjects() {
           </div>
 
           {/* Horizontal scrollbar carousel track */}
-          <div className="flex gap-4 overflow-x-auto pt-3 pb-4 px-2 -mx-2 scrollbar-none snap-x snap-mandatory">
+          <div
+            ref={containerRef}
+            className="relative flex gap-4 overflow-x-auto pt-3 pb-4 px-2 -mx-2 scrollbar-none snap-x snap-mandatory"
+          >
             {featuredProjects.map((project, idx) => {
               const isActive = idx === activeIndex;
               return (
@@ -175,30 +203,17 @@ export default function FeaturedProjects() {
                       : "border-surface-border bg-surface/10 hover:bg-surface/35 text-text-muted hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
-                  {/* Miniature Thumbnail (Shared layout image coordinate start) */}
+                  {/* Miniature Thumbnail */}
                   <div className="w-16 h-11 rounded-lg overflow-hidden relative bg-black/45 border border-surface-border shrink-0">
-                    {!isActive ? (
-                      <motion.div
-                        layoutId={`project-img-${project.id}`}
-                        className="absolute inset-0 w-full h-full"
-                        transition={{
-                          type: "spring",
-                          stiffness: 220,
-                          damping: 26,
-                        }}
-                      >
-                        <Image
-                          src={project.image}
-                          alt=""
-                          fill
-                          className="object-cover opacity-80"
-                          sizes="64px"
-                        />
-                      </motion.div>
-                    ) : (
-                      // Render empty track placeholder when flying, to prevent layout collapses
-                      <div className="absolute inset-0 bg-black/60 w-full h-full" />
-                    )}
+                    <Image
+                      src={project.image}
+                      alt=""
+                      fill
+                      className={`object-cover transition-opacity duration-300 ${
+                        isActive ? "opacity-100" : "opacity-60"
+                      }`}
+                      sizes="64px"
+                    />
                   </div>
 
                   <div className="min-w-0">

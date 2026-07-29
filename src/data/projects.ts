@@ -33,7 +33,7 @@ export const featuredProjects = [
     title: "Permatech Roofing",
     category: "Enterprise eCommerce",
     image: PermatechImage,
-    url: "https://permatech-ui.icodebdev.com/",
+    url: "https://permatechroofing.com/",
     description:
       "Developed scalable B2B eCommerce solutions including bundle pricing, customer-specific pricing, checkout workflows, and product management.",
     technologies: [
@@ -52,28 +52,6 @@ export const featuredProjects = [
   },
   {
     id: "03",
-    title: "EatTak",
-    category: "Food Delivery Platform",
-    image: EattakImage,
-    url: "https://eattak.com/",
-    description:
-      "Developed a Swiggy-style food ordering platform featuring restaurant discovery, online ordering, live order management, and customer-focused experiences.",
-    technologies: [
-      "React",
-      "Next.js",
-      "Node.js",
-      "REST APIs",
-      "Tailwind CSS",
-    ],
-    highlights: [
-      "Food Ordering System",
-      "Restaurant Listings",
-      "Order Management",
-      "Mobile-First Design",
-    ],
-  },
-  {
-    id: "04",
     title: "Avumy Space",
     category: "Property & Event Booking",
     image: AvumyImage,
@@ -95,7 +73,7 @@ export const featuredProjects = [
     ],
   },
   {
-    id: "05",
+    id: "04",
     title: "Pendrive",
     category: "Cloud File Sharing Platform",
     image: PendriveImage,
@@ -117,7 +95,7 @@ export const featuredProjects = [
     ],
   },
   {
-    id: "06",
+    id: "05",
     title: "JB Sushi",
     category: "Restaurant Ordering Platform",
     image: JBSushiImage,
@@ -135,6 +113,28 @@ export const featuredProjects = [
       "Menu Management",
       "Responsive Experience",
       "Customer Engagement",
+    ],
+  },
+  {
+    id: "06",
+    title: "EatTak",
+    category: "Food Delivery Platform",
+    image: EattakImage,
+    url: "https://eattak.com/",
+    description:
+      "Developed a Swiggy-style food ordering platform featuring restaurant discovery, online ordering, live order management, and customer-focused experiences.",
+    technologies: [
+      "React",
+      "Next.js",
+      "Node.js",
+      "REST APIs",
+      "Tailwind CSS",
+    ],
+    highlights: [
+      "Food Ordering System",
+      "Restaurant Listings",
+      "Order Management",
+      "Mobile-First Design",
     ],
   },
 ];
@@ -161,34 +161,34 @@ export const projects = [
     title: "Permatech Roofing",
     subtitle: "Enterprise Commerce Platform",
     image: PermatechImage,
-    url: "https://permatech-ui.icodebdev.com/",
+    url: "https://permatechroofing.com/",
   },
   {
     number: "03",
-    title: "EatTak",
-    subtitle: "Food Delivery Platform",
-    image: EattakImage,
-    url: "https://eattak.com/",
-  },
-  {
-    number: "04",
     title: "Avumy Space",
     subtitle: "Property Booking Platform",
     image: AvumyImage,
     url: "https://www.avumy.com/",
   },
   {
-    number: "05",
+    number: "04",
     title: "Pendrive",
     subtitle: "Cloud File Sharing Platform",
     image: PendriveImage,
     url: "https://pendrive.me/",
   },
   {
-    number: "06",
+    number: "05",
     title: "JB Sushi",
     subtitle: "Restaurant Ordering Platform",
     image: JBSushiImage,
     url: "https://www.jbsushi.com/",
+  },
+  {
+    number: "06",
+    title: "EatTak",
+    subtitle: "Food Delivery Platform",
+    image: EattakImage,
+    url: "https://eattak.com/",
   },
 ];

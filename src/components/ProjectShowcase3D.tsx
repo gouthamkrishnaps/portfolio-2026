@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { featuredProjects } from "../data/projects";
 
 interface ProjectShowcase3DProps {
   imageUrl: string;
@@ -47,11 +48,25 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
 
     // --- MODEL CREATION & LOADING ---
     const textureLoader = new THREE.TextureLoader();
+    const textureCache: { [url: string]: THREE.Texture } = {};
 
     // Load initial texture
     const initialTexture = textureLoader.load(imageUrlRef.current);
     initialTexture.colorSpace = THREE.SRGBColorSpace;
     initialTexture.minFilter = THREE.LinearFilter;
+    textureCache[imageUrlRef.current] = initialTexture;
+
+    // Pre-cache all featured projects images to prevent race conditions in production
+    featuredProjects.forEach((proj) => {
+      const url = proj.image.src;
+      if (url && url !== imageUrlRef.current) {
+        textureLoader.load(url, (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.minFilter = THREE.LinearFilter;
+          textureCache[url] = tex;
+        });
+      }
+    });
 
     // Screen Mesh Geometry (Aspect ratio matching screenshots, e.g. 1.6:1) - Scaled up from 4.8x3.0
     const screenGeo = new THREE.PlaneGeometry(5.2, 3.25);
@@ -264,11 +279,17 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
         isFlippingRef.current = true;
         flipTargetRotationRef.current = screenMesh.rotation.y + Math.PI; // Flip 180 degrees
         
-        textureLoader.load(imageUrlRef.current, (newTex) => {
-          newTex.colorSpace = THREE.SRGBColorSpace;
-          newTex.minFilter = THREE.LinearFilter;
-          nextTextureRef.current = newTex;
-        });
+        const cachedTex = textureCache[imageUrlRef.current];
+        if (cachedTex) {
+          nextTextureRef.current = cachedTex;
+        } else {
+          textureLoader.load(imageUrlRef.current, (newTex) => {
+            newTex.colorSpace = THREE.SRGBColorSpace;
+            newTex.minFilter = THREE.LinearFilter;
+            nextTextureRef.current = newTex;
+            textureCache[imageUrlRef.current] = newTex;
+          });
+        }
       }
 
       // 2. Perform Card Flip Rotation & Texture Swapping
@@ -370,7 +391,12 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
       // Dispose buffer assets
       screenGeo.dispose();
       screenMat.dispose();
-      initialTexture.dispose();
+      
+      // Dispose all cached textures
+      Object.values(textureCache).forEach((tex) => {
+        tex.dispose();
+      });
+      
       scanlineTexture.dispose();
       scanlineMat.dispose();
       

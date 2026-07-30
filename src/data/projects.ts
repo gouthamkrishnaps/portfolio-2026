@@ -4,6 +4,7 @@ import DarlingsImage from "@/images/assets/darlings.png";
 import EattakImage from "@/images/assets/eattak.png";
 import PendriveImage from "@/images/assets/pendrive.png";
 import JBSushiImage from "@/images/assets/sushi.png";
+import MyDearPaImage from "@/images/assets/mydearpa.png";
 // import GitSandboxImage from "@/images/assets/git_sandbox.png";
 
 export const featuredProjects = [
@@ -117,6 +118,28 @@ export const featuredProjects = [
   },
   {
     id: "06",
+    title: "My Dear Pa",
+    category: "Eldercare & Companion Services Platform",
+    image: MyDearPaImage,
+    url: "https://mydearpa.com/",
+    description:
+      "Developed a modern eldercare platform that connects families with trusted companions for home visits, hospital assistance, travel support, and senior care services through an intuitive booking experience.",
+    technologies: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "REST APIs",
+    ],
+    highlights: [
+      "Companion Booking",
+      "Service Scheduling",
+      "Responsive UI",
+      "Modern User Experience",
+    ],
+  },
+  {
+    id: "07",
     title: "EatTak",
     category: "Food Delivery Platform",
     image: EattakImage,
@@ -186,6 +209,13 @@ export const projects = [
   },
   {
     number: "06",
+    title: "My Dear Pa",
+    subtitle: "Eldercare & Companion Services Platform",
+    image: MyDearPaImage,
+    url: "https://mydearpa.com/",
+  },
+  {
+    number: "07",
     title: "EatTak",
     subtitle: "Food Delivery Platform",
     image: EattakImage,

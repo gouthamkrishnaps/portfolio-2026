@@ -7,14 +7,13 @@ import {
   ArrowDown,
   Terminal,
   Activity,
-  Cpu,
 } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import FloatingTech from "./FloatingTech";
 
-// Dynamic import with no SSR for WebGL Anti-Gravity Grid
-const HeroBackground = dynamic(() => import("./HeroBackground"), { ssr: false });
+// Dynamic import with no SSR for WebGL wave-field canvas
+const HeroCanvas = dynamic(() => import("./HeroCanvas"), { ssr: false });
 
 export default function Hero() {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -80,36 +79,15 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-primary pt-20 pb-24 sm:pb-8"
     >
-      {/* WebGL Anti-Gravity Grid Background */}
-      <HeroBackground />
+      {/* WebGL Wave-Field Interactive Canvas */}
+      <HeroCanvas />
 
-      {/* Decorative center spotlight */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,var(--bg-primary)_85%)] pointer-events-none" />
+      {/* Decorative center spotlight to ensure text readability */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--bg-primary)_0%,transparent_55%)] pointer-events-none opacity-60" />
 
-      {/* Sci-Fi Grid Backdrop */}
-      <div
-        className="absolute inset-0 pointer-events-none -z-10 animate-pulse"
-        style={{
-          backgroundImage: `
-            linear-gradient(var(--grid-color) 1px, transparent 1px), 
-            linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-          maskImage: "radial-gradient(ellipse at center, black, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at center, black, transparent 80%)",
-          animationDuration: "4s",
-        }}
-      />
-
-      {/* Ambient background glows */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-cyan-500/10 blur-[130px] transition-transform duration-500"
-          style={{ transform: `translate3d(${parallax.x * 40}px, ${parallax.y * 40}px, 0)` }}
-        />
-        <div className="absolute bottom-10 right-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-purple-500/10 blur-[130px] transition-transform duration-500"
-          style={{ transform: `translate3d(${parallax.x * -40}px, ${parallax.y * -40}px, 0)` }}
-        />
-      </div>
+      {/* Top & bottom vignettes */}
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bg-primary to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg-primary to-transparent pointer-events-none" />
 
       <div className="container mx-auto px-6 relative z-10 w-full max-w-5xl flex flex-col items-center justify-center">
 
@@ -127,7 +105,7 @@ export default function Hero() {
 
 
           {/* Master Name Header */}
-          <h1 className="w-full text-6xl sm:text-[6.5vw] md:text-[6vw] lg:text-[80px] font-black uppercase tracking-tight leading-[0.95] text-slate-900 dark:text-white sm:whitespace-nowrap text-center">
+          <h1 className="w-full text-6xl xs:text-7xl sm:text-[7vw] md:text-[6.8vw] lg:text-[90px] font-black uppercase tracking-tight leading-[0.95] text-slate-900 dark:text-white sm:whitespace-nowrap text-center">
             Goutham
             <br className="sm:hidden" />{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 dark:from-cyan-400 dark:via-indigo-400 dark:to-purple-500 text-glow">
@@ -190,7 +168,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Side floating tech cards for large viewports (cleared space) */}
+      {/* Side floating tech cards for large viewports */}
       <FloatingTech parallax={parallax} />
 
       {/* Compact HUD Status Ribbon at Bottom */}

@@ -84,30 +84,35 @@ export default function CustomCursor() {
 
     // Lerp loop
     let animationFrameId: number;
-    const render = () => {
-      const lerpFactor = 0.15; // Speed of the outer ring follow
-      
-      // Update ring position
-      ringPos.current.x += (mousePos.current.x - ringPos.current.x) * lerpFactor;
-      ringPos.current.y += (mousePos.current.y - ringPos.current.y) * lerpFactor;
-
-      // Apply transforms directly to DOM elements
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) translate3d(-50%, -50%, 0)`;
-      }
-
-      if (ringRef.current) {
-        const scale = isMouseDown.current ? 0.75 : isHovered.current ? 2.0 : 1.0;
-        const color = isHovered.current ? "rgba(6, 182, 212, 0.4)" : "rgba(147, 51, 234, 0.3)";
-        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate3d(-50%, -50%, 0) scale(${scale})`;
-        ringRef.current.style.borderColor = color;
+      const render = () => {
+        const lerpFactor = 0.15; // Speed of the outer ring follow
         
-        if (isHovered.current) {
-          ringRef.current.style.backgroundColor = "rgba(6, 182, 212, 0.1)";
-        } else {
-          ringRef.current.style.backgroundColor = "transparent";
+        // Update ring position
+        ringPos.current.x += (mousePos.current.x - ringPos.current.x) * lerpFactor;
+        ringPos.current.y += (mousePos.current.y - ringPos.current.y) * lerpFactor;
+
+        const isDark = document.documentElement.classList.contains("dark");
+
+        // Apply transforms directly to DOM elements
+        if (dotRef.current) {
+          dotRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) translate3d(-50%, -50%, 0)`;
         }
-      }
+
+        if (ringRef.current) {
+          const scale = isMouseDown.current ? 0.75 : isHovered.current ? 2.0 : 1.0;
+          const color = isHovered.current
+            ? (isDark ? "rgba(6, 182, 212, 0.5)" : "rgba(8, 145, 178, 0.6)")
+            : (isDark ? "rgba(147, 51, 234, 0.4)" : "rgba(124, 58, 237, 0.5)");
+
+          ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate3d(-50%, -50%, 0) scale(${scale})`;
+          ringRef.current.style.borderColor = color;
+          
+          if (isHovered.current) {
+            ringRef.current.style.backgroundColor = isDark ? "rgba(6, 182, 212, 0.15)" : "rgba(8, 145, 178, 0.08)";
+          } else {
+            ringRef.current.style.backgroundColor = "transparent";
+          }
+        }
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -132,13 +137,13 @@ export default function CustomCursor() {
       {/* Inner Dot */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 w-2 h-2 bg-cyan-400 rounded-full pointer-events-none z-[9999] transition-opacity duration-300 opacity-0 dark:mix-blend-screen"
+        className="fixed top-0 left-0 w-2 h-2 bg-cyan-600 dark:bg-cyan-400 rounded-full pointer-events-none z-[9999] transition-opacity duration-300 opacity-0 dark:mix-blend-screen"
         style={{ willChange: "transform" }}
       />
       {/* Outer Ring */}
       <div
         ref={ringRef}
-        className="fixed top-0 left-0 w-8 h-8 border border-purple-500 rounded-full pointer-events-none z-[9998] transition-[opacity,width,height,background-color] duration-300 opacity-0 dark:mix-blend-screen"
+        className="fixed top-0 left-0 w-8 h-8 border border-purple-600 dark:border-purple-500 rounded-full pointer-events-none z-[9998] transition-[opacity,width,height,background-color] duration-300 opacity-0 dark:mix-blend-screen"
         style={{
           willChange: "transform",
           transformOrigin: "center",

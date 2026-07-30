@@ -73,7 +73,7 @@ export default function FeaturedProjects() {
         
         {/* Header Block */}
         <div className="text-center sm:text-left mb-6 sm:mb-8">
-          <span className="text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
+          <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
             Featured Projects
           </span>
           <h2 className="mt-1.5 text-4xl sm:text-5xl font-black leading-none uppercase tracking-tight">
@@ -100,7 +100,7 @@ export default function FeaturedProjects() {
                     exit={{ opacity: 0, x: 15 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
                   >
-                    <span className="text-cyan-400 text-xs sm:text-sm font-bold uppercase tracking-widest">
+                    <span className="text-cyan-600 dark:text-cyan-400 text-xs sm:text-sm font-bold uppercase tracking-widest">
                       {activeProject.category}
                     </span>
                     <h3 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white uppercase mt-1 tracking-tight">
@@ -117,7 +117,7 @@ export default function FeaturedProjects() {
                           key={item}
                           className="flex items-center gap-2 p-2.5 rounded-xl bg-surface/30 border border-surface-border/50 text-text-secondary text-xs font-semibold"
                         >
-                          <CheckCircle2 className="text-cyan-400 shrink-0" size={12} />
+                          <CheckCircle2 className="text-cyan-600 dark:text-cyan-400 shrink-0" size={12} />
                           <span className="truncate">{item}</span>
                         </div>
                       ))}
@@ -199,7 +199,7 @@ export default function FeaturedProjects() {
                   suppressHydrationWarning
                   className={`flex-shrink-0 snap-start w-[240px] sm:w-[280px] flex items-center gap-4 p-3 rounded-2xl border text-left transition-all duration-300 relative ${
                     isActive 
-                      ? "border-cyan-500/50 bg-cyan-500/5 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] scale-[1.02]" 
+                      ? "border-cyan-500/50 bg-cyan-500/5 text-cyan-600 dark:text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] scale-[1.02]" 
                       : "border-surface-border bg-surface/10 hover:bg-surface/35 text-text-muted hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >

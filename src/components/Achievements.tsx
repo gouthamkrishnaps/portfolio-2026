@@ -37,7 +37,7 @@ export default function Achievements() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease }}
         >
-          <span className="text-brand-400 uppercase tracking-[4px] text-sm">
+          <span className="text-brand-600 dark:text-brand-400 uppercase tracking-[4px] text-sm">
             Achievements
           </span>
 

@@ -29,17 +29,17 @@ const skillCategories = [
   {
     title: "Frontend Development",
     skills: ["React 19", "Next.js 16", "TypeScript", "HTML5/CSS3", "SCSS", "Tailwind CSS"],
-    color: "text-cyan-400 border-cyan-500/20 bg-cyan-500/5",
+    color: "text-cyan-600 dark:text-cyan-400 border-cyan-500/20 bg-cyan-500/5",
   },
   {
     title: "Backend & APIs",
     skills: ["Node.js", "Express.js", "GraphQL", "Apollo Client", "REST APIs"],
-    color: "text-indigo-400 border-indigo-500/20 bg-indigo-500/5",
+    color: "text-indigo-600 dark:text-indigo-400 border-indigo-500/20 bg-indigo-500/5",
   },
   {
     title: "Databases & Cloud",
     skills: ["MongoDB", "MySQL", "Azure Devops", "Git / GitHub"],
-    color: "text-purple-400 border-purple-500/20 bg-purple-500/5",
+    color: "text-purple-600 dark:text-purple-400 border-purple-500/20 bg-purple-500/5",
   },
 ];
 
@@ -72,7 +72,7 @@ export default function SkillsUniverse() {
           transition={{ duration: 0.6 }}
           className="text-center sm:text-left mb-16"
         >
-          <span className="text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
+          <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
             Interactive Stack
           </span>
           <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-black leading-none uppercase tracking-tight">

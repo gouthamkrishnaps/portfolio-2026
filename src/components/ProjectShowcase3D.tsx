@@ -82,7 +82,7 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
     scene.add(screenMesh);
 
     // --- CYBER SCROLLING SCANLINES OVERLAY ---
-    const createScanlineTexture = () => {
+    const createScanlineTexture = (isDark: boolean) => {
       const sCanvas = document.createElement("canvas");
       sCanvas.width = 64;
       sCanvas.height = 64;
@@ -90,7 +90,7 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
       if (sCtx) {
         sCtx.fillStyle = "rgba(0, 0, 0, 0)";
         sCtx.fillRect(0, 0, 64, 64);
-        sCtx.fillStyle = "rgba(6, 182, 212, 0.12)"; // Glowing cyan scanline
+        sCtx.fillStyle = isDark ? "rgba(6, 182, 212, 0.12)" : "rgba(14, 116, 144, 0.15)"; // Glowing cyan scanline
         sCtx.fillRect(0, 0, 64, 3);
       }
       const tex = new THREE.CanvasTexture(sCanvas);
@@ -100,9 +100,11 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
       return tex;
     };
 
-    const scanlineTexture = createScanlineTexture();
+    const scanlineTextureDark = createScanlineTexture(true);
+    const scanlineTextureLight = createScanlineTexture(false);
+
     const scanlineMat = new THREE.MeshBasicMaterial({
-      map: scanlineTexture,
+      map: scanlineTextureDark,
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
@@ -176,25 +178,29 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
 
     pGeometry.setAttribute("position", new THREE.BufferAttribute(pPositions, 3));
 
-    const createSparkTexture = () => {
+    const createSparkTexture = (isDark: boolean) => {
       const pCanvas = document.createElement("canvas");
       pCanvas.width = 16;
       pCanvas.height = 16;
       const pCtx = pCanvas.getContext("2d");
       if (pCtx) {
         const grad = pCtx.createRadialGradient(8, 8, 0, 8, 8, 8);
-        grad.addColorStop(0, "rgba(34, 211, 238, 1)");
-        grad.addColorStop(0.3, "rgba(34, 211, 238, 0.4)");
-        grad.addColorStop(1, "rgba(34, 211, 238, 0)");
+        const color = isDark ? "rgba(34, 211, 238, " : "rgba(8, 145, 178, ";
+        grad.addColorStop(0, color + "1)");
+        grad.addColorStop(0.3, color + "0.4)");
+        grad.addColorStop(1, color + "0)");
         pCtx.fillStyle = grad;
         pCtx.fillRect(0, 0, 16, 16);
       }
       return new THREE.CanvasTexture(pCanvas);
     };
 
+    const sparkTextureDark = createSparkTexture(true);
+    const sparkTextureLight = createSparkTexture(false);
+
     const pMat = new THREE.PointsMaterial({
       size: 0.12,
-      map: createSparkTexture(),
+      map: sparkTextureDark,
       transparent: true,
       opacity: 0.55,
       blending: THREE.AdditiveBlending,
@@ -202,6 +208,38 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
     });
     const risingSparks = new THREE.Points(pGeometry, pMat);
     scene.add(risingSparks);
+
+    // Dynamic theme colors state
+    let isThemeDark = document.documentElement.classList.contains("dark");
+
+    const applyProjectorTheme = (isDark: boolean) => {
+      // 1. Scanline material blending & texture
+      scanlineMat.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
+      scanlineMat.map = isDark ? scanlineTextureDark : scanlineTextureLight;
+      scanlineMat.needsUpdate = true;
+
+      // 2. Hologram ring material colors & opacities
+      ringMat.color.setHex(isDark ? 0x06b6d4 : 0x0e7490);
+      ringMat.opacity = isDark ? 0.35 : 0.45;
+
+      // 3. Emitter base solid ring
+      baseMat.color.setHex(isDark ? 0x6366f1 : 0x4338ca);
+      baseMat.opacity = isDark ? 0.15 : 0.25;
+
+      // 4. Projector beams
+      beamMat.color.setHex(isDark ? 0x06b6d4 : 0x0e7490);
+      beamMat.opacity = isDark ? 0.16 : 0.25;
+      beamMat.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
+
+      // 5. Sparks particles
+      pMat.map = isDark ? sparkTextureDark : sparkTextureLight;
+      pMat.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
+      pMat.opacity = isDark ? 0.55 : 0.65;
+      pMat.needsUpdate = true;
+    };
+
+    // Apply colors immediately
+    applyProjectorTheme(isThemeDark);
 
     // --- INTERACTIVE EVENT LISTENERS ---
     const handleMouseMove = (e: MouseEvent) => {
@@ -273,6 +311,13 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
     let lastUrl = imageUrlRef.current;
 
     const tick = () => {
+      // Check for theme updates dynamically
+      const currentDark = document.documentElement.classList.contains("dark");
+      if (currentDark !== isThemeDark) {
+        isThemeDark = currentDark;
+        applyProjectorTheme(isThemeDark);
+      }
+
       // 1. Detect dynamic URL swaps to trigger 3D Card Flips
       if (imageUrlRef.current !== lastUrl) {
         lastUrl = imageUrlRef.current;
@@ -318,7 +363,8 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
       }
 
       // 3. Scroll Hologram Overlay Scanlines
-      scanlineTexture.offset.y -= 0.007;
+      scanlineTextureDark.offset.y -= 0.007;
+      scanlineTextureLight.offset.y -= 0.007;
 
       // 4. Subtle Ambient Float (sine wave vertical offset)
       const floatOffset = Math.sin(Date.now() / 600) * 0.08;
@@ -397,7 +443,10 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
         tex.dispose();
       });
       
-      scanlineTexture.dispose();
+      scanlineTextureDark.dispose();
+      scanlineTextureLight.dispose();
+      sparkTextureDark.dispose();
+      sparkTextureLight.dispose();
       scanlineMat.dispose();
       
       ringGeo.dispose();

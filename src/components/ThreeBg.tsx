@@ -58,10 +58,7 @@ export default function ThreeBg() {
     const velocities = new Float32Array(particleCount * 3);
     const pointsColors = new Float32Array(particleCount * 3);
 
-    // Theme Color Palette
-    const colorCyan = new THREE.Color(0x06b6d4);   // Cyan
-    const colorIndigo = new THREE.Color(0x4f46e5); // Indigo
-    const colorPurple = new THREE.Color(0x9333ea); // Purple
+    const tValues = new Float32Array(particleCount);
 
     // Initialize Particle coordinates and attributes
     for (let i = 0; i < particleCount; i++) {
@@ -75,18 +72,7 @@ export default function ThreeBg() {
       velocities[i3 + 1] = (Math.random() - 0.5) * 0.012;
       velocities[i3 + 2] = (Math.random() - 0.5) * 0.006;
 
-      // Color mapping: generate gradients across particles
-      const t = Math.random();
-      const mixedColor = new THREE.Color();
-      if (t < 0.5) {
-        mixedColor.lerpColors(colorCyan, colorIndigo, t * 2);
-      } else {
-        mixedColor.lerpColors(colorIndigo, colorPurple, (t - 0.5) * 2);
-      }
-      
-      pointsColors[i3] = mixedColor.r;
-      pointsColors[i3 + 1] = mixedColor.g;
-      pointsColors[i3 + 2] = mixedColor.b;
+      tValues[i] = Math.random();
     }
 
     // Points Geometry & Material
@@ -145,6 +131,46 @@ export default function ThreeBg() {
     const lineSegments = new THREE.LineSegments(lineGeometry, lineMaterial);
     mainGroup.add(lineSegments);
 
+    // Dynamic theme colors state
+    let isThemeDark = document.documentElement.classList.contains("dark");
+
+    const applyThemeColors = (isDark: boolean) => {
+      // In dark mode we use cyan/indigo/purple (500 equivalent)
+      // In light mode we use cyan-700 / indigo-700 / purple-700 for optimal contrast on white
+      const colorCyan = new THREE.Color(isDark ? 0x06b6d4 : 0x0e7490);
+      const colorIndigo = new THREE.Color(isDark ? 0x4f46e5 : 0x4338ca);
+      const colorPurple = new THREE.Color(isDark ? 0x9333ea : 0x7e22ce);
+
+      const colorsAttr = pointsGeometry.getAttribute("color") as THREE.BufferAttribute;
+      const colorsArr = colorsAttr.array as Float32Array;
+
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+        const t = tValues[i];
+        const mixedColor = new THREE.Color();
+        if (t < 0.5) {
+          mixedColor.lerpColors(colorCyan, colorIndigo, t * 2);
+        } else {
+          mixedColor.lerpColors(colorIndigo, colorPurple, (t - 0.5) * 2);
+        }
+        
+        colorsArr[i3] = mixedColor.r;
+        colorsArr[i3 + 1] = mixedColor.g;
+        colorsArr[i3 + 2] = mixedColor.b;
+      }
+      colorsAttr.needsUpdate = true;
+
+      // Adjust blending & opacities
+      pointsMaterial.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
+      pointsMaterial.opacity = isDark ? 0.85 : 0.65;
+
+      lineMaterial.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
+      lineMaterial.opacity = isDark ? 0.28 : 0.22;
+    };
+
+    // Apply colors immediately
+    applyThemeColors(isThemeDark);
+
     // Mouse coordinates tracking
     let targetMouseX = 0;
     let targetMouseY = 0;
@@ -173,6 +199,13 @@ export default function ThreeBg() {
     let animationFrameId: number;
 
     const animate = () => {
+      // Check for theme updates dynamically
+      const currentDark = document.documentElement.classList.contains("dark");
+      if (currentDark !== isThemeDark) {
+        isThemeDark = currentDark;
+        applyThemeColors(isThemeDark);
+      }
+
       // Smooth mouse coordinates LERP
       mouseX += (targetMouseX - mouseX) * 0.08;
       mouseY += (targetMouseY - mouseY) * 0.08;

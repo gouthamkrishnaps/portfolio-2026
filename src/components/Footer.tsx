@@ -20,10 +20,10 @@ export default function Footer() {
         {/* Center Side: Technologies Info */}
         <div className="text-text-muted text-center md:text-left font-medium">
           Built with{" "}
-          <span className="text-cyan-400">Next.js 16</span>,{" "}
-          <span className="text-indigo-400">Three.js</span>,{" "}
-          <span className="text-purple-400">Tailwind CSS</span> &{" "}
-          <span className="text-pink-400 font-semibold">Framer Motion</span>.
+          <span className="text-cyan-600 dark:text-cyan-400 font-semibold">Next.js 16</span>,{" "}
+          <span className="text-indigo-600 dark:text-indigo-400 font-semibold">Three.js</span>,{" "}
+          <span className="text-purple-600 dark:text-purple-400 font-semibold">Tailwind CSS</span> &{" "}
+          <span className="text-pink-600 dark:text-pink-400 font-semibold">Framer Motion</span>.
         </div>
 
         {/* Right Side: Back to Top Button */}
@@ -31,7 +31,7 @@ export default function Footer() {
           onClick={scrollToTop}
           suppressHydrationWarning
           whileHover={{ y: -4, borderColor: "rgba(6, 182, 212, 0.5)" }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-surface-border bg-surface/30 hover:bg-surface/70 text-text-muted hover:text-cyan-400 text-xs font-bold uppercase tracking-wider transition-all duration-300"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-surface-border bg-surface/30 hover:bg-surface/70 text-text-muted hover:text-cyan-600 dark:hover:text-cyan-400 text-xs font-bold uppercase tracking-wider transition-all duration-300"
           aria-label="Scroll to top"
         >
           Back to Top

@@ -236,7 +236,7 @@ export default function Skills3D() {
         style={{ perspective: "800px", transformStyle: "preserve-3d" }}
       >
         {/* Core center glowing element */}
-        <div className="absolute w-24 h-24 sm:w-36 sm:h-36 rounded-full bg-cyan-500/10 border border-cyan-500/20 blur-xl pointer-events-none" />
+        <div className="absolute w-24 h-24 sm:w-36 sm:h-36 rounded-full bg-cyan-500/15 dark:bg-cyan-500/10 border border-cyan-500/30 dark:border-cyan-500/20 blur-xl pointer-events-none" />
 
         {/* 3D Orbit Points */}
         {skills.map((skill, idx) => {
@@ -254,7 +254,7 @@ export default function Skills3D() {
             >
               {/* Tag Design - Matches original UI precisely */}
               <div className="glass-panel flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-surface-border text-xs sm:text-sm font-bold tracking-wide text-slate-800 dark:text-white hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-                {Icon && <Icon className="w-4 h-4 text-cyan-500/80 dark:text-cyan-400/80 group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors" />}
+                {Icon && <Icon className="w-4 h-4 text-cyan-600/80 dark:text-cyan-400/80 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors" />}
                 <span>{skill.name}</span>
               </div>
             </div>

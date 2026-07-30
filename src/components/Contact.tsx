@@ -110,14 +110,14 @@ export default function Contact() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
+          <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
             Get In Touch
           </span>
 
           <h2 className="mt-4 text-5xl sm:text-6xl md:text-8xl font-black leading-[0.9] uppercase tracking-tight">
             Let's build
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 dark:from-cyan-400 dark:via-indigo-400 dark:to-purple-500">
               something amazing
             </span>
           </h2>
@@ -173,10 +173,10 @@ export default function Contact() {
                     download={link.download}
                     target={link.href.startsWith("http") ? "_blank" : undefined}
                     rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    className="flex items-center justify-between border-b border-surface-border/50 pb-3 hover:border-cyan-400 group transition-colors"
+                    className="flex items-center justify-between border-b border-surface-border/50 pb-3 hover:border-cyan-500 dark:hover:border-cyan-400 group transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-surface border border-surface-border text-text-muted group-hover:text-cyan-400 group-hover:border-cyan-500/35 transition-colors">
+                      <div className="p-2 rounded-lg bg-surface border border-surface-border text-text-muted group-hover:text-cyan-600 dark:group-hover:text-cyan-400 group-hover:border-cyan-500/35 transition-colors">
                         <Icon size={16} />
                       </div>
                       <div className="text-left">
@@ -184,7 +184,7 @@ export default function Contact() {
                         <span className="text-sm font-semibold text-text-secondary group-hover:text-slate-900 group-hover:dark:text-white transition-colors">{link.val}</span>
                       </div>
                     </div>
-                    <ArrowUpRight className="text-text-muted group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" size={16} />
+                    <ArrowUpRight className="text-text-muted group-hover:text-cyan-600 dark:group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" size={16} />
                   </a>
                 );
               })}
@@ -282,7 +282,7 @@ export default function Contact() {
                   </button>
 
                   {submitError && (
-                    <p className="text-red-400 font-mono text-xs text-center mt-3 animate-pulse uppercase tracking-wider">
+                    <p className="text-red-600 dark:text-red-400 font-mono text-xs text-center mt-3 animate-pulse uppercase tracking-wider">
                       {submitError}
                     </p>
                   )}

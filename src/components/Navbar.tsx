@@ -77,7 +77,7 @@ export default function Navbar() {
           {/* Logo */}
           <a
             href="#home"
-            className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-400 hover:scale-105 transition-transform duration-300"
+            className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 to-indigo-600 dark:from-cyan-400 dark:to-indigo-400 hover:scale-105 transition-transform duration-300"
           >
             GK
           </a>

@@ -34,7 +34,7 @@ const experiences = [
     location: "Infopark Kochi",
     period: "Aug 2024 - Present",
     icon: Briefcase,
-    color: "from-cyan-500/10 via-blue-500/5 to-indigo-500/10 border-cyan-500/20 text-cyan-400",
+    color: "from-cyan-500/10 via-blue-500/5 to-indigo-500/10 border-cyan-500/20 text-cyan-600 dark:text-cyan-400",
     description:
       "Engineered high-performance eCommerce platforms, enterprise booking flows, and customized visual features. Led refactoring of legacy frontend structures into modular Next.js layouts.",
     skills: ["Next.js", "React", "TypeScript", "GraphQL", "Apollo", "Tailwind CSS"],
@@ -45,7 +45,7 @@ const experiences = [
     location: "KSUM Kalamassery",
     period: "Jun 2024 - Jul 2024",
     icon: Building2,
-    color: "from-purple-500/10 via-pink-500/5 to-pink-500/10 border-purple-500/20 text-purple-400",
+    color: "from-purple-500/10 via-pink-500/5 to-pink-500/10 border-purple-500/20 text-purple-600 dark:text-purple-400",
     description:
       "Contributed to building patient-facing dashboards and search tools for health packages. Integrated REST APIs, optimized state management, and resolved responsiveness issues.",
     skills: ["React", "JavaScript", "REST APIs", "Tailwind CSS", "Redux Toolkit"],
@@ -56,7 +56,7 @@ const experiences = [
     location: "Kakkanad Kochi",
     period: "Jul 2023 - Mar 2024",
     icon: GraduationCap,
-    color: "from-emerald-500/10 via-teal-500/5 to-green-500/10 border-emerald-500/20 text-emerald-400",
+    color: "from-emerald-500/10 via-teal-500/5 to-green-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400",
     description:
       "Trained intensely in full-stack JavaScript development. Developed, deployed, and audited full-stack applications, managing MongoDB databases and Express REST endpoints.",
     skills: ["MongoDB", "Express.js", "React", "Node.js", "REST APIs", "CSS3"],
@@ -106,7 +106,7 @@ export default function Experience() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
+          <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
             My Journey
           </span>
 
@@ -152,7 +152,7 @@ export default function Experience() {
                     {/* Job Details Header */}
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-surface-raised border border-surface-border flex items-center justify-center shrink-0">
-                        <Icon size={20} className={item.color.split(" ").pop()} />
+                        <Icon size={20} className={item.color.split(" ").filter(c => c.includes("text-")).join(" ")} />
                       </div>
 
                       <div className="min-w-0 flex-1">
@@ -161,7 +161,7 @@ export default function Experience() {
                         </h3>
 
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                          <p className="text-cyan-400 text-sm sm:text-base font-bold">
+                          <p className="text-cyan-600 dark:text-cyan-400 text-sm sm:text-base font-bold">
                             {item.company}
                           </p>
                           <span className="text-[10px] sm:text-xs text-text-muted font-bold">
@@ -186,7 +186,7 @@ export default function Experience() {
                         return (
                           <span
                             key={skill}
-                            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface/50 border border-surface-border text-text-muted text-xs font-semibold hover:border-cyan-500/40 hover:text-cyan-400 dark:hover:text-cyan-300 transition-colors duration-200 group"
+                            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface/50 border border-surface-border text-text-muted text-xs font-semibold hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-200 group"
                           >
                             {SkillIcon && <SkillIcon className="w-3.5 h-3.5 shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />}
                             <span>{skill}</span>
@@ -198,7 +198,7 @@ export default function Experience() {
 
                   {/* Dynamic Timeline Dot/Node */}
                   <div className="absolute left-[10px] sm:left-[14px] md:left-1/2 top-8 md:top-12 md:-translate-x-1/2 flex items-center justify-center">
-                    <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-cyan-500 border-[3px] border-bg-primary shadow-[0_0_8px_rgba(6,182,212,0.8)] z-10" />
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-cyan-500 border-[3px] border-bg-primary shadow-[0_0_8px_rgba(6,182,212,0.4)] dark:shadow-[0_0_8px_rgba(6,182,212,0.8)] z-10" />
                   </div>
                 </motion.div>
               );
@@ -222,7 +222,7 @@ export default function Experience() {
               className="glass-panel rounded-2xl p-6 border border-surface-border text-center sm:text-left glowing-border-parent relative"
             >
               <div className="glowing-border-glow" />
-              <h3 className="text-2xl font-black text-cyan-400">{item.metric}</h3>
+              <h3 className="text-2xl font-black text-cyan-600 dark:text-cyan-400">{item.metric}</h3>
               <p className="mt-1.5 text-text-muted text-sm sm:text-base">{item.desc}</p>
             </motion.div>
           ))}

@@ -13,8 +13,8 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import FloatingTech from "./FloatingTech";
 
-// Dynamic import with no SSR for WebGL Flow Field
-const ThreeBg = dynamic(() => import("./ThreeBg"), { ssr: false });
+// Dynamic import with no SSR for WebGL Anti-Gravity Grid
+const HeroBackground = dynamic(() => import("./HeroBackground"), { ssr: false });
 
 export default function Hero() {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -80,8 +80,8 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-primary pt-20 pb-24 sm:pb-8"
     >
-      {/* WebGL Swirling Cosmic Flow Field */}
-      <ThreeBg />
+      {/* WebGL Anti-Gravity Grid Background */}
+      <HeroBackground />
 
       {/* Decorative center spotlight */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,var(--bg-primary)_85%)] pointer-events-none" />
@@ -130,7 +130,7 @@ export default function Hero() {
           <h1 className="w-full text-6xl sm:text-[6.5vw] md:text-[6vw] lg:text-[80px] font-black uppercase tracking-tight leading-[0.95] text-slate-900 dark:text-white sm:whitespace-nowrap text-center">
             Goutham
             <br className="sm:hidden" />{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500 text-glow">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 dark:from-cyan-400 dark:via-indigo-400 dark:to-purple-500 text-glow">
               Krishna P S
             </span>
           </h1>
@@ -177,7 +177,7 @@ export default function Hero() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 sm:p-3.5 rounded-full bg-surface/20 border border-surface-border hover:border-cyan-500/40 hover:bg-surface/80 hover:text-cyan-400 text-text-muted transition-all duration-300"
+                  className="p-2.5 sm:p-3.5 rounded-full bg-surface/20 border border-surface-border hover:border-cyan-500/40 hover:bg-surface/80 hover:text-cyan-600 dark:hover:text-cyan-400 text-text-muted transition-all duration-300"
                   aria-label={social.label}
                   id={`social-link-${social.label.toLowerCase()}`}
                 >
@@ -203,8 +203,8 @@ export default function Hero() {
         {/* Left side telemetry metrics */}
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
-            <Terminal size={12} className="text-cyan-400" />
-            TELEMETRY: <span className="text-cyan-300">X: {coords.x} | Y: {coords.y}</span>
+            <Terminal size={12} className="text-cyan-600 dark:text-cyan-400" />
+            TELEMETRY: <span className="text-cyan-600 dark:text-cyan-300 font-bold">X: {coords.x} | Y: {coords.y}</span>
           </span>
           <span className="hidden md:inline">
             RESOLUTION: <span className="text-slate-800 dark:text-white">{screenDim.w} x {screenDim.h}</span>
@@ -223,7 +223,7 @@ export default function Hero() {
             }}
           >
             <a href="#about" aria-label="Scroll to About">
-              <ArrowDown className="text-cyan-400 hover:text-cyan-300 transition-colors" size={20} />
+              <ArrowDown className="text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors" size={20} />
             </a>
           </motion.div>
         </div>
@@ -231,12 +231,12 @@ export default function Hero() {
         {/* Right side diagnostics */}
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
-            <Activity size={12} className="text-purple-400" />
-            DIAGNOSTICS: <span className="text-green-400 flex items-center gap-1 font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 pulse-badge" /> ONLINE
+            <Activity size={12} className="text-purple-600 dark:text-purple-400" />
+            DIAGNOSTICS: <span className="text-green-600 dark:text-green-400 flex items-center gap-1 font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400 pulse-badge" /> ONLINE
             </span>
           </span>
-          <span className="hidden sm:inline">PING: <span className="text-purple-300">12MS</span></span>
+          <span className="hidden sm:inline">PING: <span className="text-purple-600 dark:text-purple-300 font-semibold">12MS</span></span>
           <span className="text-slate-800 dark:text-white font-semibold">{time}</span>
         </div>
       </motion.div>

@@ -65,7 +65,7 @@ export default function CounterCard({
       {/* Glowing boundary element */}
       <div className="glowing-border-glow" />
 
-      <h3 className="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 text-glow">
+      <h3 className="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-indigo-600 dark:from-cyan-400 dark:to-indigo-400 text-glow">
         {count}
         {suffix}
       </h3>

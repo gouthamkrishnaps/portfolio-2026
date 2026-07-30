@@ -147,17 +147,17 @@ export default function Hero() {
           </p>
 
           {/* Actions button strip */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 sm:mt-10 w-full sm:w-auto">
+          <div className="flex flex-row items-center justify-center gap-3 mt-6 sm:mt-10">
             <a
               href="#projects"
-              className="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-xl shadow-indigo-500/10 hover:shadow-indigo-500/30 hover:-translate-y-0.5 active:translate-y-0"
+              className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-xl shadow-indigo-500/10 hover:shadow-indigo-500/30 hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
             >
               Selected Work
             </a>
 
             <a
               href="#contact"
-              className="w-full sm:w-auto px-10 py-4 rounded-full border border-surface-border bg-surface/30 backdrop-blur-md hover:bg-surface/60 text-slate-900 dark:text-white font-black text-sm uppercase tracking-wider transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-400 hover:-translate-y-0.5 active:translate-y-0"
+              className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-full border border-surface-border bg-surface/30 backdrop-blur-md hover:bg-surface/60 text-slate-900 dark:text-white font-black text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-400 hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
             >
               Get In Touch
             </a>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { ReactLenis } from "lenis/react";
 import Preloader from "./Preloader";
 
 // Filter out the "Encountered a script tag" React 19 warning in development
@@ -45,9 +46,11 @@ function ThemeLoader({ children }: { children: React.ReactNode }) {
   return (
     <>
       {loading && <Preloader onComplete={handleComplete} />}
-      <div className={loading ? "opacity-0" : "opacity-100 transition-opacity duration-700 font-sans"}>
-        {children}
-      </div>
+      <ReactLenis root options={{ lerp: 0.15, duration: 1.0, smoothWheel: true, syncTouch: false }}>
+        <div className={loading ? "opacity-0" : "opacity-100 transition-opacity duration-700 font-sans"}>
+          {children}
+        </div>
+      </ReactLenis>
     </>
   );
 }

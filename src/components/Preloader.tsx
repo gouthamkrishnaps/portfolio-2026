@@ -2,92 +2,66 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, Terminal } from "lucide-react";
 
 interface PreloaderProps {
   onComplete: () => void;
 }
 
-const compileLogs = [
-  "ROOT@GOUTHAM.DEV: INITIATING SECURE GATEWAY...",
-  "CONNECTING CLIENT SHELL [IP: 192.168.1.7]...",
-  "VERIFYING LOCAL HANDSHAKE PROTOCOLS... PASS",
-  "ESTABLISHING CRYPTOGRAPHIC ADDR CHANNELS...",
-  "ALLOCATING RUNTIME HEAP RESOURCE [4096MB]...",
-  "SCANNING ENVIRONMENT WORKSPACE DEPENDENCIES...",
-  "[LOAD] package.json -> 940B",
-  "[LOAD] tsconfig.json -> 711B",
-  "[LOAD] next.config.ts -> 185B",
-  "[LOAD] tailwind.config.js -> OK",
-  "[LOAD] src/app/layout.tsx -> 4.2KB",
-  "[LOAD] src/app/page.tsx -> 2.1KB",
-  "[LOAD] src/app/globals.css -> 11.4KB",
-  "[LOAD] src/components/Hero.tsx -> 16.2KB",
-  "[LOAD] src/components/About.tsx -> 12.8KB",
-  "[LOAD] src/components/Experience.tsx -> 24.5KB",
-  "[LOAD] src/components/Skills3D.tsx -> 20.1KB",
-  "[LOAD] src/components/Preloader.tsx -> 15.6KB",
-  "[LOAD] src/components/FeaturedProjects.tsx -> 28.3KB",
-  "MOUNTING COMPILER CORE: NEXT-TURBOPACK...",
-  "[BUILD] Compiling Turbopack contexts...",
-  "[BUILD] webpack chunk loader init (182/1428)",
-  "[BUILD] webpack chunk loader init (492/1428)",
-  "[BUILD] webpack chunk loader init (864/1428)",
-  "[BUILD] webpack chunk loader init (1190/1428)",
-  "[BUILD] webpack chunk loader init (1428/1428)",
-  "RESOLVED BUNDLE GRAPH ASSET PATHWAYS.",
-  "TREESHAKING DEAD EXPORTS FRAGMENTS...",
-  "OPTIMIZING GRAPHICS RENDERING SYSTEM...",
-  "MINIFYING PRODUCTION BUNDLE PAYLOAD...",
-  "SYSTEM 100% NOMINAL. BOOTING PORTFOLIO...",
+const statusSteps = [
+  { threshold: 0, text: "VERIFYING SECURE PROTOCOLS..." },
+  { threshold: 15, text: "COMPILING WEBGL MODULES..." },
+  { threshold: 40, text: "PARSING CLIENT VIEWPORT DATA..." },
+  { threshold: 65, text: "RENDERING INTERACTIVE SCENE..." },
+  { threshold: 85, text: "LAUNCHING EXPERIENCE..." },
 ];
 
 export default function Preloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0);
-  const [currentLogs, setCurrentLogs] = useState<string[]>([compileLogs[0]]);
+  const [statusText, setStatusText] = useState(statusSteps[0].text);
   const [isLoaded, setIsLoaded] = useState(false);
-  
-  const matrixCanvasRef = useRef<HTMLCanvasElement>(null);
-  const terminalRef = useRef<HTMLDivElement>(null);
-
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const onCompleteRef = useRef(onComplete);
+
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  // Hyper-speed log printing stream (adds a log every 60ms)
+  // Handle progress interval
   useEffect(() => {
-    let index = 1;
-    const logInterval = setInterval(() => {
-      if (index < compileLogs.length) {
-        setCurrentLogs((prev) => [...prev, compileLogs[index]]);
-        index++;
-        
-        // Map progress percentage to current log index
-        const pct = Math.min((index / compileLogs.length) * 100, 100);
-        setProgress(pct);
-      } else {
-        clearInterval(logInterval);
-        setIsLoaded(true);
-        setTimeout(() => {
-          onCompleteRef.current();
-        }, 550); // Fade-out exit delay buffer
-      }
-    }, 60);
+    let current = 0;
+    const interval = setInterval(() => {
+      // Staggered incremental updates for realistic loading feel
+      const increment = Math.floor(Math.random() * 8) + 3;
+      current = Math.min(current + increment, 100);
+      setProgress(current);
 
-    return () => clearInterval(logInterval);
+      // Update status text based on progress thresholds
+      const activeStep = [...statusSteps]
+        .reverse()
+        .find((step) => current >= step.threshold);
+      if (activeStep) {
+        setStatusText(activeStep.text);
+      }
+
+      if (current >= 100) {
+        clearInterval(interval);
+        // Start exit animation after a tiny completion pause
+        setTimeout(() => {
+          setIsLoaded(true);
+          // Trigger complete callback once exit transition concludes
+          setTimeout(() => {
+            onCompleteRef.current();
+          }, 800);
+        }, 300);
+      }
+    }, 80);
+
+    return () => clearInterval(interval);
   }, []);
 
-  // Terminal scroll to bottom
+  // Ambient Starry Particle Orbit Canvas Effect
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
-  }, [currentLogs]);
-
-  // Background HTML5 Canvas Matrix Digital Rain
-  useEffect(() => {
-    const canvas = matrixCanvasRef.current;
+    const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -101,37 +75,58 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     };
     window.addEventListener("resize", handleResize);
 
-    const matrixChars = "0101010101010101ABCDEFfnconstasyncawaitstructinterfaceWebGLTHREEletuseRefuseEffectimportexportclass";
-    const fontSize = 13;
-    const columns = Math.floor(width / fontSize);
+    // Create particles swirling in orbit
+    const particleCount = 60;
+    const particles: Array<{
+      angle: number;
+      radius: number;
+      speed: number;
+      size: number;
+      color: string;
+      pulseSpeed: number;
+      pulseOffset: number;
+    }> = [];
 
-    // Stagger drops vertical coordinates
-    const rainDrops: number[] = [];
-    for (let x = 0; x < columns; x++) {
-      rainDrops[x] = Math.random() * -100;
+    for (let i = 0; i < particleCount; i++) {
+      const isCyan = Math.random() > 0.4;
+      particles.push({
+        angle: Math.random() * Math.PI * 2,
+        radius: Math.random() * 200 + 80,
+        speed: (Math.random() * 0.01 + 0.003) * (Math.random() > 0.5 ? 1 : -1),
+        size: Math.random() * 2 + 1,
+        color: isCyan ? "rgba(6, 182, 212, " : "rgba(168, 85, 247, ",
+        pulseSpeed: Math.random() * 0.03 + 0.01,
+        pulseOffset: Math.random() * Math.PI * 2,
+      });
     }
 
     let frameId: number;
-    const drawMatrix = () => {
-      ctx.fillStyle = "rgba(3, 3, 8, 0.08)";
-      ctx.fillRect(0, 0, width, height);
+    const drawParticles = () => {
+      ctx.clearRect(0, 0, width, height);
 
-      ctx.fillStyle = "rgba(6, 182, 212, 0.28)"; // Cyan code glow
-      ctx.font = `bold ${fontSize}px monospace`;
+      const centerX = width / 2;
+      const centerY = height / 2;
 
-      for (let i = 0; i < rainDrops.length; i++) {
-        const char = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-        ctx.fillText(char, i * fontSize, rainDrops[i] * fontSize);
+      particles.forEach((p) => {
+        p.angle += p.speed;
+        const x = centerX + Math.cos(p.angle) * p.radius;
+        const y = centerY + Math.sin(p.angle) * p.radius;
 
-        if (rainDrops[i] * fontSize > height && Math.random() > 0.985) {
-          rainDrops[i] = 0;
-        }
-        rainDrops[i]++;
-      }
-      frameId = requestAnimationFrame(drawMatrix);
+        // Oscillate opacity for starry twinkling effect
+        const alpha = Math.abs(Math.sin(Date.now() * p.pulseSpeed + p.pulseOffset)) * 0.4 + 0.1;
+
+        ctx.beginPath();
+        ctx.arc(x, y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `${p.color}${alpha})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color.includes("6, 182") ? "rgba(6, 182, 212, 0.4)" : "rgba(168, 85, 247, 0.4)";
+        ctx.fill();
+      });
+
+      frameId = requestAnimationFrame(drawParticles);
     };
 
-    drawMatrix();
+    drawParticles();
 
     return () => {
       cancelAnimationFrame(frameId);
@@ -139,81 +134,126 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     };
   }, []);
 
-  // Compute segmented retro loading indicator
-  const barLength = 16;
-  const filledLength = Math.floor((progress / 100) * barLength);
-  const visualLoadingBar = `[${"█".repeat(filledLength)}${"░".repeat(barLength - filledLength)}]`;
-
   return (
     <AnimatePresence>
       {!isLoaded && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ 
-            opacity: 0, 
-            scaleY: 0.01, 
-            scaleX: 1.15,
-            filter: "brightness(2.2) contrast(3)" 
-          }}
-          transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 w-full h-full bg-[#020205] z-[99999] flex items-center justify-center font-mono text-cyan-400 p-6 select-none overflow-hidden"
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 w-full h-full bg-[#030306] z-[99999] flex flex-col items-center justify-center select-none overflow-hidden font-sans"
         >
-          {/* Matrix code rain canvas background */}
-          <canvas 
-            ref={matrixCanvasRef} 
-            className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none opacity-45"
+          {/* Subtle grid lines background */}
+          <div 
+            className="absolute inset-0 z-0 pointer-events-none opacity-20"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), 
+                                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)`,
+              backgroundSize: "40px 40px",
+              backgroundPosition: "center",
+            }}
           />
 
-          {/* CRT Overlay Scanlines */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.04),rgba(0,255,0,0.01),rgba(0,0,255,0.04))] bg-[size:100%_4px,6px_100%] pointer-events-none z-10" />
+          {/* Canvas for swirling ambient dust */}
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+          />
 
-          {/* Compact Mini-Terminal HUD Console */}
-          <div className="max-w-md w-full h-80 flex flex-col bg-black/85 rounded-xl border border-cyan-500/30 backdrop-blur-md shadow-[0_0_40px_rgba(6,182,212,0.2)] relative z-20 overflow-hidden glowing-border-parent">
-            <div className="glowing-border-glow" />
+          {/* Central Glassmorphic App Launch Card */}
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ 
+              scale: 18, 
+              opacity: 0,
+              filter: "blur(4px)",
+              transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
+            }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center bg-gradient-to-br from-neutral-900/60 to-neutral-950/80 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-[0_0_50px_rgba(99,102,241,0.15)] relative z-10"
+          >
+            {/* Glowing backdrop halo */}
+            <div className="absolute inset-0 rounded-[32px] bg-gradient-to-tr from-cyan-500/10 via-indigo-500/5 to-purple-500/15 blur-md" />
 
-            {/* Header console status bar */}
-            <div className="flex items-center justify-between border-b border-cyan-500/20 px-3 py-2 shrink-0 bg-cyan-950/15">
-              <div className="flex items-center gap-2">
-                <Cpu size={14} className="pulse-badge text-cyan-400" />
-                <span className="text-[10px] font-black uppercase tracking-[1.5px] text-white">
-                  ROOT@GOUTHAM.DEV: SSH_SHELL
-                </span>
+            <svg viewBox="0 0 100 100" className="w-20 h-20 sm:w-24 sm:h-24 relative z-10">
+              <defs>
+                <linearGradient id="loaderLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#06b6d4" />
+                  <stop offset="50%" stopColor="#6366f1" />
+                  <stop offset="100%" stopColor="#a855f7" />
+                </linearGradient>
+              </defs>
+
+              {/* Outer spinning ring */}
+              <circle
+                cx="50"
+                cy="50"
+                r="43"
+                fill="none"
+                stroke="url(#loaderLogoGrad)"
+                strokeWidth="1.5"
+                strokeDasharray="25 15 35 15"
+                className="animate-[spin_10s_linear_infinite]"
+              />
+
+              {/* Inner dashed tracker ring */}
+              <circle
+                cx="50"
+                cy="50"
+                r="37"
+                fill="none"
+                stroke="#6366f1"
+                strokeWidth="0.75"
+                strokeOpacity="0.3"
+                strokeDasharray="3 3"
+              />
+
+              {/* Stylized Modern G Logo */}
+              <motion.path
+                d="M 72 38 
+                   C 72 23, 28 23, 28 50 
+                   C 28 77, 72 77, 72 62 
+                   L 50 62 
+                   L 50 51 
+                   L 80 51"
+                fill="none"
+                stroke="url(#loaderLogoGrad)"
+                strokeWidth="7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="drop-shadow-[0_0_10px_rgba(99,102,241,0.5)]"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+              />
+            </svg>
+          </motion.div>
+
+          {/* Lower HUD Info & Progress (Slides down & fades out on launch) */}
+          <motion.div
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="flex flex-col items-center mt-10 relative z-10"
+          >
+            {/* Status indicator */}
+            <span className="text-[10px] sm:text-xs font-black tracking-[3px] text-neutral-400 font-sans h-4 select-none">
+              {statusText}
+            </span>
+
+            {/* Linear glowing progress bar */}
+            <div className="flex items-center gap-4 mt-6">
+              <div className="w-48 sm:w-56 h-[3px] bg-neutral-800 rounded-full overflow-hidden relative shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500 rounded-full"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <span className="text-[9px] text-cyan-400/60 font-bold animate-pulse">● SECURED</span>
-            </div>
-
-            {/* Core compiling outputs terminal */}
-            <div 
-              ref={terminalRef}
-              className="flex-1 min-h-0 bg-black/40 p-4 flex flex-col text-[11px] leading-relaxed gap-1.5 text-cyan-400/85 overflow-y-auto scrollbar-none scroll-smooth font-mono select-text"
-            >
-              {currentLogs.slice(0, -1).map((log, index) => (
-                <div key={index} className="flex gap-2 text-cyan-400/30 shrink-0">
-                  <span className="select-none text-cyan-400/20">&gt;</span>
-                  <span className="break-all">{log}</span>
-                </div>
-              ))}
-              
-              {currentLogs.length > 0 && (
-                <div className="flex gap-2 text-cyan-300 font-bold text-shadow-xs shrink-0">
-                  <span className="animate-pulse select-none">&gt;</span>
-                  <span className="break-all">{currentLogs[currentLogs.length - 1]}</span>
-                  <span className="animate-ping text-cyan-300 font-black">_</span>
-                </div>
-              )}
-            </div>
-
-            {/* Segmented loading progress footer */}
-            <div className="border-t border-cyan-500/20 px-3 py-2 bg-cyan-950/20 flex items-center justify-between shrink-0 text-[10px] font-bold text-cyan-400/70">
-              <span className="text-white text-[11px] tracking-[1px] font-black">
-                {visualLoadingBar}
-              </span>
-              <span>
+              <span className="text-xs sm:text-sm font-bold text-white tracking-wider w-8 text-right font-sans tabular-nums">
                 {Math.round(progress)}%
               </span>
             </div>
-
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

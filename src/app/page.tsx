@@ -7,6 +7,7 @@ import FeaturedProjects from "../components/FeaturedProjects";
 import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import SkillsUniverse from "../components/SkillsUniverse";
+import BuildTogether from "../components/BuildTogether";
 
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
       {/* <CaseStudies /> */}
       <SkillsUniverse />
       <Achievements />
+      <BuildTogether />
       <Contact />
       <Footer />
     </main>

@@ -11,6 +11,7 @@ import {
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import FloatingTech from "./FloatingTech";
+import { EncryptedText } from "@/images/components/ui/encrypted-text";
 
 // Dynamic import with no SSR for WebGL wave-field canvas
 const HeroCanvas = dynamic(() => import("./HeroCanvas"), { ssr: false });
@@ -115,7 +116,12 @@ export default function Hero() {
 
           {/* Role subtitle */}
           <h2 className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-[8px] sm:tracking-[12px] text-text-muted">
-            Software Engineer
+            <EncryptedText
+              text="Software Engineer"
+              encryptedClassName="text-text-muted/40"
+              revealedClassName="text-text-muted"
+              revealDelayMs={55}
+            />
           </h2>
 
           {/* Intro Description */}

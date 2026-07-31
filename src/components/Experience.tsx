@@ -10,6 +10,7 @@ import {
 import { FaReact, FaNodeJs, FaCss3Alt } from "react-icons/fa";
 import { SiNextdotjs, SiTypescript, SiGraphql, SiApollographql, SiTailwindcss, SiRedux, SiJavascript, SiMongodb, SiExpress } from "react-icons/si";
 import { TbApi } from "react-icons/tb";
+import { CardSpotlight } from "@/images/components/ui/card-spotlight";
 
 const expSkillIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   "Next.js": SiNextdotjs,
@@ -143,58 +144,60 @@ export default function Experience() {
                   }`}
                 >
                   
-                  {/* Card Container */}
-                  <div
+                  <CardSpotlight
                     className={`w-[calc(100%-2.5rem)] ml-8 sm:w-[calc(100%-3.5rem)] sm:ml-12 md:w-[46%] md:ml-0 rounded-[24px] border p-6 sm:p-8 backdrop-blur-md bg-gradient-to-br ${item.color} glowing-border-parent relative transition-all duration-300 hover:shadow-xl`}
+                    radius={200}
                   >
                     <div className="glowing-border-glow" />
 
-                    {/* Job Details Header */}
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-surface-raised border border-surface-border flex items-center justify-center shrink-0">
-                        <Icon size={20} className={item.color.split(" ").filter(c => c.includes("text-")).join(" ")} />
-                      </div>
+                    <div className="relative z-10">
+                      {/* Job Details Header */}
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-surface-raised border border-surface-border flex items-center justify-center shrink-0">
+                          <Icon size={20} className={item.color.split(" ").filter(c => c.includes("text-")).join(" ")} />
+                        </div>
 
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-xl sm:text-2xl font-black tracking-wide text-slate-900 dark:text-white">
-                          {item.title}
-                        </h3>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-xl sm:text-2xl font-black tracking-wide text-slate-900 dark:text-white">
+                            {item.title}
+                          </h3>
 
-                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                          <p className="text-cyan-600 dark:text-cyan-400 text-sm sm:text-base font-bold">
-                            {item.company}
-                          </p>
-                          <span className="text-[10px] sm:text-xs text-text-muted font-bold">
-                            • {item.location}
-                          </span>
+                          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                            <p className="text-cyan-600 dark:text-cyan-400 text-sm sm:text-base font-bold">
+                              {item.company}
+                            </p>
+                            <span className="text-[10px] sm:text-xs text-text-muted font-bold">
+                              • {item.location}
+                            </span>
+                          </div>
                         </div>
                       </div>
+
+                      <p className="text-xs sm:text-sm text-text-muted mt-3 font-semibold">
+                        {item.period}
+                      </p>
+
+                      <p className="mt-4 text-sm sm:text-base text-text-secondary leading-relaxed">
+                        {item.description}
+                      </p>
+
+                      {/* Skill Badges for this Role */}
+                      <div className="flex flex-wrap gap-2 mt-6 border-t border-surface-border/40 pt-4">
+                        {item.skills.map((skill) => {
+                          const SkillIcon = expSkillIcons[skill];
+                          return (
+                            <span
+                              key={skill}
+                              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface/50 border border-surface-border text-text-muted text-xs font-semibold hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-200 group"
+                            >
+                              {SkillIcon && <SkillIcon className="w-3.5 h-3.5 shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />}
+                              <span>{skill}</span>
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
-
-                    <p className="text-xs sm:text-sm text-text-muted mt-3 font-semibold">
-                      {item.period}
-                    </p>
-
-                    <p className="mt-4 text-sm sm:text-base text-text-secondary leading-relaxed">
-                      {item.description}
-                    </p>
-
-                    {/* Skill Badges for this Role */}
-                    <div className="flex flex-wrap gap-2 mt-6 border-t border-surface-border/40 pt-4">
-                      {item.skills.map((skill) => {
-                        const SkillIcon = expSkillIcons[skill];
-                        return (
-                          <span
-                            key={skill}
-                            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface/50 border border-surface-border text-text-muted text-xs font-semibold hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-200 group"
-                          >
-                            {SkillIcon && <SkillIcon className="w-3.5 h-3.5 shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />}
-                            <span>{skill}</span>
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </div>
+                  </CardSpotlight>
 
                   {/* Dynamic Timeline Dot/Node */}
                   <div className="absolute left-[10px] sm:left-[14px] md:left-1/2 top-8 md:top-12 md:-translate-x-1/2 flex items-center justify-center">

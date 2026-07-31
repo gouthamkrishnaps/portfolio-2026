@@ -11,7 +11,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-surface-border/50 py-10 bg-slate-50/50 dark:bg-black/20 backdrop-blur-md relative z-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-6 text-sm sm:text-base">
-        
+
         {/* Left Side: Copyright */}
         <div className="text-center md:text-left text-text-secondary font-semibold">
           © {new Date().getFullYear()} Goutham Krishna P S. All rights reserved.
@@ -37,6 +37,13 @@ export default function Footer() {
           Back to Top
           <ArrowUp size={12} />
         </motion.button>
+      </div>
+
+      {/* Large Low-Opacity Typography Brand Name */}
+      <div className="w-full flex justify-center mt-16 md:mt-24 select-none pointer-events-none overflow-hidden pb-2">
+        <span className="text-[14vw] font-extrabold text-neutral-950/[0.04] dark:text-white/[0.03] uppercase tracking-tighter leading-none text-center">
+          Goutham
+        </span>
       </div>
     </footer>
   );

@@ -4,6 +4,15 @@ import { useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Preloader from "./Preloader";
 
+// Filter out the "Encountered a script tag" React 19 warning in development
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+  const origError = console.error;
+  console.error = (...args: any[]) => {
+    if (typeof args[0] === "string" && args[0].includes("Encountered a script tag")) return;
+    origError.apply(console, args);
+  };
+}
+
 function ThemeLoader({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 

@@ -254,51 +254,53 @@ export default function About() {
               </span>
             </h2>
 
-            <p className="mt-6 text-text-secondary text-base sm:text-lg leading-relaxed">
-              I'm Goutham Krishna P S, a passionate and results-driven Software Developer. 
-              My focus is on crafting clean, modular React, Next.js, and TypeScript architectures 
-              and implementing high-end frontend experiences that are engaging and highly performant.
-            </p>
+            <div className="select-none" onCopy={(e) => e.preventDefault()}>
+              <p className="mt-6 text-text-secondary text-base sm:text-lg leading-relaxed">
+                I'm Goutham Krishna P S, a passionate and results-driven Software Developer. 
+                My focus is on crafting clean, modular React, Next.js, and TypeScript architectures 
+                and implementing high-end frontend experiences that are engaging and highly performant.
+              </p>
 
-            <p className="mt-4 text-text-secondary text-base sm:text-lg leading-relaxed">
-              Currently working at{" "}
-              <Tooltip content={<ICodeBeesTooltip />}>
-                <strong className="text-cyan-600 dark:text-cyan-400 cursor-pointer underline decoration-dotted decoration-cyan-500/50 underline-offset-4 hover:text-cyan-500 transition-colors">
-                  ICodeBees
-                </strong>
-              </Tooltip>
-              , where I construct complex, enterprise-level e-commerce portals and interactive SaaS interfaces. 
-              I have contributed to custom features for major brands like{" "}
-              <Tooltip content={<AvumyTooltip />}>
-                <span className="font-semibold text-cyan-600 dark:text-cyan-400 cursor-pointer underline decoration-dotted decoration-cyan-500/50 underline-offset-4 hover:text-cyan-500 transition-colors">
-                  Avumy
-                </span>
-              </Tooltip>
-              ,{" "}
-              <Tooltip content={<DarlingsTooltip />}>
-                <span className="font-semibold text-indigo-600 dark:text-indigo-400 cursor-pointer underline decoration-dotted decoration-indigo-500/50 underline-offset-4 hover:text-indigo-500 transition-colors">
-                  Darlings of Chelsea
-                </span>
-              </Tooltip>
-              ,{" "}
-              <Tooltip content={<PermatechTooltip />}>
-                <span className="font-semibold text-emerald-600 dark:text-emerald-400 cursor-pointer underline decoration-dotted decoration-emerald-500/50 underline-offset-4 hover:text-emerald-500 transition-colors">
-                  Permatech
-                </span>
-              </Tooltip>
-              , and{" "}
-              <Tooltip content={<RubberizedTooltip />}>
-                <span className="font-semibold text-amber-600 dark:text-amber-400 cursor-pointer underline decoration-dotted decoration-amber-500/50 underline-offset-4 hover:text-amber-500 transition-colors">
-                  Rubberized
-                </span>
-              </Tooltip>
-              .
-            </p>
+              <p className="mt-4 text-text-secondary text-base sm:text-lg leading-relaxed">
+                Currently working at{" "}
+                <Tooltip content={<ICodeBeesTooltip />}>
+                  <strong className="text-cyan-600 dark:text-cyan-400 cursor-pointer underline decoration-dotted decoration-cyan-500/50 underline-offset-4 hover:text-cyan-500 transition-colors">
+                    ICodeBees
+                  </strong>
+                </Tooltip>
+                , where I construct complex, enterprise-level e-commerce portals and interactive SaaS interfaces. 
+                I have contributed to custom features for major brands like{" "}
+                <Tooltip content={<AvumyTooltip />}>
+                  <span className="font-semibold text-cyan-600 dark:text-cyan-400 cursor-pointer underline decoration-dotted decoration-cyan-500/50 underline-offset-4 hover:text-cyan-500 transition-colors">
+                    Avumy
+                  </span>
+                </Tooltip>
+                ,{" "}
+                <Tooltip content={<DarlingsTooltip />}>
+                  <span className="font-semibold text-indigo-600 dark:text-indigo-400 cursor-pointer underline decoration-dotted decoration-indigo-500/50 underline-offset-4 hover:text-indigo-500 transition-colors">
+                    Darlings of Chelsea
+                  </span>
+                </Tooltip>
+                ,{" "}
+                <Tooltip content={<PermatechTooltip />}>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400 cursor-pointer underline decoration-dotted decoration-emerald-500/50 underline-offset-4 hover:text-emerald-500 transition-colors">
+                    Permatech
+                  </span>
+                </Tooltip>
+                , and{" "}
+                <Tooltip content={<RubberizedTooltip />}>
+                  <span className="font-semibold text-amber-600 dark:text-amber-400 cursor-pointer underline decoration-dotted decoration-amber-500/50 underline-offset-4 hover:text-amber-500 transition-colors">
+                    Rubberized
+                  </span>
+                </Tooltip>
+                .
+              </p>
 
-            <p className="mt-4 text-text-secondary text-base sm:text-lg leading-relaxed">
-              My engineering philosophy revolves around pixel-perfect accuracy, optimization (Core Web Vitals), 
-              responsive fluidity, and pushing the boundaries of what is possible in the browser.
-            </p>
+              <p className="mt-4 text-text-secondary text-base sm:text-lg leading-relaxed">
+                My engineering philosophy revolves around pixel-perfect accuracy, optimization (Core Web Vitals), 
+                responsive fluidity, and pushing the boundaries of what is possible in the browser.
+              </p>
+            </div>
 
 
 

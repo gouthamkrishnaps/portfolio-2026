@@ -40,11 +40,11 @@ export default function Footer() {
       </div>
 
       {/* Large Low-Opacity Typography Brand Name */}
-      <div className="w-full flex justify-center mt-16 md:mt-24 select-none pointer-events-none overflow-hidden pb-2">
+      {/* <div className="w-full flex justify-center mt-16 md:mt-24 select-none pointer-events-none overflow-hidden pb-2">
         <span className="text-[14vw] font-extrabold text-neutral-950/[0.04] dark:text-white/[0.03] uppercase tracking-tighter leading-none text-center">
           Goutham
         </span>
-      </div>
+      </div> */}
     </footer>
   );
 }

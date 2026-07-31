@@ -32,6 +32,28 @@ export const CardSpotlight = ({
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    let { left, top } = e.currentTarget.getBoundingClientRect();
+    const touch = e.touches[0];
+    mouseX.set(touch.clientX - left);
+    mouseY.set(touch.clientY - top);
+    setIsHovering(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    let { left, top } = e.currentTarget.getBoundingClientRect();
+    const touch = e.touches[0];
+    mouseX.set(touch.clientX - left);
+    mouseY.set(touch.clientY - top);
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => {
+      setIsHovering(false);
+    }, 1500);
+  };
+
   return (
     <div
       className={cn(
@@ -41,10 +63,16 @@ export const CardSpotlight = ({
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       {...props}
     >
       <motion.div
-        className="pointer-events-none absolute z-0 -inset-px rounded-[inherit] opacity-0 transition duration-300 group-hover/spotlight:opacity-100"
+        className={cn(
+          "pointer-events-none absolute z-0 -inset-px rounded-[inherit] opacity-0 transition duration-300 group-hover/spotlight:opacity-100",
+          isHovering && "opacity-100"
+        )}
         style={{
           backgroundColor: color,
           maskImage: useMotionTemplate`

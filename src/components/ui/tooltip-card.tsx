@@ -97,27 +97,28 @@ export const Tooltip = ({
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLSpanElement>) => {
-    const touch = e.touches[0];
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mouseX = touch.clientX - rect.left;
-    const mouseY = touch.clientY - rect.top;
-    updateMousePosition(mouseX, mouseY);
-    setIsVisible(true);
-  };
-
-  const handleTouchEnd = () => {
-    // Delay hiding to allow for tap interaction
-    setTimeout(() => {
-      setIsVisible(false);
-      setMouse({ x: 0, y: 0 });
-      setPosition({ x: 0, y: 0 });
-    }, 2000);
+    if (window.matchMedia("(hover: none)").matches) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isVisible) {
+        setIsVisible(false);
+        setMouse({ x: 0, y: 0 });
+        setPosition({ x: 0, y: 0 });
+      } else {
+        const touch = e.touches[0];
+        const rect = e.currentTarget.getBoundingClientRect();
+        const mouseX = touch.clientX - rect.left;
+        const mouseY = touch.clientY - rect.top;
+        updateMousePosition(mouseX, mouseY);
+        setIsVisible(true);
+      }
+    }
   };
 
   const handleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
-    // Toggle visibility on click for mobile devices
     if (window.matchMedia("(hover: none)").matches) {
       e.preventDefault();
+      e.stopPropagation();
       if (isVisible) {
         setIsVisible(false);
         setMouse({ x: 0, y: 0 });
@@ -131,6 +132,30 @@ export const Tooltip = ({
       }
     }
   };
+
+  // Close tooltip on outside click/tap
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsVisible(false);
+        setMouse({ x: 0, y: 0 });
+        setPosition({ x: 0, y: 0 });
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, [isVisible]);
 
   // Update position when tooltip becomes visible or content changes
   useEffect(() => {
@@ -148,7 +173,6 @@ export const Tooltip = ({
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
       onClick={handleClick}
     >
       {children}

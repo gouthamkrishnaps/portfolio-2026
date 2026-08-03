@@ -167,55 +167,55 @@
    DARK THEME
    ============================================================ */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: #030A0E;
+  --foreground: #CCD0CF;
+  --card: #0A151C;
+  --card-foreground: #CCD0CF;
+  --popover: #0A151C;
+  --popover-foreground: #CCD0CF;
+  --primary: #CCD0CF;
+  --primary-foreground: #030A0E;
+  --secondary: #253745;
+  --secondary-foreground: #CCD0CF;
+  --muted: #0A151C;
+  --muted-foreground: #9BA8AB;
+  --accent: #253745;
+  --accent-foreground: #CCD0CF;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --border: rgba(74, 92, 106, 0.2);
+  --input: rgba(74, 92, 106, 0.25);
+  --ring: #4A5C6A;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: #0A151C;
+  --sidebar-foreground: #CCD0CF;
+  --sidebar-primary: #253745;
+  --sidebar-primary-foreground: #CCD0CF;
+  --sidebar-accent: #253745;
+  --sidebar-accent-foreground: #CCD0CF;
+  --sidebar-border: rgba(74, 92, 106, 0.2);
+  --sidebar-ring: #4A5C6A;
 
-  /* --- Custom Portfolio Theme Values (Dark - Refined Zinc/Indigo) --- */
-  --bg-primary: #09090b;
-  --surface: oklch(1 0 0 / 5%);
-  --surface-hover: oklch(1 0 0 / 12%);
-  --surface-raised: oklch(1 0 0 / 8%);
-  --surface-border: oklch(1 0 0 / 10%);
+  /* --- Custom Portfolio Theme Values (Dark - Palette Inspired) --- */
+  --bg-primary: #030A0E;
+  --surface: rgba(10, 21, 28, 0.5);
+  --surface-hover: rgba(23, 40, 52, 0.7);
+  --surface-raised: rgba(23, 40, 52, 0.5);
+  --surface-border: rgba(74, 92, 106, 0.25);
   --brand-300: #a5b4fc;
   --brand-400: #818cf8;
   --brand-500: #6366f1;
   --brand-600: #4f46e5;
   --brand-700: #4338ca;
-  --text-secondary: #d4d4d8;
-  --text-muted: #a1a1aa;
-  --text-tertiary: #71717a;
-  --text-mask: oklch(1 0 0 / 2%);
-  --text-mask-light: oklch(1 0 0 / 3%);
-  --text-mask-medium: oklch(1 0 0 / 10%);
+  --text-secondary: #9BA8AB;
+  --text-muted: #9BA8AB;
+  --text-tertiary: #4A5C6A;
+  --text-mask: rgba(204, 208, 207, 0.02);
+  --text-mask-light: rgba(204, 208, 207, 0.04);
+  --text-mask-medium: rgba(204, 208, 207, 0.08);
   --accent-green: #22c55e;
   --accent-cyan: #06b6d4;
   --accent-emerald: #059669;
@@ -224,7 +224,7 @@
   --accent-purple-deep: #9333ea;
   --glow-1: rgba(99, 102, 241, 0.35);
   --glow-2: rgba(6, 182, 212, 0.3);
-  --grid-color: rgba(99, 102, 241, 0.035);
+  --grid-color: rgba(74, 92, 106, 0.04);
   --card-spotlight-color: rgba(99, 102, 241, 0.12);
 
   --cyan-300: #67e8f9;
@@ -296,14 +296,14 @@
 }
 
 .dark .glass-panel {
-  background: rgba(10, 10, 20, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  background: rgba(10, 21, 28, 0.45);
+  border: 1px solid rgba(74, 92, 106, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(3, 10, 14, 0.4);
 }
 
 .dark .glass-panel:hover {
-  border-color: rgba(6, 182, 212, 0.2);
-  box-shadow: 0 12px 40px 0 rgba(6, 182, 212, 0.1);
+  border-color: rgba(74, 92, 106, 0.35);
+  box-shadow: 0 12px 40px 0 rgba(10, 21, 28, 0.15);
 }
 
 .mobile-bg-radial {
@@ -311,7 +311,7 @@
 }
 
 .dark .mobile-bg-radial {
-  background: radial-gradient(circle at 50% 50%, #08071a 0%, #020205 100%);
+  background: radial-gradient(circle at 50% 50%, #0A151C 0%, #030A0E 100%);
 }
 
 .text-glow {
@@ -359,7 +359,7 @@
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #030308;
+  background: #030A0E;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -368,7 +368,7 @@
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #1e1b4b;
+  background: #253745;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -376,7 +376,7 @@
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #312e81;
+  background: #4A5C6A;
 }
 
 /* Pulse animation for pulsing badges */

@@ -45,7 +45,7 @@ export default function HeroCanvas() {
       uTime: { value: 0.0 },
       uMouse: { value: new THREE.Vector2(99999.0, 99999.0) },
       uMouseRadius: { value: 7.5 },
-      uMouseStrength: { value: 4.2 },
+      uMouseStrength: { value: 2.0 },
       uIsDark: { value: 1.0 },
     };
 
@@ -67,10 +67,10 @@ export default function HeroCanvas() {
 
         vec3 pos = position;
 
-        // --- MULTI-OCTAVE CONTINUOUS LIQUID WAVES ---
-        float wave1 = sin(pos.x * 0.22 + uTime * 0.75) * 1.1;
-        float wave2 = cos(pos.y * 0.28 + uTime * 0.55) * 0.85;
-        float wave3 = sin((pos.x * 0.16 + pos.y * 0.18) + uTime * 0.4) * 0.6;
+        // --- MULTI-OCTAVE CONTINUOUS LIQUID WAVES (toned down) ---
+        float wave1 = sin(pos.x * 0.22 + uTime * 0.55) * 0.5;
+        float wave2 = cos(pos.y * 0.28 + uTime * 0.4) * 0.4;
+        float wave3 = sin((pos.x * 0.16 + pos.y * 0.18) + uTime * 0.3) * 0.25;
         float elevation = wave1 + wave2 + wave3;
 
         pos.z += elevation;
@@ -85,7 +85,7 @@ export default function HeroCanvas() {
         vMouseProximity = force;
 
         // Lifts the mesh up gently toward the cursor in a smooth 3D dome
-        pos.z += force * 2.2;
+        pos.z += force * 1.2;
         vElevation = pos.z;
 
         vWorldPos = pos;
@@ -137,8 +137,8 @@ export default function HeroCanvas() {
         vec3 baseColor = mix(cyan, purple, normY);
 
         // --- AMBIENT SPOTLIGHT GLOW ON HOVER ---
-        vec3 spotLightColor = uIsDark > 0.5 ? vec3(0.20, 0.70, 0.85) : vec3(0.15, 0.75, 0.95);
-        vec3 lineColor = mix(baseColor, spotLightColor, vMouseProximity * (uIsDark > 0.5 ? 0.7 : 0.45));
+        vec3 spotLightColor = uIsDark > 0.5 ? vec3(0.30, 0.32, 0.72) : vec3(0.35, 0.38, 0.82);
+        vec3 lineColor = mix(baseColor, spotLightColor, vMouseProximity * (uIsDark > 0.5 ? 0.5 : 0.3));
 
         // Soft grid line intensity (Zero dark surface fill between lines)
         vec3 finalColor = lineColor;
@@ -152,9 +152,9 @@ export default function HeroCanvas() {
         float boundY = smoothstep(14.0, 9.5, abs(vWorldPos.y));
         float boundary = boundX * boundY;
 
-        // Alpha calculation: Zero alpha when not on a grid line (prevents any background darkening)
-        float baseAlpha = uIsDark > 0.5 ? 0.35 : 0.18;
-        float alpha = boundary * gridLine * (baseAlpha + vMouseProximity * (uIsDark > 0.5 ? 0.25 : 0.15));
+        // Alpha calculation: Zero alpha when not on a grid line
+        float baseAlpha = uIsDark > 0.5 ? 0.14 : 0.08;
+        float alpha = boundary * gridLine * (baseAlpha + vMouseProximity * (uIsDark > 0.5 ? 0.12 : 0.08));
 
         gl_FragColor = vec4(finalColor, alpha);
       }
@@ -211,8 +211,8 @@ export default function HeroCanvas() {
 
         const nx = (e.clientX / window.innerWidth) * 2 - 1;
         const ny = -(e.clientY / window.innerHeight) * 2 + 1;
-        targetCamX = nx * 2.2;
-        targetCamY = baseCamY + ny * 1.5;
+        targetCamX = nx * 1.2;
+        targetCamY = baseCamY + ny * 0.8;
       } else {
         isPointerInBounds = false;
       }

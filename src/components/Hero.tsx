@@ -2,25 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Mail,
-  ArrowDown,
-  Terminal,
-  Activity,
-} from "lucide-react";
+import { Mail, ArrowDown } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import dynamic from "next/dynamic";
-import FloatingTech from "./FloatingTech";
-import { EncryptedText } from "@/images/components/ui/encrypted-text";
 
-// Dynamic import with no SSR for WebGL wave-field canvas
+// Dynamic import with no SSR for WebGL canvas
 const HeroCanvas = dynamic(() => import("./HeroCanvas"), { ssr: false });
 
 export default function Hero() {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [parallax, setParallax] = useState({ x: 0, y: 0 });
-  const [time, setTime] = useState("");
-  const [screenDim, setScreenDim] = useState({ w: 1920, h: 1080 });
   const [isIntroFinished, setIsIntroFinished] = useState(false);
 
   useEffect(() => {
@@ -35,194 +24,175 @@ export default function Hero() {
 
     window.addEventListener("hud-loaded", handleHudLoaded);
 
-    // Track dynamic specs
-    setScreenDim({ w: window.innerWidth, h: window.innerHeight });
-
-    const handleMouseMove = (e: MouseEvent) => {
-      setCoords({ x: e.clientX, y: e.clientY });
-
-      const px = (e.clientX / window.innerWidth) - 0.5;
-      const py = (e.clientY / window.innerHeight) - 0.5;
-      setParallax({ x: px, y: py });
-    };
-
-    const handleResize = () => {
-      setScreenDim({ w: window.innerWidth, h: window.innerHeight });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("resize", handleResize);
-
-    // Clock
-    const updateTime = () => {
-      const now = new Date();
-      setTime(
-        now.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        })
-      );
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-
     return () => {
       window.removeEventListener("hud-loaded", handleHudLoaded);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", handleResize);
-      clearInterval(interval);
     };
   }, []);
+
+  // Staggered animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      },
+    },
+  };
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-primary pt-20 pb-24 sm:pb-8"
     >
-      {/* WebGL Wave-Field Interactive Canvas */}
+      {/* Toned-down WebGL Canvas */}
       <HeroCanvas />
 
-      {/* Decorative center spotlight to ensure text readability */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--bg-primary)_0%,transparent_55%)] pointer-events-none opacity-60" />
+      {/* Subtle dot-grid background overlay */}
+      <div className="absolute inset-0 dot-grid-bg opacity-40 pointer-events-none" />
+
+      {/* Center radial readability mask */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--bg-primary)_0%,transparent_70%)] pointer-events-none opacity-70" />
 
       {/* Top & bottom vignettes */}
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bg-primary to-transparent pointer-events-none" />
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg-primary to-transparent pointer-events-none" />
 
       <div className="container mx-auto px-6 relative z-10 w-full max-w-5xl flex flex-col items-center justify-center">
-
-        {/* Center Contents Container */}
+        {/* Staggered Entry Container */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isIntroFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          style={{
-            x: parallax.x * 10,
-            y: parallax.y * 10,
-          }}
-          className="text-center w-full max-w-5xl flex flex-col items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isIntroFinished ? "visible" : "hidden"}
+          className="text-center w-full flex flex-col items-center"
         >
-
-
-          {/* Master Name Header */}
-          <h1 className="w-full text-6xl xs:text-7xl sm:text-[7vw] md:text-[6.8vw] lg:text-[90px] font-black uppercase tracking-tight leading-[0.95] text-slate-900 dark:text-white sm:whitespace-nowrap text-center">
+          {/* Name Heading */}
+          <motion.h1
+            variants={itemVariants}
+            className="w-full text-5xl xs:text-6xl sm:text-7xl md:text-[80px] lg:text-[88px] font-black uppercase tracking-tight leading-[1] text-zinc-900 dark:text-zinc-50 text-center sm:whitespace-nowrap"
+          >
             Goutham
             <br className="sm:hidden" />{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 dark:from-cyan-400 dark:via-indigo-400 dark:to-purple-500 text-glow">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 dark:from-indigo-400 dark:via-indigo-400 dark:to-cyan-400">
               Krishna P S
             </span>
-          </h1>
+          </motion.h1>
 
-          {/* Role subtitle */}
-          <h2 className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-[8px] sm:tracking-[12px] text-text-muted">
-            <EncryptedText
-              text="Software Engineer"
-              encryptedClassName="text-text-muted/40"
-              revealedClassName="text-text-muted"
-              revealDelayMs={55}
-            />
-          </h2>
+          {/* Role Subtitle */}
+          <motion.h2
+            variants={itemVariants}
+            className="mt-4 sm:mt-5 text-base sm:text-lg md:text-xl font-medium text-text-muted tracking-wide"
+          >
+            Frontend & Full-Stack Software Engineer
+          </motion.h2>
 
-          {/* Intro Description */}
-          <p className="mt-5 sm:mt-8 max-w-xl text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
-            Architecting interactive browser installations, complex e-commerce engines,
-            and lightweight mathematical UI layouts. Transforming vectors into code.
-          </p>
+          {/* Bio Description */}
+          <motion.p
+            variants={itemVariants}
+            className="mt-5 sm:mt-6 max-w-xl text-sm sm:text-base md:text-[17px] text-text-secondary leading-relaxed"
+          >
+            Specializing in React, Next.js, and high-performance web applications.
+            Focused on building pixel-perfect UI systems, modern design architectures,
+            and fast, accessible web experiences.
+          </motion.p>
 
-          {/* Actions button strip */}
-          <div className="flex flex-row items-center justify-center gap-3 mt-6 sm:mt-10">
+          {/* CTA Buttons */}
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-row items-center justify-center gap-3 mt-8 sm:mt-10"
+          >
+            {/* Primary: Dark inverted button with micro-glow */}
             <a
               href="#projects"
-              className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-xl shadow-indigo-500/10 hover:shadow-indigo-500/30 hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
+              className="group relative px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 focus-ring"
             >
-              Selected Work
+              <span className="relative z-10">View Projects</span>
+              <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_20px_rgba(99,102,241,0.3)] dark:shadow-[0_0_20px_rgba(99,102,241,0.2)]" />
             </a>
 
+            {/* Secondary: Ghost/outline button */}
             <a
               href="#contact"
-              className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-full border border-surface-border bg-surface/30 backdrop-blur-md hover:bg-surface/60 text-slate-900 dark:text-white font-black text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-400 hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
+              className="px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 focus-ring"
             >
-              Get In Touch
+              Get in Touch
             </a>
-          </div>
+          </motion.div>
 
-          {/* Social icons row */}
-          <div className="flex items-center gap-4 sm:gap-5 mt-6 sm:mt-10">
+          {/* Social Icons Row */}
+          <motion.div
+            variants={itemVariants}
+            className="flex items-center gap-3 mt-8 sm:mt-10"
+          >
             {[
-              { icon: FaGithub, href: "https://github.com/gouthamkrishnaps", label: "GitHub" },
-              { icon: FaLinkedin, href: "https://linkedin.com/in/gouthamkrishnaps", label: "LinkedIn" },
-              { icon: Mail, href: "mailto:gouthamkrishnaps02@gmail.com", label: "Email" },
-            ].map((social, idx) => {
+              {
+                icon: FaGithub,
+                href: "https://github.com/gouthamkrishnaps",
+                label: "GitHub",
+              },
+              {
+                icon: FaLinkedin,
+                href: "https://linkedin.com/in/gouthamkrishnaps",
+                label: "LinkedIn",
+              },
+              {
+                icon: Mail,
+                href: "mailto:gouthamkrishnaps02@gmail.com",
+                label: "Email",
+              },
+            ].map((social) => {
               const Icon = social.icon;
               return (
                 <a
-                  key={idx}
+                  key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 sm:p-3.5 rounded-full bg-surface/20 border border-surface-border hover:border-cyan-500/40 hover:bg-surface/80 hover:text-cyan-600 dark:hover:text-cyan-400 text-text-muted transition-all duration-300"
+                  className="group relative w-11 h-11 flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 hover:border-indigo-500/40 hover:bg-indigo-500/5 text-zinc-500 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300 focus-ring"
                   aria-label={social.label}
                   id={`social-link-${social.label.toLowerCase()}`}
                 >
                   <Icon size={18} />
+                  {/* Tooltip */}
+                  <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 px-2.5 py-1 text-[11px] font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg">
+                    {social.label}
+                  </span>
                 </a>
               );
             })}
-          </div>
-
+          </motion.div>
         </motion.div>
       </div>
 
-      {/* Side floating tech cards for large viewports */}
-      <FloatingTech parallax={parallax} />
-
-      {/* Compact HUD Status Ribbon at Bottom */}
+      {/* Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isIntroFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="absolute bottom-3 sm:bottom-5 inset-x-0 px-6 sm:px-12 w-full flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 pointer-events-none select-none text-[10px] sm:text-xs font-mono text-text-tertiary uppercase tracking-wider"
+        initial={{ opacity: 0 }}
+        animate={isIntroFinished ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.6, delay: 1.2 }}
+        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2"
       >
-        {/* Left side telemetry metrics */}
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5">
-            <Terminal size={12} className="text-cyan-600 dark:text-cyan-400" />
-            TELEMETRY: <span className="text-cyan-600 dark:text-cyan-300 font-bold">X: {coords.x} | Y: {coords.y}</span>
-          </span>
-          <span className="hidden md:inline">
-            RESOLUTION: <span className="text-slate-800 dark:text-white">{screenDim.w} x {screenDim.h}</span>
-          </span>
-        </div>
-
-        {/* Down Scroll Arrow link (Centered in middle space) */}
-        <div className="hidden sm:block pointer-events-auto">
-          <motion.div
-            animate={{
-              y: [0, 6, 0],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 2,
-            }}
-          >
-            <a href="#about" aria-label="Scroll to About">
-              <ArrowDown className="text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors" size={20} />
-            </a>
-          </motion.div>
-        </div>
-
-        {/* Right side diagnostics */}
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5">
-            <Activity size={12} className="text-purple-600 dark:text-purple-400" />
-            DIAGNOSTICS: <span className="text-green-600 dark:text-green-400 flex items-center gap-1 font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400 pulse-badge" /> ONLINE
-            </span>
-          </span>
-          <span className="hidden sm:inline">PING: <span className="text-purple-600 dark:text-purple-300 font-semibold">12MS</span></span>
-          <span className="text-slate-800 dark:text-white font-semibold">{time}</span>
-        </div>
+        <motion.a
+          href="#about"
+          aria-label="Scroll to About section"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="text-zinc-400 dark:text-zinc-600 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors focus-ring rounded-full p-2 block"
+        >
+          <ArrowDown size={20} />
+        </motion.a>
       </motion.div>
     </section>
   );

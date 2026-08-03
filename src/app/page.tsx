@@ -6,6 +6,7 @@ import Experience from "../components/Experience";
 import FeaturedProjects from "../components/FeaturedProjects";
 import Footer from "../components/Footer";
 import Hero from "../components/Hero";
+import TechStackMarquee from "../components/TechStackMarquee";
 import SkillsUniverse from "../components/SkillsUniverse";
 import BuildTogether from "../components/BuildTogether";
 
@@ -14,6 +15,7 @@ export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden">
       <Hero />
+      <TechStackMarquee />
       <About />
       <Experience />
       <FeaturedProjects />

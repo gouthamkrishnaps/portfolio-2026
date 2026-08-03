@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Nunito, Outfit } from "next/font/google";
+import { Inter, Nunito, Outfit } from "next/font/google";
 import ThemeProvider from "../components/ThemeProvider";
 import Navbar from "../components/Navbar";
 import ScrollProgress from "../components/ScrollProgress";
 import CustomCursor from "../components/CustomCursor";
 import { Analytics } from "@vercel/analytics/react";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -117,7 +122,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${nunito.variable} ${outfit.variable} h-full antialiased`}
+      className={`${inter.variable} ${nunito.variable} ${outfit.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

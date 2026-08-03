@@ -197,14 +197,14 @@ export default function FeaturedProjects() {
                   key={project.id}
                   onClick={() => setActiveIndex(idx)}
                   suppressHydrationWarning
-                  className={`flex-shrink-0 snap-start w-[240px] sm:w-[280px] flex items-center gap-4 p-3 rounded-2xl border text-left transition-all duration-300 relative ${
+                  className={`flex-shrink-0 snap-start w-[180px] sm:w-[240px] md:w-[280px] flex items-center gap-2.5 sm:gap-4 p-2 sm:p-3 rounded-xl sm:rounded-2xl border text-left transition-all duration-300 relative ${
                     isActive 
                       ? "border-cyan-500/50 bg-cyan-500/5 text-cyan-600 dark:text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] scale-[1.02]" 
                       : "border-surface-border bg-surface/10 hover:bg-surface/35 text-text-muted hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
                   {/* Miniature Thumbnail */}
-                  <div className="w-16 h-11 rounded-lg overflow-hidden relative bg-black/45 border border-surface-border shrink-0">
+                  <div className="w-12 h-9 sm:w-16 sm:h-11 rounded-lg overflow-hidden relative bg-black/45 border border-surface-border shrink-0">
                     <Image
                       src={project.image}
                       alt=""
@@ -217,12 +217,12 @@ export default function FeaturedProjects() {
                   </div>
 
                   <div className="min-w-0">
-                    <span className={`block text-[10px] uppercase font-bold tracking-widest leading-none mb-1 ${
+                    <span className={`block text-[8px] sm:text-[10px] uppercase font-bold tracking-widest leading-none mb-0.5 sm:mb-1 ${
                       isActive ? "text-cyan-600 dark:text-cyan-300" : "text-text-tertiary"
                     }`}>
                       {project.id} // {project.category.split(" ")[0]}
                     </span>
-                    <span className="block text-sm font-black uppercase tracking-wide truncate">
+                    <span className="block text-xs sm:text-sm font-black uppercase tracking-wide truncate">
                       {project.title}
                     </span>
                   </div>

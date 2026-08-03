@@ -13,7 +13,7 @@ export default function CounterCard({
   label,
 }: CounterProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [count, setCount] = useState(0);
   const [suffix, setSuffix] = useState("");
 
@@ -38,7 +38,7 @@ export default function CounterCard({
         
         // Exponential ease-out formula
         const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-        const currentCount = Math.floor(easeOut * target);
+        const currentCount = Math.round(easeOut * target);
         
         setCount(currentCount);
 
@@ -60,7 +60,7 @@ export default function CounterCard({
         boxShadow: "0 10px 30px -10px rgba(6, 182, 212, 0.15)",
       }}
       transition={{ duration: 0.3 }}
-      className="glass-panel rounded-[30px] p-6 sm:p-8 flex flex-col justify-between glowing-border-parent relative"
+      className="glass-panel rounded-[30px] p-6 sm:p-8 flex flex-col justify-between glowing-border-parent relative h-full"
     >
       {/* Glowing boundary element */}
       <div className="glowing-border-glow" />

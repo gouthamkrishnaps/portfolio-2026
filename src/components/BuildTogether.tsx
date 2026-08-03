@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import CoffeePic from "@/images/assets/Web design glassmorphism about coffee dark and blue.jpeg";
-import RestaurantPic from "@/images/assets/Luxury Restaurant Website Design – Elegant & Modern Fine Dining Layout.jpeg";
-import FoodPic from "@/images/assets/Rustic Food Landing Page Mockup _ Dark UI & Organic Web Design Inspiration.jpeg";
+import DarlingsImage from "@/images/assets/darlings.png";
+import PermatechImage from "@/images/assets/permatech.png";
+import AvumyImage from "@/images/assets/avumy.png";
 
 export default function BuildTogether() {
   const [isMounted, setIsMounted] = useState(false);
@@ -49,22 +49,25 @@ export default function BuildTogether() {
   const cards = [
     {
       id: "left",
-      title: "Coffee App",
-      image: CoffeePic,
+      title: "Permatech Roofing",
+      domain: "permatechroofing.com",
+      image: PermatechImage,
       custom: leftCustom,
       zIndex: hoveredCard === "left" ? 30 : hoveredCard ? 10 : 10,
     },
     {
       id: "right",
-      title: "Rustic Food",
-      image: FoodPic,
+      title: "Avumy Space",
+      domain: "avumy.com",
+      image: AvumyImage,
       custom: rightCustom,
       zIndex: hoveredCard === "right" ? 30 : hoveredCard ? 10 : 10,
     },
     {
       id: "center",
-      title: "Fine Dining",
-      image: RestaurantPic,
+      title: "Darlings of Chelsea",
+      domain: "darlingsofchelsea.co.uk",
+      image: DarlingsImage,
       custom: centerCustom,
       zIndex: hoveredCard === "center" ? 30 : hoveredCard ? 10 : 20,
     },
@@ -117,7 +120,7 @@ export default function BuildTogether() {
             Start a Project
           </Link>
           <Link
-            href="#featured-projects"
+            href="#projects"
             className="w-full sm:w-auto px-8 py-3.5 rounded-full text-text-muted hover:text-cyan-600 dark:hover:text-cyan-400 font-bold text-sm sm:text-base text-center bg-surface/50 border border-surface-border hover:border-cyan-500/30 transition-all duration-300"
           >
             View Projects
@@ -164,8 +167,8 @@ export default function BuildTogether() {
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-rose-500/80" />
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-500/80" />
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500/80" />
-                <span className="text-[8px] sm:text-[9px] font-mono text-text-tertiary ml-2 hidden sm:inline select-none truncate max-w-[120px]">
-                  {card.title.toLowerCase().replace(/ /g, "")}.dev
+                <span className="text-[8px] sm:text-[9px] font-mono text-text-tertiary ml-2 hidden sm:inline select-none truncate max-w-[180px]">
+                  {card.domain}
                 </span>
               </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Mail, ArrowDown, ArrowRight, Command } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import dynamic from "next/dynamic";
@@ -59,6 +59,8 @@ function MagneticLink({
 export default function Hero() {
   const [isIntroFinished, setIsIntroFinished] = useState(false);
   const [specialtyIndex, setSpecialtyIndex] = useState(0);
+  const [typedText, setTypedText] = useState(specialties[0]);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
@@ -82,13 +84,36 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    if (isPaused) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = setInterval(() => {
+    if (!isIntroFinished || isPaused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTypedText(specialties[specialtyIndex]);
+      return;
+    }
+
+    const currentFull = specialties[specialtyIndex];
+
+    if (!isDeleting && typedText === currentFull) {
+      const pauseTimer = setTimeout(() => setIsDeleting(true), 2000);
+      return () => clearTimeout(pauseTimer);
+    }
+
+    if (isDeleting && typedText === "") {
+      setIsDeleting(false);
       setSpecialtyIndex((prev) => (prev + 1) % specialties.length);
-    }, 3200);
-    return () => clearInterval(timer);
-  }, [isPaused]);
+      return;
+    }
+
+    const delay = isDeleting ? 26 : 48;
+    const timer = setTimeout(() => {
+      setTypedText((prev) =>
+        isDeleting
+          ? currentFull.slice(0, prev.length - 1)
+          : currentFull.slice(0, prev.length + 1)
+      );
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [isIntroFinished, isPaused, isDeleting, typedText, specialtyIndex]);
 
   // Staggered animation variants
   const containerVariants = {
@@ -143,9 +168,12 @@ export default function Hero() {
           {/* Editorial Greeting */}
           <motion.p
             variants={itemVariants}
-            className="mb-3 sm:mb-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-text-muted"
+            className="mb-3 sm:mb-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-text-muted flex items-center justify-center gap-2"
           >
-            Hey, I&apos;m
+            <span aria-hidden="true" className="text-sm sm:text-base leading-none">
+              👋
+            </span>
+            <span>Hey, I&apos;m</span>
           </motion.p>
 
           {/* Name Heading */}
@@ -165,7 +193,7 @@ export default function Hero() {
             variants={itemVariants}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className="mt-4 sm:mt-5 w-full max-w-3xl flex flex-col sm:grid sm:grid-cols-[1fr_auto_1fr] items-center gap-1 sm:gap-3 text-sm sm:text-lg md:text-xl font-medium tracking-wide"
+            className="mt-4 sm:mt-5 w-full max-w-3xl flex flex-col sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 sm:gap-3 text-sm sm:text-lg md:text-xl font-medium tracking-wide"
           >
             <h2 className="text-text-muted sm:text-right whitespace-nowrap">
               Software Engineer
@@ -175,22 +203,23 @@ export default function Hero() {
             </span>
             <button
               type="button"
-              onClick={() => setSpecialtyIndex((prev) => (prev + 1) % specialties.length)}
+              onClick={() => {
+                const next = (specialtyIndex + 1) % specialties.length;
+                setSpecialtyIndex(next);
+                setTypedText(specialties[next]);
+                setIsDeleting(false);
+              }}
               aria-label={`Current specialty: ${specialties[specialtyIndex]}. Click to cycle specialty.`}
               className="group relative sm:justify-self-start text-center sm:text-left focus-ring rounded-sm cursor-pointer pb-1 whitespace-nowrap"
             >
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={specialties[specialtyIndex]}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.25 }}
-                  className="inline-block font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500 dark:from-indigo-400 dark:to-cyan-400"
-                >
-                  {specialties[specialtyIndex]}
-                </motion.span>
-              </AnimatePresence>
+              <span className="inline-flex items-center font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500 dark:from-indigo-400 dark:to-cyan-400 leading-normal">
+                {"\u200B"}
+                {typedText}
+                <span
+                  aria-hidden="true"
+                  className="inline-block w-[2px] h-[1em] ml-0.5 bg-cyan-500 dark:bg-cyan-400 animate-pulse shrink-0"
+                />
+              </span>
               <span
                 aria-hidden="true"
                 className="block h-[1.5px] w-full opacity-35 group-hover:opacity-100 bg-gradient-to-r from-indigo-500 to-cyan-500 transition-opacity duration-300"
@@ -211,16 +240,16 @@ export default function Hero() {
           {/* CTA Buttons */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-row items-center justify-center gap-3 mt-8 sm:mt-10"
+            className="flex flex-row items-center justify-center gap-2.5 sm:gap-3 mt-6 sm:mt-8"
           >
             {/* Primary: Dark inverted button with magnetic pull & micro-glow */}
             <MagneticLink
               href="#projects"
-              className="group relative inline-flex items-center gap-2 px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 font-semibold text-xs sm:text-sm tracking-wide transition-transform duration-200 ease-out active:scale-95 focus-ring"
+              className="group relative inline-flex items-center gap-1.5 px-4 py-2 sm:px-6 sm:py-2.5 rounded-full bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 font-semibold text-xs sm:text-[13px] tracking-wide transition-transform duration-200 ease-out active:scale-95 focus-ring"
             >
               <span className="relative z-10">View Projects</span>
               <ArrowRight
-                size={15}
+                size={14}
                 className="relative z-10 transition-transform duration-300 group-hover:translate-x-1"
               />
               <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_24px_rgba(99,102,241,0.35)] dark:shadow-[0_0_24px_rgba(99,102,241,0.25)]" />
@@ -229,7 +258,7 @@ export default function Hero() {
             {/* Secondary: Ghost/outline button with magnetic pull */}
             <MagneticLink
               href="#contact"
-              className="inline-flex items-center px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 font-semibold text-xs sm:text-sm tracking-wide transition-transform duration-200 ease-out active:scale-95 focus-ring"
+              className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 font-semibold text-xs sm:text-[13px] tracking-wide transition-transform duration-200 ease-out active:scale-95 focus-ring"
             >
               Get in Touch
             </MagneticLink>

@@ -76,7 +76,7 @@ export default function FeaturedProjects() {
       id="projects"
       tabIndex={-1}
       onKeyDown={handleKeyDown}
-      className="relative min-h-screen py-16 sm:py-24 flex items-center justify-center bg-bg-primary overflow-hidden focus:outline-none"
+      className="relative min-h-screen py-14 sm:py-16 flex items-center justify-center bg-bg-primary overflow-hidden focus:outline-none"
     >
       {/* Background spotlights */}
       <div className="absolute inset-0 pointer-events-none">
@@ -93,15 +93,15 @@ export default function FeaturedProjects() {
 
       {/* Scroll-linked Section Reveal wrapper */}
       <motion.div
-        initial={{ opacity: 0, y: 60 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-120px" }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 relative z-10 w-full flex flex-col justify-between min-h-[80vh]"
+        viewport={{ once: true, margin: "-30px" }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10 w-full min-w-0 flex flex-col justify-center"
       >
         
         {/* Header Block + Category Filters */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-4 sm:mb-5">
           <div className="text-center sm:text-left">
             <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
               Featured Projects
@@ -138,16 +138,16 @@ export default function FeaturedProjects() {
         </div>
 
         {/* ============================================================
-           UPPER SECTION: Active Project Detailed Showcase
+           UPPER SECTION: Active Project Detailed Showcase (Compact for single-view)
            ============================================================ */}
-        <div className="flex-1 flex items-center justify-center py-4">
-          <div className="w-full glass-panel rounded-[32px] p-6 sm:p-8 lg:p-10 border border-surface-border glowing-border-parent relative">
+        <div className="flex items-center justify-center w-full min-w-0">
+          <div className="w-full min-w-0 overflow-hidden glass-panel rounded-[28px] p-4 sm:p-6 lg:p-7 border border-surface-border glowing-border-parent relative">
             <div className="glowing-border-glow" />
             
-            <div className="grid lg:grid-cols-12 gap-8 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center w-full min-w-0">
               
               {/* Details grid column */}
-              <div className="lg:col-span-5 flex flex-col justify-center">
+              <div className="lg:col-span-5 flex flex-col justify-center min-w-0">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeProject.id}
@@ -167,11 +167,11 @@ export default function FeaturedProjects() {
                     </p>
 
                     {/* Highlights Bullet List */}
-                    <div className="grid grid-cols-2 gap-2.5 mt-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-5">
                       {activeProject.highlights.map((item) => (
                         <div
                           key={item}
-                          className="flex items-center gap-2 p-2.5 rounded-xl bg-surface/30 border border-surface-border/50 text-text-secondary text-xs font-semibold"
+                          className="flex items-center gap-2 p-2.5 rounded-xl bg-surface/30 border border-surface-border/50 text-text-secondary text-xs font-semibold min-w-0"
                         >
                           <CheckCircle2 className="text-cyan-600 dark:text-cyan-400 shrink-0" size={12} />
                           <span className="truncate">{item}</span>
@@ -212,7 +212,7 @@ export default function FeaturedProjects() {
               </div>
 
               {/* Large Showcase Mockup Column (Dynamic 3D Holographic Projector) */}
-              <div className="lg:col-span-7 relative flex items-center justify-center h-full min-h-[340px] sm:min-h-[450px] md:min-h-[500px] lg:min-h-[580px] xl:min-h-[650px] w-full">
+              <div className="lg:col-span-7 relative flex items-center justify-center h-full min-h-[260px] sm:min-h-[320px] md:min-h-[360px] lg:min-h-[390px] w-full min-w-0 overflow-hidden">
                 <ProjectShowcase3D imageUrl={activeProject.image.src} title={activeProject.title} />
               </div>
             </div>
@@ -222,7 +222,7 @@ export default function FeaturedProjects() {
         {/* ============================================================
            LOWER SECTION: Horizontal Ribbon Project Switcher
            ============================================================ */}
-        <div className="mt-8 flex flex-col gap-4">
+        <div className="mt-4 sm:mt-5 flex flex-col gap-3 w-full min-w-0">
           <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-text-tertiary px-2">
             <span>NAVIGATE SHOWCASE</span>
             <div className="flex gap-2.5">
@@ -248,7 +248,7 @@ export default function FeaturedProjects() {
           {/* Horizontal scrollbar carousel track */}
           <div
             ref={containerRef}
-            className="relative flex gap-4 overflow-x-auto pt-3 pb-4 px-2 -mx-2 scrollbar-none snap-x snap-mandatory"
+            className="relative flex gap-4 overflow-x-auto pt-3 pb-4 px-1 scrollbar-none snap-x snap-mandatory w-full max-w-full min-w-0"
           >
             {visibleProjects.map((project, idx) => {
               const isActive = idx === safeIndex;
@@ -257,34 +257,53 @@ export default function FeaturedProjects() {
                   key={project.id}
                   onClick={() => setActiveIndex(idx)}
                   suppressHydrationWarning
-                  className={`flex-shrink-0 snap-start w-[180px] sm:w-[240px] md:w-[280px] flex items-center gap-2.5 sm:gap-4 p-2 sm:p-3 rounded-xl sm:rounded-2xl border text-left transition-all duration-300 relative ${
+                  className={`group flex-shrink-0 snap-start w-[240px] sm:w-[270px] md:w-[295px] flex flex-col gap-2.5 p-2.5 sm:p-3 rounded-2xl border text-left transition-all duration-300 relative cursor-pointer overflow-hidden ${
                     isActive 
-                      ? "border-cyan-500/50 bg-cyan-500/5 text-cyan-600 dark:text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] scale-[1.02]" 
-                      : "border-surface-border bg-surface/10 hover:bg-surface/35 text-text-muted hover:text-slate-900 dark:hover:text-white"
+                      ? "border-cyan-500/50 bg-cyan-500/5 text-cyan-600 dark:text-cyan-400 shadow-[0_0_18px_rgba(6,182,212,0.16)]" 
+                      : "border-surface-border bg-surface/15 hover:bg-surface/40 text-text-muted hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
-                  {/* Miniature Thumbnail */}
-                  <div className="w-12 h-9 sm:w-16 sm:h-11 rounded-lg overflow-hidden relative bg-black/45 border border-surface-border shrink-0">
+                  {/* Top Full-Width Preview Image */}
+                  <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-black/50 border border-surface-border/60 shrink-0">
                     <Image
                       src={project.image}
-                      alt=""
+                      alt={project.title}
                       fill
-                      className={`object-cover transition-opacity duration-300 ${
-                        isActive ? "opacity-100" : "opacity-60"
+                      className={`object-cover transition-all duration-500 group-hover:scale-105 ${
+                        isActive ? "opacity-100" : "opacity-75 group-hover:opacity-95"
                       }`}
-                      sizes="64px"
+                      sizes="300px"
                     />
-                  </div>
-
-                  <div className="min-w-0">
-                    <span className={`block text-[8px] sm:text-[10px] uppercase font-bold tracking-widest leading-none mb-0.5 sm:mb-1 ${
-                      isActive ? "text-cyan-600 dark:text-cyan-300" : "text-text-tertiary"
-                    }`}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <span
+                      className={`absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] uppercase font-bold tracking-widest backdrop-blur-md border ${
+                        isActive
+                          ? "bg-cyan-500/20 border-cyan-400/40 text-cyan-200"
+                          : "bg-black/55 border-white/10 text-zinc-300"
+                      }`}
+                    >
                       {project.id} {"//"} {project.category.split(" ")[0]}
                     </span>
-                    <span className="block text-xs sm:text-sm font-black uppercase tracking-wide truncate">
+                  </div>
+
+                  {/* Card Footer Content */}
+                  <div className="min-w-0 w-full px-0.5">
+                    <span className="block text-xs sm:text-sm font-black uppercase tracking-wide truncate text-slate-900 dark:text-white">
                       {project.title}
                     </span>
+                    <span className="block text-[11px] text-text-muted truncate mt-0.5">
+                      {project.description}
+                    </span>
+                    <div className="flex items-center gap-1.5 mt-2">
+                      {project.technologies.slice(0, 2).map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-[9px] px-2 py-0.5 rounded-md bg-surface/60 border border-surface-border/60 text-text-secondary font-semibold truncate"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </button>
               );

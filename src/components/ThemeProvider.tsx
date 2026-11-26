@@ -54,7 +54,7 @@ function ThemeLoader({ children }: { children: React.ReactNode }) {
   return (
     <>
       {loading && <Preloader onComplete={handleComplete} />}
-      <ReactLenis root options={{ lerp: 0.15, duration: 1.0, smoothWheel: !reducedMotion, syncTouch: false }}>
+      <ReactLenis root options={{ lerp: 0.22, duration: 0.75, smoothWheel: !reducedMotion, syncTouch: false }}>
         <div className={loading ? "opacity-0" : "opacity-100 transition-opacity duration-500 font-sans"}>
           {children}
         </div>

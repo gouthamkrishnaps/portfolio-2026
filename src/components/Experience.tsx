@@ -98,14 +98,14 @@ export default function Experience() {
         </h2>
       </div>
 
-      <div className="max-w-5xl mx-auto px-5 sm:px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 relative z-10">
         
         {/* Title */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-30px" }}
+          transition={{ duration: 0.4 }}
         >
           <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
             My Journey
@@ -135,17 +135,17 @@ export default function Experience() {
               return (
                 <motion.div
                   key={item.company}
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 28 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7, delay: index * 0.15 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{ duration: 0.42, delay: index * 0.08 }}
                   className={`relative flex flex-col md:flex-row ${
                     index % 2 === 0 ? "md:justify-start" : "md:justify-end"
                   }`}
                 >
                   
                   <CardSpotlight
-                    className={`w-[calc(100%-2.5rem)] ml-8 sm:w-[calc(100%-3.5rem)] sm:ml-12 md:w-[46%] md:ml-0 rounded-[24px] border p-6 sm:p-8 backdrop-blur-md bg-gradient-to-br ${item.color} glowing-border-parent relative transition-all duration-300 hover:shadow-xl`}
+                    className={`w-[calc(100%-2.5rem)] ml-8 sm:w-[calc(100%-3.5rem)] sm:ml-12 md:w-[47.5%] md:ml-0 rounded-[24px] border p-6 sm:p-8 backdrop-blur-md bg-gradient-to-br ${item.color} glowing-border-parent relative transition-all duration-300 hover:shadow-xl`}
                     radius={200}
                   >
                     <div className="glowing-border-glow" />
@@ -182,15 +182,15 @@ export default function Experience() {
                       </p>
 
                       {/* Skill Badges for this Role */}
-                      <div className="flex flex-wrap gap-2 mt-6 border-t border-surface-border/40 pt-4">
+                      <div className="flex flex-wrap gap-1.5 mt-5 border-t border-surface-border/40 pt-3.5">
                         {item.skills.map((skill) => {
                           const SkillIcon = expSkillIcons[skill];
                           return (
                             <span
                               key={skill}
-                              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface/50 border border-surface-border text-text-muted text-xs font-semibold hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-200 group"
+                              className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface/50 border border-surface-border text-text-muted text-[11px] font-medium hover:border-cyan-500/40 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-200 group"
                             >
-                              {SkillIcon && <SkillIcon className="w-3.5 h-3.5 shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />}
+                              {SkillIcon && <SkillIcon className="w-3 h-3 shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" />}
                               <span>{skill}</span>
                             </span>
                           );
@@ -210,7 +210,7 @@ export default function Experience() {
         </div>
 
         {/* Small Bottom Features summary (3 columns) */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-20 sm:mt-28">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 mt-14 sm:mt-24">
           {[
             { metric: "20+", desc: "Responsive Projects Shipped" },
             { metric: "Clean Code", desc: "Atomic Component Design" },
@@ -218,15 +218,15 @@ export default function Experience() {
           ].map((item, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1, duration: 0.5 }}
-              className="glass-panel rounded-2xl p-6 border border-surface-border text-center sm:text-left glowing-border-parent relative"
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ delay: idx * 0.08, duration: 0.4 }}
+              className="glass-panel rounded-2xl p-4 sm:p-6 border border-surface-border text-center sm:text-left glowing-border-parent relative"
             >
               <div className="glowing-border-glow" />
-              <h3 className="text-2xl font-black text-cyan-600 dark:text-cyan-400">{item.metric}</h3>
-              <p className="mt-1.5 text-text-muted text-sm sm:text-base">{item.desc}</p>
+              <h3 className="text-xl sm:text-2xl font-black text-cyan-600 dark:text-cyan-400">{item.metric}</h3>
+              <p className="mt-1 text-text-muted text-xs sm:text-sm">{item.desc}</p>
             </motion.div>
           ))}
         </div>

@@ -107,29 +107,25 @@ export default function HeroCanvas() {
         float ribbon2 = smoothstep(0.02, 0.62, fbm(p * 2.1 - q * 1.1 + vec2(-t * 0.35, t * 0.5)));
         float crest = pow(ribbon1 * ribbon2, 1.35);
 
-        // Rich Electric Indigo + Luminous Cyan + Violet + Teal Cursor Accent
-        vec3 deepIndigo = vec3(0.310, 0.275, 0.898); // #4f46e5
-        vec3 brightCyan = vec3(0.133, 0.827, 0.933); // #22d3ee
-        vec3 violet     = vec3(0.659, 0.333, 0.969); // #a855f7
-        vec3 mintTeal   = vec3(0.176, 0.831, 0.749); // #2dd4bf
+        // Balanced moody Indigo + Cyan-Slate palette
+        vec3 deepIndigo = vec3(0.240, 0.265, 0.720);
+        vec3 mutedCyan  = vec3(0.080, 0.450, 0.620);
 
-        vec3 aurora = mix(deepIndigo, violet, ribbon2 * 0.65);
-        aurora = mix(aurora, brightCyan, ribbon1 * 0.72);
-        aurora += mintTeal * crest * 0.35;
+        vec3 aurora = mix(deepIndigo, mutedCyan, ribbon1 * 0.6 + ribbon2 * 0.25);
 
-        // Soft edge vignette so the aurora fades naturally into the page background
-        float vignette = 1.0 - smoothstep(0.28, 0.98, length((uv - 0.5) * vec2(1.12, 1.22)));
+        // Soft edge vignette so the aurora fades naturally into the dark background
+        float vignette = 1.0 - smoothstep(0.24, 0.95, length((uv - 0.5) * vec2(1.14, 1.24)));
 
-        // Luminous cursor glow highlight
-        vec3 cursorGlow = mix(brightCyan, mintTeal, 0.45) * influence * 0.55;
+        // Subtle, refined cursor glow highlight
+        vec3 cursorGlow = mix(deepIndigo, mutedCyan, 0.5) * influence * 0.38;
 
-        float darkAlpha = (0.10 + ribbon1 * 0.24 + ribbon2 * 0.16 + crest * 0.18) * vignette;
-        float lightAlpha = (0.07 + ribbon1 * 0.16 + ribbon2 * 0.11 + crest * 0.12) * vignette;
-        float alpha = mix(lightAlpha, darkAlpha, uIsDark) + influence * 0.22;
+        float darkAlpha = (0.035 + ribbon1 * 0.13 + ribbon2 * 0.08 + crest * 0.07) * vignette;
+        float lightAlpha = (0.035 + ribbon1 * 0.10 + ribbon2 * 0.06) * vignette;
+        float alpha = mix(lightAlpha, darkAlpha, uIsDark) + influence * 0.16;
 
         vec3 finalColor = aurora + cursorGlow;
 
-        gl_FragColor = vec4(finalColor, clamp(alpha, 0.0, 0.72));
+        gl_FragColor = vec4(finalColor, clamp(alpha, 0.0, 0.42));
       }
     `;
 

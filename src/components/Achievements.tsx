@@ -47,7 +47,7 @@ export default function Achievements() {
         </motion.div>
 
         {/* Counter Cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-12 sm:mt-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mt-12 sm:mt-20">
           {[
             { value: "20+", label: "Projects Delivered" },
             { value: "5+", label: "Production Applications" },

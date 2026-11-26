@@ -1,34 +1,35 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
+  const pointerRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
-  // Use refs to track positions to avoid triggering React re-renders at 120fps
-  const mousePos = useRef({ x: 0, y: 0 });
-  const ringPos = useRef({ x: 0, y: 0 });
+  const mousePos = useRef({ x: -100, y: -100 });
+  const ringPos = useRef({ x: -100, y: -100 });
   const isHovered = useRef(false);
   const isMouseDown = useRef(false);
   const isHidden = useRef(true);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current.x = e.clientX;
       mousePos.current.y = e.clientY;
+
       if (isHidden.current) {
         isHidden.current = false;
-        if (dotRef.current) dotRef.current.style.opacity = "1";
+        ringPos.current.x = e.clientX;
+        ringPos.current.y = e.clientY;
+        if (pointerRef.current) pointerRef.current.style.opacity = "1";
         if (ringRef.current) ringRef.current.style.opacity = "1";
       }
     };
 
     const handleMouseDown = () => {
       isMouseDown.current = true;
-      if (ringRef.current) {
-        ringRef.current.style.transform = `${ringRef.current.style.transform} scale(0.75)`;
-      }
     };
 
     const handleMouseUp = () => {
@@ -37,78 +38,76 @@ export default function CustomCursor() {
 
     const handleMouseLeave = () => {
       isHidden.current = true;
-      if (dotRef.current) dotRef.current.style.opacity = "0";
+      if (pointerRef.current) pointerRef.current.style.opacity = "0";
       if (ringRef.current) ringRef.current.style.opacity = "0";
     };
 
     const handleMouseEnter = () => {
       isHidden.current = false;
-      if (dotRef.current) dotRef.current.style.opacity = "1";
+      if (pointerRef.current) pointerRef.current.style.opacity = "1";
       if (ringRef.current) ringRef.current.style.opacity = "1";
     };
 
-    // Listeners for cursor interaction
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      const isInteractive = Boolean(
+        target.tagName === "A" ||
+          target.tagName === "BUTTON" ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.closest("a") ||
+          target.closest("button") ||
+          target.closest('[role="button"]') ||
+          target.classList.contains("cursor-pointer")
+      );
+
+      isHovered.current = isInteractive;
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
-
-    // Track hovered elements
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target) return;
-
-      const isInteractive =
-        target.tagName === "A" ||
-        target.tagName === "BUTTON" ||
-        target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.closest('[role="button"]') ||
-        target.classList.contains("cursor-pointer");
-
-      if (isInteractive) {
-        isHovered.current = true;
-      } else {
-        isHovered.current = false;
-      }
-    };
-
     window.addEventListener("mouseover", handleMouseOver);
 
-    // Lerp loop
     let animationFrameId: number;
-      const render = () => {
-        const lerpFactor = 0.15; // Speed of the outer ring follow
-        
-        // Update ring position
-        ringPos.current.x += (mousePos.current.x - ringPos.current.x) * lerpFactor;
-        ringPos.current.y += (mousePos.current.y - ringPos.current.y) * lerpFactor;
 
-        const isDark = document.documentElement.classList.contains("dark");
+    const render = () => {
+      const lerpFactor = prefersReducedMotion ? 1.0 : 0.22;
 
-        // Apply transforms directly to DOM elements
-        if (dotRef.current) {
-          dotRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) translate3d(-50%, -50%, 0)`;
-        }
+      ringPos.current.x += (mousePos.current.x - ringPos.current.x) * lerpFactor;
+      ringPos.current.y += (mousePos.current.y - ringPos.current.y) * lerpFactor;
 
-        if (ringRef.current) {
-          const scale = isMouseDown.current ? 0.75 : isHovered.current ? 2.0 : 1.0;
-          const color = isHovered.current
-            ? (isDark ? "rgba(6, 182, 212, 0.5)" : "rgba(8, 145, 178, 0.6)")
-            : (isDark ? "rgba(147, 51, 234, 0.4)" : "rgba(124, 58, 237, 0.5)");
+      const isDark = document.documentElement.classList.contains("dark");
+      const pointerScale = isMouseDown.current ? 0.88 : isHovered.current ? 1.08 : 1.0;
 
-          ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate3d(-50%, -50%, 0) scale(${scale})`;
-          ringRef.current.style.borderColor = color;
-          
-          if (isHovered.current) {
-            ringRef.current.style.backgroundColor = isDark ? "rgba(6, 182, 212, 0.15)" : "rgba(8, 145, 178, 0.08)";
-          } else {
-            ringRef.current.style.backgroundColor = "transparent";
-          }
-        }
+      if (pointerRef.current) {
+        // Tip of the SVG arrow is at (2, 2), offset so the exact tip sits on the cursor coordinate
+        pointerRef.current.style.transform = `translate3d(${mousePos.current.x - 2}px, ${mousePos.current.y - 2}px, 0) scale(${pointerScale})`;
+      }
+
+      if (ringRef.current) {
+        const ringScale = isMouseDown.current ? 0.75 : isHovered.current ? 1.35 : 1.0;
+        const borderColor = isHovered.current
+          ? isDark
+            ? "rgba(34, 211, 238, 0.75)"
+            : "rgba(79, 70, 229, 0.75)"
+          : isDark
+            ? "rgba(129, 140, 248, 0.35)"
+            : "rgba(99, 102, 241, 0.35)";
+
+        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate3d(-50%, -50%, 0) scale(${ringScale})`;
+        ringRef.current.style.borderColor = borderColor;
+        ringRef.current.style.backgroundColor = isHovered.current
+          ? isDark
+            ? "rgba(34, 211, 238, 0.08)"
+            : "rgba(79, 70, 229, 0.06)"
+          : "transparent";
+      }
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -127,22 +126,36 @@ export default function CustomCursor() {
   }, []);
 
   return (
-    <>
-      {/* Inner Dot */}
+    <div className="hidden md:block">
+      {/* Crisp Precision SVG Pointer */}
       <div
-        ref={dotRef}
-        className="fixed top-0 left-0 w-2 h-2 bg-cyan-600 dark:bg-cyan-400 rounded-full pointer-events-none z-[9999] transition-opacity duration-300 opacity-0 dark:mix-blend-screen"
-        style={{ willChange: "transform" }}
-      />
-      {/* Outer Ring */}
+        ref={pointerRef}
+        className="fixed top-0 left-0 pointer-events-none z-[9999] transition-opacity duration-200 opacity-0"
+        style={{ willChange: "transform", transformOrigin: "2px 2px" }}
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.28)]"
+        >
+          <path
+            d="M3 2L10.2 20.5L13.1 13.4L20.2 10.5L3 2Z"
+            className="fill-zinc-900 stroke-white dark:fill-white dark:stroke-indigo-400"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+
+      {/* Subtle Precision Halo */}
       <div
         ref={ringRef}
-        className="fixed top-0 left-0 w-8 h-8 border border-purple-600 dark:border-purple-500 rounded-full pointer-events-none z-[9998] transition-[opacity,width,height,background-color] duration-300 opacity-0 dark:mix-blend-screen"
-        style={{
-          willChange: "transform",
-          transformOrigin: "center",
-        }}
+        className="fixed top-0 left-0 w-5 h-5 border rounded-full pointer-events-none z-[9998] transition-[opacity,border-color,background-color] duration-200 opacity-0"
+        style={{ willChange: "transform", transformOrigin: "center" }}
       />
-    </>
+    </div>
   );
 }

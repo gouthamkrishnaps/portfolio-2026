@@ -35,7 +35,7 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
 
     // Camera
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.set(0, 0.15, 7.8); // Moved closer (7.8 down from 9) for larger image projection
+    camera.position.set(0, -0.35, 9.7); // Framed with extra bottom margin for the emitter ring
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -489,7 +489,7 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[340px] sm:h-[450px] md:h-[500px] lg:h-[580px] xl:h-[650px] flex items-center justify-center select-none cursor-grab active:cursor-grabbing overflow-hidden"
+      className="relative w-full h-[260px] sm:h-[320px] md:h-[360px] lg:h-[390px] flex items-center justify-center select-none cursor-grab active:cursor-grabbing overflow-hidden"
     >
       {/* Background ambient neon flare */}
       <div className="absolute w-[280px] h-[280px] rounded-full bg-cyan-500/5 blur-[80px] pointer-events-none z-0" />

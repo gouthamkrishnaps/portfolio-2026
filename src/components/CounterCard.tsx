@@ -60,17 +60,17 @@ export default function CounterCard({
         boxShadow: "0 10px 30px -10px rgba(6, 182, 212, 0.15)",
       }}
       transition={{ duration: 0.3 }}
-      className="glass-panel rounded-[30px] p-6 sm:p-8 flex flex-col justify-between glowing-border-parent relative h-full"
+      className="glass-panel rounded-2xl sm:rounded-[30px] p-4 sm:p-8 flex flex-col justify-between glowing-border-parent relative h-full"
     >
       {/* Glowing boundary element */}
       <div className="glowing-border-glow" />
 
-      <h3 className="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-indigo-600 dark:from-cyan-400 dark:to-indigo-400 text-glow">
+      <h3 className="text-3xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-indigo-600 dark:from-cyan-400 dark:to-indigo-400 text-glow">
         {count}
         {suffix}
       </h3>
 
-      <p className="mt-4 text-text-secondary text-sm sm:text-base font-semibold uppercase tracking-wider">
+      <p className="mt-2.5 sm:mt-4 text-text-secondary text-[8.5px] xs:text-[9.5px] sm:text-sm md:text-base font-semibold uppercase tracking-normal sm:tracking-wider whitespace-nowrap">
         {label}
       </p>
     </motion.div>

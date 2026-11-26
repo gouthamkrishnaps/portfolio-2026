@@ -1,23 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Moon, Sun, Menu, X, Download, GitBranch } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  Menu,
+  X,
+  Download,
+  Search,
+  Home,
+  User,
+  Briefcase,
+  FolderKanban,
+  Cpu,
+  Mail,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import CommandPalette from "./CommandPalette";
 
 const navLinks = [
-  { label: "Home", href: "#home", id: "home" },
-  { label: "About", href: "#about", id: "about" },
-  { label: "Experience", href: "#experience", id: "experience" },
-  { label: "Projects", href: "#projects", id: "projects" },
-  { label: "Skills", href: "#skills", id: "skills" },
-  { label: "Contact", href: "#contact", id: "contact" },
+  { label: "Home", href: "#home", id: "home", icon: Home },
+  { label: "About", href: "#about", id: "about", icon: User },
+  { label: "Experience", href: "#experience", id: "experience", icon: Briefcase },
+  { label: "Projects", href: "#projects", id: "projects", icon: FolderKanban },
+  { label: "Skills", href: "#skills", id: "skills", icon: Cpu },
+  { label: "Contact", href: "#contact", id: "contact", icon: Mail },
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
@@ -57,26 +68,23 @@ export default function Navbar() {
     setTheme(isDark ? "light" : "dark");
   }
 
-  if (pathname === "/sandbox") return null;
-
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full pointer-events-none">
       <motion.div
-        layout
-        initial={{ y: -100, opacity: 0 }}
+        initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 150, 
-          damping: 25, 
-          mass: 0.8,
-          layout: { type: "spring", stiffness: 150, damping: 25 }
+        transition={{
+          type: "spring",
+          stiffness: 220,
+          damping: 26,
+          mass: 0.7,
         }}
         style={{ pointerEvents: "auto" }}
-        className={`flex items-center justify-between transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`flex items-center justify-between gap-3 md:gap-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isScrolled
-            ? "w-[92vw] md:w-[85vw] max-w-4xl px-5 py-2.5 rounded-full border border-zinc-200/30 dark:border-zinc-800/30 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl shadow-lg shadow-indigo-500/5 translate-y-3 sm:translate-y-4"
-            : "w-[95vw] md:w-[80vw] max-w-6xl px-6 py-4 md:px-9 md:py-4.5 rounded-full border border-zinc-200/10 dark:border-zinc-800/10 bg-white/20 dark:bg-zinc-950/20 backdrop-blur-md shadow-lg shadow-indigo-500/5 translate-y-4 sm:translate-y-6 md:translate-y-8"
+            ? "w-[90vw] md:w-auto max-w-2xl px-4 py-2 rounded-full border border-zinc-200/40 dark:border-zinc-800/40 bg-white/75 dark:bg-zinc-900/75 backdrop-blur-xl shadow-lg shadow-indigo-500/5 translate-y-3 sm:translate-y-4"
+            : "w-[92vw] md:w-auto max-w-3xl px-4 py-2.5 md:px-5 rounded-full border border-zinc-200/15 dark:border-zinc-800/20 bg-white/25 dark:bg-zinc-950/30 backdrop-blur-md shadow-lg shadow-indigo-500/5 translate-y-4 sm:translate-y-6"
         }`}
       >
         {/* Logo */}
@@ -88,16 +96,20 @@ export default function Navbar() {
           GK
         </a>
 
-        {/* Desktop Nav Items */}
-        <nav className="hidden md:flex items-center gap-1 relative" aria-label="Main navigation">
+        {/* Desktop Nav Items (Hybrid Dock: active expands to Icon + Label, inactive shows Icon + hover tooltip) */}
+        <nav className="hidden md:flex items-center gap-1.5 relative" aria-label="Main navigation">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
+            const Icon = link.icon;
             return (
               <a
                 key={link.href}
                 href={link.href}
-                className={`relative px-3.5 py-1.5 text-sm font-medium tracking-wide rounded-full transition-colors duration-300 focus-ring ${
-                  isActive ? "text-indigo-600 dark:text-indigo-400" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                aria-label={link.label}
+                className={`group relative flex items-center gap-1.5 rounded-full text-sm font-medium tracking-wide transition-all duration-300 focus-ring ${
+                  isActive
+                    ? "px-3.5 py-1.5 text-indigo-600 dark:text-indigo-400"
+                    : "p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/50"
                 }`}
               >
                 {isActive && (
@@ -107,14 +119,44 @@ export default function Navbar() {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                {link.label}
+                <Icon size={16} className="shrink-0" />
+                <AnimatePresence initial={false}>
+                  {isActive && (
+                    <motion.span
+                      key={link.id}
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: "auto" }}
+                      exit={{ opacity: 0, width: 0 }}
+                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden whitespace-nowrap"
+                    >
+                      {link.label}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+                {!isActive && (
+                  <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-0.5 text-[11px] font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-md">
+                    {link.label}
+                  </span>
+                )}
               </a>
             );
           })}
         </nav>
 
         {/* Right Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          {/* Command Palette trigger */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("open-command-palette"))}
+            className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 text-xs font-medium transition-all duration-300 focus-ring cursor-pointer"
+            aria-label="Open command palette"
+          >
+            <Search size={13} />
+            <kbd className="text-[10px] font-semibold opacity-75">⌘K</kbd>
+          </button>
+
           {/* Theme toggle */}
           {mounted && (
             <button
@@ -189,5 +231,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </header>
+    <CommandPalette />
+    </>
   );
 }

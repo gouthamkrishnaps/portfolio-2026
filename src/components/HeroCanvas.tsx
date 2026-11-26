@@ -10,304 +10,233 @@ export default function HeroCanvas() {
     const container = containerRef.current;
     if (!container) return;
 
-    // --- SCENE, CAMERA, RENDERER ---
     const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
     const w = container.clientWidth || window.innerWidth;
     const h = container.clientHeight || window.innerHeight;
 
-    const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
-    // Angled 3D perspective looking down at the liquid mesh landscape
-    camera.position.set(0, -7, 16);
-    camera.lookAt(0, 1, 0);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(w, h);
     container.appendChild(renderer.domElement);
 
-    // --- CONTINUOUS DEFORMABLE 3D WIREFRAME MESH GRID ---
-    // High-resolution grid plane (NOT particles)
-    const gridWidth = 42;
-    const gridHeight = 28;
-    const gridSegsX = 90;
-    const gridSegsY = 60;
-
-    const planeGeom = new THREE.PlaneGeometry(
-      gridWidth,
-      gridHeight,
-      gridSegsX,
-      gridSegsY
-    );
-
-    // UNIFORMS
     const uniforms = {
       uTime: { value: 0.0 },
-      uMouse: { value: new THREE.Vector2(99999.0, 99999.0) },
-      uMouseRadius: { value: 7.5 },
-      uMouseStrength: { value: 2.0 },
+      uResolution: { value: new THREE.Vector2(w, h) },
+      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+      uMouseActive: { value: 0.0 },
       uIsDark: { value: 1.0 },
     };
 
-    // VERTEX SHADER: Continuous Mesh Waves + Smooth Magnetic Dome Elevation
     const vertexShader = /* glsl */ `
-      uniform float uTime;
-      uniform vec2 uMouse;
-      uniform float uMouseRadius;
-      uniform float uMouseStrength;
-
       varying vec2 vUv;
-      varying vec3 vWorldPos;
-      varying float vDistToMouse;
-      varying float vMouseProximity;
-      varying float vElevation;
-
       void main() {
         vUv = uv;
-
-        vec3 pos = position;
-
-        // --- MULTI-OCTAVE CONTINUOUS LIQUID WAVES (toned down) ---
-        float wave1 = sin(pos.x * 0.22 + uTime * 0.55) * 0.5;
-        float wave2 = cos(pos.y * 0.28 + uTime * 0.4) * 0.4;
-        float wave3 = sin((pos.x * 0.16 + pos.y * 0.18) + uTime * 0.3) * 0.25;
-        float elevation = wave1 + wave2 + wave3;
-
-        pos.z += elevation;
-
-        // --- SMOOTH MAGNETIC CURSOR HOVER ELEVATION ---
-        vec2 diff = pos.xy - uMouse;
-        float dist = length(diff);
-        vDistToMouse = dist;
-
-        // Smooth Gaussian bell-curve falloff (zero grid pinching, zero distortion)
-        float force = exp(-dist * dist * 0.035);
-        vMouseProximity = force;
-
-        // Lifts the mesh up gently toward the cursor in a smooth 3D dome
-        pos.z += force * 1.2;
-        vElevation = pos.z;
-
-        vWorldPos = pos;
-
-        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-        gl_Position = projectionMatrix * mvPosition;
+        gl_Position = vec4(position, 1.0);
       }
     `;
 
-    // FRAGMENT SHADER: Clean Ambient Spotlight Illumination
     const fragmentShader = /* glsl */ `
-      varying vec2 vUv;
-      varying vec3 vWorldPos;
-      varying float vDistToMouse;
-      varying float vMouseProximity;
-      varying float vElevation;
-
       uniform float uTime;
+      uniform vec2 uResolution;
+      uniform vec2 uMouse;
+      uniform float uMouseActive;
       uniform float uIsDark;
 
+      varying vec2 vUv;
+
+      // Simplex-style 2D hash & smooth value noise
+      vec2 hash2(vec2 p) {
+        p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+        return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+      }
+
+      float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        vec2 u = f * f * (3.0 - 2.0 * f);
+
+        return mix(
+          mix(dot(hash2(i + vec2(0.0, 0.0)), f - vec2(0.0, 0.0)),
+              dot(hash2(i + vec2(1.0, 0.0)), f - vec2(1.0, 0.0)), u.x),
+          mix(dot(hash2(i + vec2(0.0, 1.0)), f - vec2(0.0, 1.0)),
+              dot(hash2(i + vec2(1.0, 1.0)), f - vec2(1.0, 1.0)), u.x),
+          u.y
+        );
+      }
+
+      float fbm(vec2 p) {
+        float val = 0.0;
+        float amp = 0.5;
+        mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+        for (int i = 0; i < 4; i++) {
+          val += amp * noise(p);
+          p = rot * p * 2.02;
+          amp *= 0.5;
+        }
+        return val;
+      }
+
       void main() {
-        // --- WIREFRAME GRID PATTERN ---
-        vec2 gridUv = fract(vUv * vec2(90.0, 60.0));
-        vec2 lineSmooth = smoothstep(vec2(0.08), vec2(0.0), gridUv) +
-                          smoothstep(vec2(0.92), vec2(1.0), gridUv);
-        float gridLine = max(lineSmooth.x, lineSmooth.y);
+        vec2 uv = vUv;
+        float aspect = uResolution.x / max(uResolution.y, 1.0);
+        vec2 p = (uv - 0.5) * vec2(aspect, 1.0);
+        vec2 m = (uMouse - 0.5) * vec2(aspect, 1.0);
 
-        // --- ELEGANT COLOR PALETTE ---
-        // Dark mode: Soft Slate Cyan & Muted Indigo
-        vec3 cyanD   = vec3(0.08, 0.52, 0.65);   // Soft Slate Cyan
-        vec3 indigoD = vec3(0.22, 0.26, 0.58);   // Soft Slate Indigo
-        vec3 purpleD = vec3(0.42, 0.22, 0.65);   // Soft Slate Purple
-        vec3 pinkD   = vec3(0.55, 0.25, 0.50);
+        // Cursor fluid warp & gentle ripple
+        float dist = length(p - m);
+        float influence = exp(-dist * 2.6) * uMouseActive;
+        vec2 dir = normalize(p - m + 0.0001);
+        p += dir * sin(dist * 9.0 - uTime * 2.4) * 0.035 * influence;
 
-        // Light mode: Bright soft sky cyan -> indigo -> soft violet pastel line colors
-        vec3 cyanL   = vec3(0.20, 0.68, 0.90);   // Bright Soft Sky Cyan
-        vec3 indigoL  = vec3(0.40, 0.45, 0.92);   // Bright Soft Indigo
-        vec3 purpleL  = vec3(0.65, 0.42, 0.92);   // Bright Soft Violet
-        vec3 pinkL    = vec3(0.90, 0.45, 0.72);   // Bright Soft Rose
+        float t = uTime * 0.16;
 
-        vec3 cyan   = uIsDark > 0.5 ? cyanD   : cyanL;
-        vec3 indigo = uIsDark > 0.5 ? indigoD  : indigoL;
-        vec3 purple = uIsDark > 0.5 ? purpleD  : purpleL;
+        // Domain-warped fluid ribbons
+        vec2 q = vec2(
+          fbm(p * 1.4 + vec2(t, t * 0.6)),
+          fbm(p * 1.4 + vec2(-t * 0.7, t * 0.9) + vec2(5.2, 1.3))
+        );
 
-        // Vertical landscape gradient
-        float normY = (vWorldPos.y + 14.0) / 28.0;
-        normY = clamp(normY, 0.0, 1.0);
+        float flow = fbm(p * 1.6 + q * 1.35 + vec2(t * 0.5, -t * 0.4));
+        float ribbon1 = smoothstep(-0.12, 0.48, flow);
+        float ribbon2 = smoothstep(0.02, 0.62, fbm(p * 2.1 - q * 1.1 + vec2(-t * 0.35, t * 0.5)));
+        float crest = pow(ribbon1 * ribbon2, 1.35);
 
-        vec3 baseColor = mix(cyan, purple, normY);
+        // Balanced moody Indigo + Cyan-Slate palette
+        vec3 deepIndigo = vec3(0.240, 0.265, 0.720);
+        vec3 mutedCyan  = vec3(0.080, 0.450, 0.620);
 
-        // --- AMBIENT SPOTLIGHT GLOW ON HOVER ---
-        vec3 spotLightColor = uIsDark > 0.5 ? vec3(0.30, 0.32, 0.72) : vec3(0.35, 0.38, 0.82);
-        vec3 lineColor = mix(baseColor, spotLightColor, vMouseProximity * (uIsDark > 0.5 ? 0.5 : 0.3));
+        vec3 aurora = mix(deepIndigo, mutedCyan, ribbon1 * 0.6 + ribbon2 * 0.25);
 
-        // Soft grid line intensity (Zero dark surface fill between lines)
-        vec3 finalColor = lineColor;
+        // Soft edge vignette so the aurora fades naturally into the dark background
+        float vignette = 1.0 - smoothstep(0.24, 0.95, length((uv - 0.5) * vec2(1.14, 1.24)));
 
-        // Height luminance modulation
-        float heightHighlight = smoothstep(-1.0, 3.0, vElevation) * (uIsDark > 0.5 ? 0.12 : 0.05);
-        finalColor += heightHighlight * cyan;
+        // Subtle, refined cursor glow highlight
+        vec3 cursorGlow = mix(deepIndigo, mutedCyan, 0.5) * influence * 0.38;
 
-        // Boundary vignette fade
-        float boundX = smoothstep(21.0, 14.0, abs(vWorldPos.x));
-        float boundY = smoothstep(14.0, 9.5, abs(vWorldPos.y));
-        float boundary = boundX * boundY;
+        float darkAlpha = (0.035 + ribbon1 * 0.13 + ribbon2 * 0.08 + crest * 0.07) * vignette;
+        float lightAlpha = (0.035 + ribbon1 * 0.10 + ribbon2 * 0.06) * vignette;
+        float alpha = mix(lightAlpha, darkAlpha, uIsDark) + influence * 0.16;
 
-        // Alpha calculation: Zero alpha when not on a grid line
-        float baseAlpha = uIsDark > 0.5 ? 0.14 : 0.08;
-        float alpha = boundary * gridLine * (baseAlpha + vMouseProximity * (uIsDark > 0.5 ? 0.12 : 0.08));
+        vec3 finalColor = aurora + cursorGlow;
 
-        gl_FragColor = vec4(finalColor, alpha);
+        gl_FragColor = vec4(finalColor, clamp(alpha, 0.0, 0.42));
       }
     `;
 
-    const shaderMaterial = new THREE.ShaderMaterial({
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const material = new THREE.ShaderMaterial({
       uniforms,
       vertexShader,
       fragmentShader,
       transparent: true,
       depthWrite: false,
-      wireframe: false,
-      blending: THREE.AdditiveBlending,
-      side: THREE.DoubleSide,
     });
 
-    const mesh = new THREE.Mesh(planeGeom, shaderMaterial);
+    const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // --- RAYCASTING & INTERACTION ---
-    const raycaster = new THREE.Raycaster();
-    const gridPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    // --- POINTER TRACKING ---
+    const targetMouse = new THREE.Vector2(0.5, 0.5);
+    const currentMouse = new THREE.Vector2(0.5, 0.5);
+    let targetActive = 0.0;
+    let currentActive = 0.0;
 
-    const targetWorldPos = new THREE.Vector3(99999.0, 99999.0, 0.0);
-    const currentMouse = new THREE.Vector2(99999.0, 99999.0);
-    const ndc = new THREE.Vector2(99999.0, 99999.0);
-
-    let isPointerInBounds = false;
-    let motionReduced = false;
-    if (typeof window !== "undefined") {
-      motionReduced = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-    }
-
-    // Camera parallax targets
-    let targetCamX = 0;
-    let targetCamY = -7;
-    const baseCamY = -7;
-
-    const handlePointerMove = (e: MouseEvent) => {
-      if (motionReduced) return;
+    const updatePointer = (clientX: number, clientY: number) => {
       const rect = container.getBoundingClientRect();
-
-      if (
-        e.clientX >= rect.left - 200 &&
-        e.clientX <= rect.right + 200 &&
-        e.clientY >= rect.top - 200 &&
-        e.clientY <= rect.bottom + 200
-      ) {
-        isPointerInBounds = true;
-        ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-
-        const nx = (e.clientX / window.innerWidth) * 2 - 1;
-        const ny = -(e.clientY / window.innerHeight) * 2 + 1;
-        targetCamX = nx * 1.2;
-        targetCamY = baseCamY + ny * 0.8;
-      } else {
-        isPointerInBounds = false;
-      }
+      if (rect.width === 0 || rect.height === 0) return;
+      targetMouse.x = (clientX - rect.left) / rect.width;
+      targetMouse.y = 1.0 - (clientY - rect.top) / rect.height;
+      targetActive = 1.0;
     };
 
+    const handleMouseMove = (e: MouseEvent) => updatePointer(e.clientX, e.clientY);
     const handleTouchMove = (e: TouchEvent) => {
-      if (motionReduced || e.touches.length === 0) return;
-      const touch = e.touches[0];
-      const rect = container.getBoundingClientRect();
-      if (
-        touch.clientX >= rect.left &&
-        touch.clientX <= rect.right &&
-        touch.clientY >= rect.top &&
-        touch.clientY <= rect.bottom
-      ) {
-        isPointerInBounds = true;
-        ndc.x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
-        ndc.y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
-      } else {
-        isPointerInBounds = false;
+      if (e.touches.length > 0) {
+        updatePointer(e.touches[0].clientX, e.touches[0].clientY);
       }
     };
-
     const handlePointerLeave = () => {
-      isPointerInBounds = false;
+      targetActive = 0.0;
     };
 
-    window.addEventListener("mousemove", handlePointerMove, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handlePointerLeave);
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
     window.addEventListener("touchend", handlePointerLeave);
 
-    // --- RESIZE ---
     const handleResize = () => {
       if (!container) return;
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
+      const nw = container.clientWidth || window.innerWidth;
+      const nh = container.clientHeight || window.innerHeight;
+      uniforms.uResolution.value.set(nw, nh);
+      renderer.setSize(nw, nh);
     };
     window.addEventListener("resize", handleResize);
 
-    // --- ANIMATION TICK LOOP ---
+    // --- ANIMATION TICK LOOP (Viewport-gated & Reduced-Motion aware) ---
     const startTime = performance.now() * 0.001;
-    let animId: number;
+    let animId: number | null = null;
+    let isVisible = true;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const tick = () => {
-      const elapsed = performance.now() * 0.001 - startTime;
+    const renderFrame = (elapsed: number) => {
       uniforms.uTime.value = elapsed;
+      uniforms.uIsDark.value = document.documentElement.classList.contains("dark") ? 1.0 : 0.0;
 
-      // Dynamic theme detection
-      const isDark = document.documentElement.classList.contains("dark");
-      uniforms.uIsDark.value = isDark ? 1.0 : 0.0;
-      shaderMaterial.blending = isDark
-        ? THREE.AdditiveBlending
-        : THREE.NormalBlending;
-
-      // Camera parallax smooth interpolation
-      camera.position.x += (targetCamX - camera.position.x) * 0.04;
-      camera.position.y += (targetCamY - camera.position.y) * 0.04;
-      camera.lookAt(0, 1, 0);
-
-      // Perform raycasting with updated camera position
-      if (isPointerInBounds && Math.abs(ndc.x) <= 2.0 && Math.abs(ndc.y) <= 2.0) {
-        raycaster.setFromCamera(ndc, camera);
-        raycaster.ray.intersectPlane(gridPlane, targetWorldPos);
-
-        // Fluid LERP mouse follower
-        currentMouse.x += (targetWorldPos.x - currentMouse.x) * 0.12;
-        currentMouse.y += (targetWorldPos.y - currentMouse.y) * 0.12;
-      } else {
-        // Smoothly fade offscreen when pointer leaves
-        currentMouse.x += (99999.0 - currentMouse.x) * 0.05;
-        currentMouse.y += (99999.0 - currentMouse.y) * 0.05;
-      }
+      currentMouse.lerp(targetMouse, 0.08);
+      currentActive += (targetActive - currentActive) * 0.06;
 
       uniforms.uMouse.value.copy(currentMouse);
+      uniforms.uMouseActive.value = currentActive;
 
       renderer.render(scene, camera);
+    };
+
+    const tick = () => {
+      if (!isVisible || prefersReducedMotion) {
+        animId = null;
+        return;
+      }
+      const elapsed = performance.now() * 0.001 - startTime;
+      renderFrame(elapsed);
       animId = requestAnimationFrame(tick);
     };
 
-    tick();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && animId === null && !prefersReducedMotion) {
+          tick();
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(container);
 
-    // --- CLEANUP ---
+    if (prefersReducedMotion) {
+      renderFrame(0);
+    } else {
+      tick();
+    }
+
     return () => {
-      cancelAnimationFrame(animId);
+      if (animId !== null) cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handlePointerMove);
+      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handlePointerLeave);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handlePointerLeave);
 
       renderer.dispose();
-      planeGeom.dispose();
-      shaderMaterial.dispose();
+      geometry.dispose();
+      material.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
@@ -317,7 +246,7 @@ export default function HeroCanvas() {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-auto bg-transparent"
+      className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-transparent"
     />
   );
 }

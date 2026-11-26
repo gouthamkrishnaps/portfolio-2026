@@ -2,43 +2,108 @@
 
 import { motion } from "framer-motion";
 import Skills3D from "./Skills3D";
-import { FaReact, FaNodeJs, FaHtml5, FaSass, FaGithub } from "react-icons/fa";
-import { SiNextdotjs, SiTypescript, SiTailwindcss, SiExpress, SiGraphql, SiApollographql, SiMongodb, SiMysql } from "react-icons/si";
-import { TbApi } from "react-icons/tb";
+import { FaReact, FaNodeJs, FaHtml5, FaSass, FaGithub, FaDocker, FaCube, FaInfinity } from "react-icons/fa";
+import {
+  SiNextdotjs,
+  SiTypescript,
+  SiTailwindcss,
+  SiExpress,
+  SiGraphql,
+  SiApollographql,
+  SiMongodb,
+  SiMysql,
+  SiThreedotjs,
+  SiFramer,
+  SiRedux,
+  SiJavascript,
+  SiRadixui,
+  SiFirebase,
+  SiPostgresql,
+  SiJsonwebtokens,
+  SiVercel,
+  SiVite,
+} from "react-icons/si";
+import { TbApi, TbBuildingStore } from "react-icons/tb";
 import { VscAzureDevops } from "react-icons/vsc";
 
 const skillsMap: Record<string, React.ComponentType<{ className?: string }>> = {
   "React 19": FaReact,
   "Next.js 16": SiNextdotjs,
   "TypeScript": SiTypescript,
+  "JavaScript (ES6+)": SiJavascript,
   "HTML5/CSS3": FaHtml5,
   "SCSS": FaSass,
   "Tailwind CSS": SiTailwindcss,
+  "Three.js / WebGL": SiThreedotjs,
+  "Framer Motion": SiFramer,
+  "Redux Toolkit": SiRedux,
+  "Radix UI / Shadcn UI": SiRadixui,
   "Node.js": FaNodeJs,
   "Express.js": SiExpress,
   "GraphQL": SiGraphql,
   "Apollo Client": SiApollographql,
   "REST APIs": TbApi,
+  "JWT / OAuth": SiJsonwebtokens,
+  "Firebase": SiFirebase,
+  "PostgreSQL": SiPostgresql,
   "MongoDB": SiMongodb,
   "MySQL": SiMysql,
   "Azure Devops": VscAzureDevops,
   "Git / GitHub": FaGithub,
+  "Vercel": SiVercel,
+  "Docker": FaDocker,
+  "CI/CD Pipelines": FaInfinity,
+  "Vite": SiVite,
+  "Cylindo 3D": FaCube,
+  "ERP Software": TbBuildingStore,
 };
 
 const skillCategories = [
   {
-    title: "Frontend Development",
-    skills: ["React 19", "Next.js 16", "TypeScript", "HTML5/CSS3", "SCSS", "Tailwind CSS"],
+    title: "Frontend & Creative UI",
+    skills: [
+      "React 19",
+      "Next.js 16",
+      "TypeScript",
+      "JavaScript (ES6+)",
+      "Three.js / WebGL",
+      "Framer Motion",
+      "Redux Toolkit",
+      "Radix UI / Shadcn UI",
+      "Tailwind CSS",
+      "SCSS",
+      "HTML5/CSS3",
+    ],
     color: "text-cyan-600 dark:text-cyan-400 border-cyan-500/20 bg-cyan-500/5",
   },
   {
-    title: "Backend & APIs",
-    skills: ["Node.js", "Express.js", "GraphQL", "Apollo Client", "REST APIs"],
+    title: "Backend, Auth & Databases",
+    skills: [
+      "Node.js",
+      "Express.js",
+      "GraphQL",
+      "Apollo Client",
+      "REST APIs",
+      "JWT / OAuth",
+      "Firebase",
+      "PostgreSQL",
+      "MongoDB",
+      "MySQL",
+    ],
     color: "text-indigo-600 dark:text-indigo-400 border-indigo-500/20 bg-indigo-500/5",
   },
   {
-    title: "Databases & Cloud",
-    skills: ["MongoDB", "MySQL", "Azure Devops", "Git / GitHub"],
+    title: "Cloud, DevOps & Platforms",
+    skills: [
+      "Vercel",
+      "Docker",
+      "CI/CD Pipelines",
+      "Vite",
+      "Azure Devops",
+      "Git / GitHub",
+      "Cylindo 3D",
+      "ERP Software",
+    ],
     color: "text-purple-600 dark:text-purple-400 border-purple-500/20 bg-purple-500/5",
   },
 ];
@@ -66,10 +131,10 @@ export default function SkillsUniverse() {
         
         {/* Title Section */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-30px" }}
+          transition={{ duration: 0.4 }}
           className="text-center sm:text-left mb-16"
         >
           <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
@@ -92,31 +157,31 @@ export default function SkillsUniverse() {
 
           {/* Right Column: Skill categories breakdown list */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-5 space-y-6"
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ duration: 0.45 }}
+            className="lg:col-span-5 space-y-4"
           >
-            {skillCategories.map((cat, idx) => (
+            {skillCategories.map((cat) => (
               <div
                 key={cat.title}
-                className="glass-panel p-6 rounded-2xl border border-surface-border glowing-border-parent relative"
+                className="glass-panel p-4 sm:p-5 rounded-2xl border border-surface-border glowing-border-parent relative"
               >
                 <div className="glowing-border-glow" />
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-b border-surface-border/40 pb-2">
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-3 border-b border-surface-border/40 pb-2">
                   {cat.title}
                 </h3>
                 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {cat.skills.map((item) => {
                     const Icon = skillsMap[item];
                     return (
                       <span
                         key={item}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold ${cat.color}`}
+                        className={`flex items-center gap-1 px-2 py-1 rounded-md border text-[11px] font-medium ${cat.color}`}
                       >
-                        {Icon && <Icon className="w-3.5 h-3.5" />}
+                        {Icon && <Icon className="w-3 h-3 shrink-0" />}
                         <span>{item}</span>
                       </span>
                     );

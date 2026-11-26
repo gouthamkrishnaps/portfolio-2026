@@ -44,4 +44,49 @@ export const skills = [
     years: "1+",
     level: 70,
   },
+  {
+    name: "Three.js",
+    years: "1+",
+    level: 85,
+  },
+  {
+    name: "Framer Motion",
+    years: "2+",
+    level: 90,
+  },
+  {
+    name: "Redux",
+    years: "2+",
+    level: 85,
+  },
+  {
+    name: "JavaScript",
+    years: "3+",
+    level: 95,
+  },
+  {
+    name: "Firebase",
+    years: "2+",
+    level: 80,
+  },
+  {
+    name: "PostgreSQL",
+    years: "1+",
+    level: 75,
+  },
+  {
+    name: "Docker",
+    years: "1+",
+    level: 75,
+  },
+  {
+    name: "Vercel",
+    years: "2+",
+    level: 90,
+  },
+  {
+    name: "Vite",
+    years: "2+",
+    level: 85,
+  },
 ];

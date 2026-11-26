@@ -105,10 +105,10 @@ export default function Contact() {
         
         {/* Title */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-30px" }}
+          transition={{ duration: 0.4 }}
         >
           <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
             Get In Touch
@@ -127,10 +127,10 @@ export default function Contact() {
           
           {/* Left Column: Availabilities & Socials */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ duration: 0.45 }}
             className="lg:col-span-5 space-y-10"
           >
             <div>
@@ -193,25 +193,25 @@ export default function Contact() {
 
           {/* Right Column: Premium Contact Form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ duration: 0.45 }}
             className="lg:col-span-7"
           >
             <form
               onSubmit={handleSubmit}
-              className="glass-panel p-8 sm:p-10 rounded-[30px] border border-surface-border glowing-border-parent relative"
+              className="glass-panel p-5 sm:p-7 rounded-2xl sm:rounded-[28px] border border-surface-border glowing-border-parent relative"
             >
               <div className="glowing-border-glow" />
-              <h3 className="text-2xl font-black uppercase text-slate-900 dark:text-white tracking-wide mb-6">
+              <h3 className="text-xl sm:text-2xl font-black uppercase text-slate-900 dark:text-white tracking-wide mb-4 sm:mb-5">
                 Send a Message
               </h3>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-5">
                 
                 {/* Name Input */}
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1.5">
                   <label htmlFor="form-name" className="text-xs font-bold uppercase tracking-wider text-text-muted">
                     Full Name
                   </label>
@@ -223,12 +223,12 @@ export default function Contact() {
                     value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                     placeholder="John Doe"
-                    className="w-full px-5 py-4 rounded-xl border border-surface-border bg-surface-raised/40 text-slate-900 dark:text-white placeholder-text-tertiary focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all font-semibold"
+                    className="w-full px-4 py-3 sm:py-3.5 rounded-xl border border-surface-border bg-surface-raised/40 text-slate-900 dark:text-white placeholder-text-tertiary focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all font-semibold text-sm sm:text-base"
                   />
                 </div>
 
                 {/* Email Input */}
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1.5">
                   <label htmlFor="form-email" className="text-xs font-bold uppercase tracking-wider text-text-muted">
                     Email Address
                   </label>
@@ -240,24 +240,24 @@ export default function Contact() {
                     value={formState.email}
                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                     placeholder="john@example.com"
-                    className="w-full px-5 py-4 rounded-xl border border-surface-border bg-surface-raised/40 text-slate-900 dark:text-white placeholder-text-tertiary focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all font-semibold"
+                    className="w-full px-4 py-3 sm:py-3.5 rounded-xl border border-surface-border bg-surface-raised/40 text-slate-900 dark:text-white placeholder-text-tertiary focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all font-semibold text-sm sm:text-base"
                   />
                 </div>
 
                 {/* Message Input */}
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1.5">
                   <label htmlFor="form-msg" className="text-xs font-bold uppercase tracking-wider text-text-muted">
                     Project details
                   </label>
                   <textarea
                     id="form-msg"
-                    rows={5}
+                    rows={4}
                     required
                     suppressHydrationWarning
                     value={formState.message}
                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                     placeholder="Tell me about your project, goals, or schedule..."
-                    className="w-full px-5 py-4 rounded-xl border border-surface-border bg-surface-raised/40 text-slate-900 dark:text-white placeholder-text-tertiary focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all font-semibold resize-none"
+                    className="w-full px-4 py-3 sm:py-3.5 rounded-xl border border-surface-border bg-surface-raised/40 text-slate-900 dark:text-white placeholder-text-tertiary focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all font-semibold text-sm sm:text-base resize-none"
                   />
                 </div>
 
@@ -267,7 +267,7 @@ export default function Contact() {
                     type="submit"
                     disabled={isSubmitting}
                     suppressHydrationWarning
-                    className="w-full flex items-center justify-center gap-2.5 px-8 py-4.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       "Sending Message..."

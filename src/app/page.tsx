@@ -9,7 +9,6 @@ import Hero from "../components/Hero";
 import TechStackMarquee from "../components/TechStackMarquee";
 import SkillsUniverse from "../components/SkillsUniverse";
 import BuildTogether from "../components/BuildTogether";
-import SolutionsBento from "../components/SolutionsBento";
 
 
 export default function Home() {
@@ -23,7 +22,6 @@ export default function Home() {
       {/* <CaseStudies /> */}
       <SkillsUniverse />
       <Achievements />
-      <SolutionsBento />
       <BuildTogether />
       <Contact />
       <Footer />

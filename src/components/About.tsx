@@ -28,15 +28,20 @@ const ICodeBeesTooltip = () => (
       Technology partner specializing in headless eCommerce (Magento, Shopify), custom ERP systems (Odoo, ERPNext), and robust Next.js/React engineering.
     </span>
 
-    <span className="relative block w-full h-[150px] rounded-md overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950 mt-1 shadow-inner">
-      <iframe 
-        src="https://www.icodebees.com/" 
-        title="iCodeBees Website"
-        className="w-[400%] h-[400%] border-none scale-25 origin-top-left opacity-90 hover:opacity-100 transition-opacity"
-        sandbox="allow-scripts allow-same-origin"
-      />
-      {/* Absolute overlay to intercept mouse interaction and avoid cursor locking inside the iframe */}
-      <span className="absolute inset-0 bg-transparent" />
+    <span className="relative flex flex-col gap-1.5 w-full rounded-md overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950 p-3 mt-1">
+      <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
+        Core Stack &amp; Focus
+      </span>
+      <span className="flex flex-wrap gap-1">
+        {["Next.js", "Magento", "Shopify", "ERPNext", "GraphQL"].map((tech) => (
+          <span
+            key={tech}
+            className="text-[9px] px-1.5 py-0.5 rounded bg-neutral-200/70 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-semibold"
+          >
+            {tech}
+          </span>
+        ))}
+      </span>
     </span>
 
     <span className="flex justify-between items-center text-[10px] text-neutral-400 mt-1 border-t border-neutral-100 dark:border-neutral-800 pt-1.5">
@@ -200,14 +205,14 @@ export default function About() {
           
           {/* Profile Image Column */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
             className="lg:col-span-5 relative group"
           >
-            {/* Glowing border outline behind image */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-[30px] blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+            {/* Subtle monochrome-indigo glow behind image */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-cyan-500/15 rounded-[30px] blur-2xl opacity-40 group-hover:opacity-65 transition-opacity duration-500" />
             
             <Tilt
               tiltMaxAngleX={6}
@@ -231,10 +236,10 @@ export default function About() {
 
           {/* About Content Column */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
             className="lg:col-span-7"
           >
             <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
@@ -264,32 +269,32 @@ export default function About() {
               <p className="mt-4 text-text-secondary text-base sm:text-lg leading-relaxed">
                 Currently working at{" "}
                 <Tooltip content={<ICodeBeesTooltip />}>
-                  <strong className="text-cyan-600 dark:text-cyan-400 cursor-pointer underline decoration-dotted decoration-cyan-500/50 underline-offset-4 hover:text-cyan-500 transition-colors">
+                  <strong className="font-semibold text-zinc-900 dark:text-zinc-100 cursor-pointer underline decoration-dotted decoration-indigo-500/45 underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400 hover:decoration-indigo-400 transition-colors">
                     ICodeBees
                   </strong>
                 </Tooltip>
                 , where I construct complex, enterprise-level e-commerce portals and interactive SaaS interfaces. 
                 I have contributed to custom features for major brands like{" "}
                 <Tooltip content={<AvumyTooltip />}>
-                  <span className="font-semibold text-cyan-600 dark:text-cyan-400 cursor-pointer underline decoration-dotted decoration-cyan-500/50 underline-offset-4 hover:text-cyan-500 transition-colors">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100 cursor-pointer underline decoration-dotted decoration-indigo-500/45 underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400 hover:decoration-indigo-400 transition-colors">
                     Avumy
                   </span>
                 </Tooltip>
                 ,{" "}
                 <Tooltip content={<DarlingsTooltip />}>
-                  <span className="font-semibold text-indigo-600 dark:text-indigo-400 cursor-pointer underline decoration-dotted decoration-indigo-500/50 underline-offset-4 hover:text-indigo-500 transition-colors">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100 cursor-pointer underline decoration-dotted decoration-indigo-500/45 underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400 hover:decoration-indigo-400 transition-colors">
                     Darlings of Chelsea
                   </span>
                 </Tooltip>
                 ,{" "}
                 <Tooltip content={<PermatechTooltip />}>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400 cursor-pointer underline decoration-dotted decoration-emerald-500/50 underline-offset-4 hover:text-emerald-500 transition-colors">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100 cursor-pointer underline decoration-dotted decoration-indigo-500/45 underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400 hover:decoration-indigo-400 transition-colors">
                     Permatech
                   </span>
                 </Tooltip>
                 , and{" "}
                 <Tooltip content={<RubberizedTooltip />}>
-                  <span className="font-semibold text-amber-600 dark:text-amber-400 cursor-pointer underline decoration-dotted decoration-amber-500/50 underline-offset-4 hover:text-amber-500 transition-colors">
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100 cursor-pointer underline decoration-dotted decoration-indigo-500/45 underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400 hover:decoration-indigo-400 transition-colors">
                     Rubberized
                   </span>
                 </Tooltip>
@@ -319,9 +324,9 @@ export default function About() {
                 return (
                   <span
                     key={item}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/25 bg-cyan-500/5 text-cyan-600 dark:text-cyan-300 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:text-cyan-700 dark:hover:text-white cursor-default group"
+                    className="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-zinc-200/80 dark:border-zinc-800 bg-surface/40 text-zinc-700 dark:text-zinc-300 text-xs sm:text-sm font-medium tracking-wide transition-all duration-300 hover:border-indigo-500/40 hover:bg-indigo-500/5 hover:text-indigo-600 dark:hover:text-indigo-300 cursor-default group"
                   >
-                    {Icon && <Icon className="w-4 h-4 text-cyan-600/80 dark:text-cyan-400/80 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors" />}
+                    {Icon && <Icon className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors" />}
                     <span>{item}</span>
                   </span>
                 );

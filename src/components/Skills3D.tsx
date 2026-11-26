@@ -3,7 +3,23 @@
 import { useEffect, useRef, useState } from "react";
 import { skills } from "../data/skills";
 import { FaReact, FaNodeJs } from "react-icons/fa";
-import { SiNextdotjs, SiTypescript, SiGraphql, SiMongodb, SiMysql, SiTailwindcss } from "react-icons/si";
+import {
+  SiNextdotjs,
+  SiTypescript,
+  SiGraphql,
+  SiMongodb,
+  SiMysql,
+  SiTailwindcss,
+  SiThreedotjs,
+  SiFramer,
+  SiRedux,
+  SiJavascript,
+  SiFirebase,
+  SiPostgresql,
+  SiDocker,
+  SiVercel,
+  SiVite,
+} from "react-icons/si";
 import { VscAzure } from "react-icons/vsc";
 
 const orbitIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -16,6 +32,15 @@ const orbitIcons: Record<string, React.ComponentType<{ className?: string }>> = 
   "MySQL": SiMysql,
   "Tailwind": SiTailwindcss,
   "Azure": VscAzure,
+  "Three.js": SiThreedotjs,
+  "Framer Motion": SiFramer,
+  "Redux": SiRedux,
+  "JavaScript": SiJavascript,
+  "Firebase": SiFirebase,
+  "PostgreSQL": SiPostgresql,
+  "Docker": SiDocker,
+  "Vercel": SiVercel,
+  "Vite": SiVite,
 };
 
 interface Point3D {

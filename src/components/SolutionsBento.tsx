@@ -1,13 +1,20 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { ShoppingBag, Zap, Cpu, Server, Layers } from "lucide-react";
 import { EncryptedText } from "./ui/encrypted-text";
 
+const commerceSources = [
+  { name: "Magento", detail: "GraphQL catalog & B2B bundle pricing" },
+  { name: "Shopify", detail: "Storefront API & headless checkout" },
+  { name: "ERPNext", detail: "Real-time inventory & invoice sync" },
+] as const;
+
 export default function SolutionsBento() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [activeSource, setActiveSource] = useState<string>("Magento");
 
   const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -93,12 +100,24 @@ export default function SolutionsBento() {
               <div className="relative flex items-center justify-between w-full max-w-md px-6 sm:px-12 z-10">
                 {/* Source Nodes */}
                 <div className="flex flex-col gap-2">
-                  {["Magento", "Shopify", "ERPNext"].map((api) => (
-                    <div key={api} className="px-2.5 py-1 rounded-lg border border-surface-border bg-surface/80 text-[9px] font-bold text-text-muted flex items-center gap-1.5 shadow-sm">
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-                      {api}
-                    </div>
-                  ))}
+                  {commerceSources.map((api) => {
+                    const isSelected = activeSource === api.name;
+                    return (
+                      <button
+                        key={api.name}
+                        type="button"
+                        onClick={() => setActiveSource(api.name)}
+                        className={`px-2.5 py-1 rounded-lg border text-[9px] font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer ${
+                          isSelected
+                            ? "border-cyan-500/60 bg-cyan-500/15 text-cyan-600 dark:text-cyan-300 scale-105"
+                            : "border-surface-border bg-surface/80 text-text-muted hover:border-cyan-500/30"
+                        }`}
+                      >
+                        <span className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-cyan-400 animate-ping" : "bg-cyan-500"}`} />
+                        {api.name}
+                      </button>
+                    );
+                  })}
                 </div>
 
                 {/* Connecting glowing laser lines */}
@@ -117,9 +136,14 @@ export default function SolutionsBento() {
                 </div>
 
                 {/* Centralized Node */}
-                <div className="p-3.5 rounded-full bg-gradient-to-tr from-cyan-500/15 to-indigo-500/15 border border-indigo-500/30 flex items-center justify-center shadow-lg shadow-indigo-500/5 relative group-hover:scale-105 transition-transform duration-500">
-                  <div className="w-2 h-2 rounded-full bg-indigo-500 animate-ping absolute" />
-                  <span className="text-[10px] font-mono font-black text-white bg-indigo-600 px-2.5 py-0.5 rounded-full shadow-md">Next.js Core</span>
+                <div className="flex flex-col items-end gap-1">
+                  <div className="p-3.5 rounded-full bg-gradient-to-tr from-cyan-500/15 to-indigo-500/15 border border-indigo-500/30 flex items-center justify-center shadow-lg shadow-indigo-500/5 relative group-hover:scale-105 transition-transform duration-500">
+                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-ping absolute" />
+                    <span className="text-[10px] font-mono font-black text-white bg-indigo-600 px-2.5 py-0.5 rounded-full shadow-md">Next.js Core</span>
+                  </div>
+                  <span className="text-[9px] font-mono text-cyan-600 dark:text-cyan-400 bg-surface/80 px-2 py-0.5 rounded border border-surface-border">
+                    {commerceSources.find((s) => s.name === activeSource)?.detail}
+                  </span>
                 </div>
               </div>
             </div>

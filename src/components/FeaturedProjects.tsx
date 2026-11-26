@@ -7,14 +7,31 @@ import { ArrowUpRight, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-re
 import ProjectShowcase3D from "./ProjectShowcase3D";
 import { featuredProjects } from "../data/projects";
 
+const projectFilters = [
+  { id: "all", label: "All Work" },
+  { id: "ecommerce", label: "eCommerce" },
+  { id: "platforms", label: "Platforms & Apps" },
+] as const;
+
+type FilterId = (typeof projectFilters)[number]["id"];
+
 export default function FeaturedProjects() {
+  const [activeFilter, setActiveFilter] = useState<FilterId>("all");
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeProject = featuredProjects[activeIndex];
+
+  const visibleProjects = featuredProjects.filter((proj) => {
+    if (activeFilter === "all") return true;
+    const isEcommerce = proj.category.toLowerCase().includes("ecommerce");
+    return activeFilter === "ecommerce" ? isEcommerce : !isEcommerce;
+  });
+
+  const safeIndex = Math.min(activeIndex, Math.max(0, visibleProjects.length - 1));
+  const activeProject = visibleProjects[safeIndex] ?? featuredProjects[0];
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (containerRef.current) {
-      const activeChild = containerRef.current.children[activeIndex] as HTMLElement;
+      const activeChild = containerRef.current.children[safeIndex] as HTMLElement;
       if (activeChild) {
         const container = containerRef.current;
         const containerWidth = container.clientWidth;
@@ -34,20 +51,32 @@ export default function FeaturedProjects() {
         });
       }
     }
-  }, [activeIndex]);
+  }, [safeIndex]);
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % featuredProjects.length);
+    setActiveIndex((prev) => (prev + 1) % visibleProjects.length);
   };
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length);
+    setActiveIndex((prev) => (prev - 1 + visibleProjects.length) % visibleProjects.length);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      handleNext();
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      handlePrev();
+    }
   };
 
   return (
     <section
       id="projects"
-      className="relative min-h-screen py-16 sm:py-24 flex items-center justify-center bg-bg-primary overflow-hidden"
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+      className="relative min-h-screen py-16 sm:py-24 flex items-center justify-center bg-bg-primary overflow-hidden focus:outline-none"
     >
       {/* Background spotlights */}
       <div className="absolute inset-0 pointer-events-none">
@@ -71,14 +100,41 @@ export default function FeaturedProjects() {
         className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 relative z-10 w-full flex flex-col justify-between min-h-[80vh]"
       >
         
-        {/* Header Block */}
-        <div className="text-center sm:text-left mb-6 sm:mb-8">
-          <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
-            Featured Projects
-          </span>
-          <h2 className="mt-1.5 text-4xl sm:text-5xl font-black leading-none uppercase tracking-tight">
-            Selected Work
-          </h2>
+        {/* Header Block + Category Filters */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+          <div className="text-center sm:text-left">
+            <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
+              Featured Projects
+            </span>
+            <h2 className="mt-1.5 text-4xl sm:text-5xl font-black leading-none uppercase tracking-tight">
+              Selected Work
+            </h2>
+          </div>
+
+          <div className="flex items-center justify-center sm:justify-end gap-2 flex-wrap" role="tablist" aria-label="Filter projects by category">
+            {projectFilters.map((filter) => {
+              const isSelected = activeFilter === filter.id;
+              return (
+                <button
+                  key={filter.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isSelected}
+                  onClick={() => {
+                    setActiveFilter(filter.id);
+                    setActiveIndex(0);
+                  }}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer focus-ring ${
+                    isSelected
+                      ? "bg-cyan-500/15 text-cyan-600 dark:text-cyan-300 border border-cyan-500/35"
+                      : "border border-surface-border bg-surface/20 text-text-muted hover:text-slate-900 dark:hover:text-white hover:bg-surface/50"
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* ============================================================
@@ -94,7 +150,7 @@ export default function FeaturedProjects() {
               <div className="lg:col-span-5 flex flex-col justify-center">
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={activeIndex}
+                    key={activeProject.id}
                     initial={{ opacity: 0, x: -15 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 15 }}
@@ -136,16 +192,20 @@ export default function FeaturedProjects() {
                     </div>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-wrap gap-3 mt-6">
+                    <div className="flex flex-wrap items-center gap-3 mt-6">
                       <a
                         href={activeProject.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         suppressHydrationWarning
-                        className="px-5 py-2.5 rounded-lg border border-surface-border bg-surface/30 hover:bg-surface/60 text-slate-900 dark:text-white font-bold text-xs sm:text-sm transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-400 hover:-translate-y-0.5"
+                        className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg border border-surface-border bg-surface/30 hover:bg-surface/60 text-slate-900 dark:text-white font-bold text-xs sm:text-sm transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-400 hover:-translate-y-0.5"
                       >
-                        Live Demo
+                        <span>Live Demo</span>
+                        <ArrowUpRight size={15} />
                       </a>
+                      <span className="text-xs font-mono font-semibold text-text-tertiary">
+                        {String(safeIndex + 1).padStart(2, "0")} / {String(visibleProjects.length).padStart(2, "0")}
+                      </span>
                     </div>
                   </motion.div>
                 </AnimatePresence>
@@ -190,8 +250,8 @@ export default function FeaturedProjects() {
             ref={containerRef}
             className="relative flex gap-4 overflow-x-auto pt-3 pb-4 px-2 -mx-2 scrollbar-none snap-x snap-mandatory"
           >
-            {featuredProjects.map((project, idx) => {
-              const isActive = idx === activeIndex;
+            {visibleProjects.map((project, idx) => {
+              const isActive = idx === safeIndex;
               return (
                 <button
                   key={project.id}
@@ -220,7 +280,7 @@ export default function FeaturedProjects() {
                     <span className={`block text-[8px] sm:text-[10px] uppercase font-bold tracking-widest leading-none mb-0.5 sm:mb-1 ${
                       isActive ? "text-cyan-600 dark:text-cyan-300" : "text-text-tertiary"
                     }`}>
-                      {project.id} // {project.category.split(" ")[0]}
+                      {project.id} {"//"} {project.category.split(" ")[0]}
                     </span>
                     <span className="block text-xs sm:text-sm font-black uppercase tracking-wide truncate">
                       {project.title}

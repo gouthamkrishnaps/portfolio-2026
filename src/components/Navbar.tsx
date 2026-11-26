@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Moon, Sun, Menu, X, Download, GitBranch } from "lucide-react";
+import { Moon, Sun, Menu, X, Download, Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import CommandPalette from "./CommandPalette";
 
 const navLinks = [
   { label: "Home", href: "#home", id: "home" },
@@ -17,7 +16,6 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
@@ -57,9 +55,8 @@ export default function Navbar() {
     setTheme(isDark ? "light" : "dark");
   }
 
-  if (pathname === "/sandbox") return null;
-
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full pointer-events-none">
       <motion.div
         layout
@@ -114,7 +111,18 @@ export default function Navbar() {
         </nav>
 
         {/* Right Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          {/* Command Palette trigger */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("open-command-palette"))}
+            className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 text-xs font-medium transition-all duration-300 focus-ring cursor-pointer"
+            aria-label="Open command palette"
+          >
+            <Search size={13} />
+            <kbd className="text-[10px] font-semibold opacity-75">⌘K</kbd>
+          </button>
+
           {/* Theme toggle */}
           {mounted && (
             <button
@@ -189,5 +197,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </header>
+    <CommandPalette />
+    </>
   );
 }

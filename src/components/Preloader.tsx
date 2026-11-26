@@ -16,11 +16,11 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  // Smooth progress simulation
+  // Fast, snappy progress reveal (~550ms total)
   useEffect(() => {
     let current = 0;
     const interval = setInterval(() => {
-      const increment = Math.floor(Math.random() * 6) + 4;
+      const increment = Math.floor(Math.random() * 10) + 12;
       current = Math.min(current + increment, 100);
       setProgress(current);
 
@@ -30,10 +30,10 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           setIsLoaded(true);
           setTimeout(() => {
             onCompleteRef.current();
-          }, 600);
-        }, 200);
+          }, 350);
+        }, 100);
       }
-    }, 70);
+    }, 35);
 
     return () => clearInterval(interval);
   }, []);

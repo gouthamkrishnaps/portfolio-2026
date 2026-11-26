@@ -28,15 +28,20 @@ const ICodeBeesTooltip = () => (
       Technology partner specializing in headless eCommerce (Magento, Shopify), custom ERP systems (Odoo, ERPNext), and robust Next.js/React engineering.
     </span>
 
-    <span className="relative block w-full h-[150px] rounded-md overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950 mt-1 shadow-inner">
-      <iframe 
-        src="https://www.icodebees.com/" 
-        title="iCodeBees Website"
-        className="w-[400%] h-[400%] border-none scale-25 origin-top-left opacity-90 hover:opacity-100 transition-opacity"
-        sandbox="allow-scripts allow-same-origin"
-      />
-      {/* Absolute overlay to intercept mouse interaction and avoid cursor locking inside the iframe */}
-      <span className="absolute inset-0 bg-transparent" />
+    <span className="relative flex flex-col gap-1.5 w-full rounded-md overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950 p-3 mt-1">
+      <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
+        Core Stack &amp; Focus
+      </span>
+      <span className="flex flex-wrap gap-1">
+        {["Next.js", "Magento", "Shopify", "ERPNext", "GraphQL"].map((tech) => (
+          <span
+            key={tech}
+            className="text-[9px] px-1.5 py-0.5 rounded bg-neutral-200/70 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-semibold"
+          >
+            {tech}
+          </span>
+        ))}
+      </span>
     </span>
 
     <span className="flex justify-between items-center text-[10px] text-neutral-400 mt-1 border-t border-neutral-100 dark:border-neutral-800 pt-1.5">

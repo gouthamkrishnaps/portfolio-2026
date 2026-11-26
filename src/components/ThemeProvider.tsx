@@ -16,13 +16,21 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
 
 function ThemeLoader({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    // Skip loading if already finished in this browser session
-    if (sessionStorage.getItem("preloader-done") === "true") {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener("change", onChange);
+
+    // Skip preloader if already finished in this session or if user prefers reduced motion
+    if (sessionStorage.getItem("preloader-done") === "true" || mq.matches) {
       setLoading(false);
-      return;
+      window.dispatchEvent(new Event("hud-loaded"));
     }
+
+    return () => mq.removeEventListener("change", onChange);
   }, []);
 
   useEffect(() => {
@@ -46,8 +54,8 @@ function ThemeLoader({ children }: { children: React.ReactNode }) {
   return (
     <>
       {loading && <Preloader onComplete={handleComplete} />}
-      <ReactLenis root options={{ lerp: 0.15, duration: 1.0, smoothWheel: true, syncTouch: false }}>
-        <div className={loading ? "opacity-0" : "opacity-100 transition-opacity duration-700 font-sans"}>
+      <ReactLenis root options={{ lerp: 0.15, duration: 1.0, smoothWheel: !reducedMotion, syncTouch: false }}>
+        <div className={loading ? "opacity-0" : "opacity-100 transition-opacity duration-500 font-sans"}>
           {children}
         </div>
       </ReactLenis>

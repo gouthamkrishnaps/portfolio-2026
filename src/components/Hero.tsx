@@ -1,20 +1,72 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Mail, ArrowDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, ArrowDown, ArrowRight, Command } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import dynamic from "next/dynamic";
 
 // Dynamic import with no SSR for WebGL canvas
 const HeroCanvas = dynamic(() => import("./HeroCanvas"), { ssr: false });
 
+const specialties = [
+  "Next.js & React Architecture",
+  "Headless Commerce & GraphQL",
+  "Interactive WebGL & 3D UI",
+];
+
+function MagneticLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className: string;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = (e.clientX - (rect.left + rect.width / 2)) * 0.18;
+    const y = (e.clientY - (rect.top + rect.height / 2)) * 0.18;
+    setOffset({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setOffset({ x: 0, y: 0 });
+  };
+
+  return (
+    <a
+      ref={ref}
+      href={href}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
+      }}
+      className={className}
+    >
+      {children}
+    </a>
+  );
+}
+
 export default function Hero() {
   const [isIntroFinished, setIsIntroFinished] = useState(false);
+  const [specialtyIndex, setSpecialtyIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    // Check if preloader was already completed
-    if (sessionStorage.getItem("preloader-done") === "true") {
+    // Check if preloader was already completed or reduced motion is preferred
+    if (
+      sessionStorage.getItem("preloader-done") === "true" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
       setIsIntroFinished(true);
     }
 
@@ -28,6 +80,15 @@ export default function Hero() {
       window.removeEventListener("hud-loaded", handleHudLoaded);
     };
   }, []);
+
+  useEffect(() => {
+    if (isPaused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = setInterval(() => {
+      setSpecialtyIndex((prev) => (prev + 1) % specialties.length);
+    }, 3200);
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
   // Staggered animation variants
   const containerVariants = {
@@ -56,7 +117,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-primary pt-20 pb-24 sm:pb-8"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-primary pt-24 pb-20 sm:pt-24 sm:pb-16"
     >
       {/* Toned-down WebGL Canvas */}
       <HeroCanvas />
@@ -79,30 +140,68 @@ export default function Hero() {
           animate={isIntroFinished ? "visible" : "hidden"}
           className="text-center w-full flex flex-col items-center"
         >
+          {/* Editorial Greeting */}
+          <motion.p
+            variants={itemVariants}
+            className="mb-3 sm:mb-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-text-muted"
+          >
+            Hey, I&apos;m
+          </motion.p>
+
           {/* Name Heading */}
           <motion.h1
             variants={itemVariants}
-            className="w-full text-5xl xs:text-6xl sm:text-7xl md:text-[80px] lg:text-[88px] font-black uppercase tracking-tight leading-[1] text-zinc-900 dark:text-zinc-50 text-center sm:whitespace-nowrap"
+            className="w-full text-[clamp(2.45rem,10vw,3.75rem)] sm:text-6xl md:text-7xl lg:text-[74px] xl:text-[88px] font-black uppercase tracking-tight leading-[1.02] text-zinc-900 dark:text-zinc-50 text-center lg:whitespace-nowrap"
           >
             Goutham
-            <br className="sm:hidden" />{" "}
+            <br className="lg:hidden" />{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 dark:from-indigo-400 dark:via-indigo-400 dark:to-cyan-400">
               Krishna P S
             </span>
           </motion.h1>
 
-          {/* Role Subtitle */}
-          <motion.h2
+          {/* Editorial Role & Cycling Specialty (locked left-side position) */}
+          <motion.div
             variants={itemVariants}
-            className="mt-4 sm:mt-5 text-base sm:text-lg md:text-xl font-medium text-text-muted tracking-wide"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            className="mt-4 sm:mt-5 w-full max-w-3xl flex flex-col sm:grid sm:grid-cols-[1fr_auto_1fr] items-center gap-1 sm:gap-3 text-sm sm:text-lg md:text-xl font-medium tracking-wide"
           >
-            Frontend & Full-Stack Software Engineer
-          </motion.h2>
+            <h2 className="text-text-muted sm:text-right whitespace-nowrap">
+              Software Engineer
+            </h2>
+            <span className="hidden sm:inline text-zinc-300 dark:text-zinc-700" aria-hidden="true">
+              /
+            </span>
+            <button
+              type="button"
+              onClick={() => setSpecialtyIndex((prev) => (prev + 1) % specialties.length)}
+              aria-label={`Current specialty: ${specialties[specialtyIndex]}. Click to cycle specialty.`}
+              className="group relative sm:justify-self-start text-center sm:text-left focus-ring rounded-sm cursor-pointer pb-1 whitespace-nowrap"
+            >
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={specialties[specialtyIndex]}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="inline-block font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500 dark:from-indigo-400 dark:to-cyan-400"
+                >
+                  {specialties[specialtyIndex]}
+                </motion.span>
+              </AnimatePresence>
+              <span
+                aria-hidden="true"
+                className="block h-[1.5px] w-full opacity-35 group-hover:opacity-100 bg-gradient-to-r from-indigo-500 to-cyan-500 transition-opacity duration-300"
+              />
+            </button>
+          </motion.div>
 
           {/* Bio Description */}
           <motion.p
             variants={itemVariants}
-            className="mt-5 sm:mt-6 max-w-xl text-sm sm:text-base md:text-[17px] text-text-secondary leading-relaxed"
+            className="mt-4 sm:mt-6 max-w-md sm:max-w-xl text-sm sm:text-base md:text-[17px] text-text-secondary leading-relaxed"
           >
             Specializing in React, Next.js, and high-performance web applications.
             Focused on building pixel-perfect UI systems, modern design architectures,
@@ -114,25 +213,29 @@ export default function Hero() {
             variants={itemVariants}
             className="flex flex-row items-center justify-center gap-3 mt-8 sm:mt-10"
           >
-            {/* Primary: Dark inverted button with micro-glow */}
-            <a
+            {/* Primary: Dark inverted button with magnetic pull & micro-glow */}
+            <MagneticLink
               href="#projects"
-              className="group relative px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 focus-ring"
+              className="group relative inline-flex items-center gap-2 px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 font-semibold text-xs sm:text-sm tracking-wide transition-transform duration-200 ease-out active:scale-95 focus-ring"
             >
               <span className="relative z-10">View Projects</span>
-              <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_20px_rgba(99,102,241,0.3)] dark:shadow-[0_0_20px_rgba(99,102,241,0.2)]" />
-            </a>
+              <ArrowRight
+                size={15}
+                className="relative z-10 transition-transform duration-300 group-hover:translate-x-1"
+              />
+              <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_24px_rgba(99,102,241,0.35)] dark:shadow-[0_0_24px_rgba(99,102,241,0.25)]" />
+            </MagneticLink>
 
-            {/* Secondary: Ghost/outline button */}
-            <a
+            {/* Secondary: Ghost/outline button with magnetic pull */}
+            <MagneticLink
               href="#contact"
-              className="px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 font-semibold text-xs sm:text-sm tracking-wide transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 focus-ring"
+              className="inline-flex items-center px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 font-semibold text-xs sm:text-sm tracking-wide transition-transform duration-200 ease-out active:scale-95 focus-ring"
             >
               Get in Touch
-            </a>
+            </MagneticLink>
           </motion.div>
 
-          {/* Social Icons Row */}
+          {/* Social Icons Row + Command Palette Hint */}
           <motion.div
             variants={itemVariants}
             className="flex items-center gap-3 mt-8 sm:mt-10"
@@ -173,6 +276,19 @@ export default function Hero() {
                 </a>
               );
             })}
+
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-command-palette"))}
+              className="hidden sm:inline-flex items-center gap-1.5 h-11 px-3.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 hover:border-indigo-500/40 hover:bg-indigo-500/5 text-zinc-500 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 text-xs font-medium transition-all duration-300 focus-ring cursor-pointer"
+              aria-label="Open quick navigation command palette"
+            >
+              <Command size={13} />
+              <span>Quick Jump</span>
+              <kbd className="ml-1 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
+                ⌘K
+              </kbd>
+            </button>
           </motion.div>
         </motion.div>
       </div>

@@ -307,7 +307,7 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
     resizeObserver.observe(container);
 
     // --- TICK ANIMATION LOOP ---
-    let animId: number;
+    let animId: number | null = null;
     let lastUrl = imageUrlRef.current;
 
     const tick = () => {
@@ -421,14 +421,31 @@ export default function ProjectShowcase3D({ imageUrl, title }: ProjectShowcase3D
       pPosAttr.needsUpdate = true;
 
       renderer.render(scene, camera);
-      animId = requestAnimationFrame(tick);
+      if (isVisible) {
+        animId = requestAnimationFrame(tick);
+      } else {
+        animId = null;
+      }
     };
+
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && animId === null) {
+          tick();
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(container);
 
     tick();
 
     // --- GEOMETRIES & ASSETS CLEANUP ---
     return () => {
-      cancelAnimationFrame(animId);
+      if (animId !== null) cancelAnimationFrame(animId);
+      observer.disconnect();
       resizeObserver.disconnect();
       
       container.removeEventListener("mousemove", handleMouseMove);

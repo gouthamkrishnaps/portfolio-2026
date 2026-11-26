@@ -265,15 +265,15 @@
 
   /* Hide system cursor on desktop screens to allow CustomCursor to take over */
   @media (min-width: 768px) {
-    html:not(.route-sandbox),
-    html:not(.route-sandbox) body,
-    html:not(.route-sandbox) a,
-    html:not(.route-sandbox) button,
-    html:not(.route-sandbox) input,
-    html:not(.route-sandbox) textarea,
-    html:not(.route-sandbox) select,
-    html:not(.route-sandbox) [role="button"],
-    html:not(.route-sandbox) .cursor-pointer {
+    html,
+    html body,
+    html a,
+    html button,
+    html input,
+    html textarea,
+    html select,
+    html [role="button"],
+    html .cursor-pointer {
       cursor: none !important;
     }
   }

@@ -5,15 +5,11 @@ import {
   useScroll,
   useSpring,
 } from "framer-motion";
-import { usePathname } from "next/navigation";
 
 export default function ScrollProgress() {
-  const pathname = usePathname();
   const { scrollYProgress } = useScroll();
 
   const scaleX = useSpring(scrollYProgress);
-
-  if (pathname === "/sandbox") return null;
 
   return (
     <div>

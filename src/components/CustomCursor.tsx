@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 
 export default function CustomCursor() {
-  const pathname = usePathname();
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
@@ -16,8 +14,6 @@ export default function CustomCursor() {
   const isHidden = useRef(true);
 
   useEffect(() => {
-    if (pathname === "/sandbox") return;
-
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current.x = e.clientX;
       mousePos.current.y = e.clientY;
@@ -129,8 +125,6 @@ export default function CustomCursor() {
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
-
-  if (pathname === "/sandbox") return null;
 
   return (
     <>

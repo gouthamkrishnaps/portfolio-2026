@@ -228,7 +228,7 @@ export default function About() {
                 alt="Goutham Krishna"
                 width={600}
                 height={800}
-                className="w-full h-auto object-cover rounded-[30px] transition-transform duration-700 group-hover:scale-103"
+                className="w-full h-[290px] sm:h-[400px] lg:h-auto object-cover object-top rounded-[30px] transition-transform duration-700 group-hover:scale-103"
                 priority
               />
             </Tilt>

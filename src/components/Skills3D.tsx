@@ -222,7 +222,7 @@ export default function Skills3D() {
 
           // Depth projection factor: 1 is closest, 0 is furthest
           const depth = (z2 + 1) / 2;
-          const scale = depth * 0.45 + 0.7; // range: [0.7, 1.15]
+          const scale = depth * 0.38 + 0.65; // range: [0.65, 1.03]
           const opacity = depth * 0.7 + 0.3; // range: [0.3, 1.0]
           const zIndex = Math.round(pz + r);
 
@@ -277,9 +277,9 @@ export default function Skills3D() {
                 willChange: "transform, opacity",
               }}
             >
-              {/* Tag Design - Matches original UI precisely */}
-              <div className="glass-panel flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-surface-border text-xs sm:text-sm font-bold tracking-wide text-slate-800 dark:text-white hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-                {Icon && <Icon className="w-4 h-4 text-cyan-600/80 dark:text-cyan-400/80 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors" />}
+              {/* Tag Design - Compact & crisp */}
+              <div className="glass-panel flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full border border-surface-border text-[11px] sm:text-xs font-bold tracking-wide text-slate-800 dark:text-white hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors duration-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                {Icon && <Icon className="w-3.5 h-3.5 text-cyan-600/80 dark:text-cyan-400/80 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors" />}
                 <span>{skill.name}</span>
               </div>
             </div>

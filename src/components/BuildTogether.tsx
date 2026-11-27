@@ -112,16 +112,16 @@ export default function BuildTogether() {
         </p>
 
         {/* CTAs */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center">
+        <div className="mt-7 flex flex-row items-center gap-2.5 sm:gap-3 justify-center">
           <Link
             href="#contact"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 font-bold text-sm sm:text-base text-center shadow-lg shadow-cyan-500/15 dark:shadow-cyan-500/5 hover:shadow-cyan-500/25 transition-all duration-300 border border-cyan-400/20"
+            className="px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 font-semibold text-xs sm:text-sm text-center shadow-lg shadow-cyan-500/15 dark:shadow-cyan-500/5 hover:shadow-cyan-500/25 transition-all duration-300 border border-cyan-400/20 whitespace-nowrap"
           >
             Start a Project
           </Link>
           <Link
             href="#projects"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full text-text-muted hover:text-cyan-600 dark:hover:text-cyan-400 font-bold text-sm sm:text-base text-center bg-surface/50 border border-surface-border hover:border-cyan-500/30 transition-all duration-300"
+            className="px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-text-muted hover:text-cyan-600 dark:hover:text-cyan-400 font-semibold text-xs sm:text-sm text-center bg-surface/50 border border-surface-border hover:border-cyan-500/30 transition-all duration-300 whitespace-nowrap"
           >
             View Projects
           </Link>

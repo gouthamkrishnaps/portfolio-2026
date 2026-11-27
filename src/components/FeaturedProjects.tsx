@@ -91,17 +91,17 @@ export default function FeaturedProjects() {
         </h2>
       </div>
 
-      {/* Scroll-linked Section Reveal wrapper */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-30px" }}
-        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10 w-full min-w-0 flex flex-col justify-center"
-      >
+      {/* Section Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10 w-full min-w-0 flex flex-col justify-center">
         
         {/* Header Block + Category Filters */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-4 sm:mb-5">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-4 sm:mb-5"
+        >
           <div className="text-center sm:text-left">
             <span className="text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-[4px] text-xs sm:text-sm">
               Featured Projects
@@ -135,12 +135,18 @@ export default function FeaturedProjects() {
               );
             })}
           </div>
-        </div>
+        </motion.div>
 
         {/* ============================================================
            UPPER SECTION: Active Project Detailed Showcase (Compact for single-view)
            ============================================================ */}
-        <div className="flex items-center justify-center w-full min-w-0">
+        <motion.div
+          initial={{ opacity: 0, y: 36, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center justify-center w-full min-w-0"
+        >
           <div className="w-full min-w-0 overflow-hidden glass-panel rounded-[28px] p-4 sm:p-6 lg:p-7 border border-surface-border glowing-border-parent relative">
             <div className="glowing-border-glow" />
             
@@ -217,12 +223,18 @@ export default function FeaturedProjects() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* ============================================================
            LOWER SECTION: Horizontal Ribbon Project Switcher
            ============================================================ */}
-        <div className="mt-4 sm:mt-5 flex flex-col gap-3 w-full min-w-0">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 24 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-4 sm:mt-5 flex flex-col gap-3 w-full min-w-0"
+        >
           <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-text-tertiary px-2">
             <span>NAVIGATE SHOWCASE</span>
             <div className="flex gap-2.5">
@@ -253,8 +265,12 @@ export default function FeaturedProjects() {
             {visibleProjects.map((project, idx) => {
               const isActive = idx === safeIndex;
               return (
-                <button
+                <motion.button
                   key={project.id}
+                  initial={{ opacity: 0, scale: 0.88 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.4, delay: Math.min(idx * 0.06, 0.25), ease: [0.16, 1, 0.3, 1] }}
                   onClick={() => setActiveIndex(idx)}
                   suppressHydrationWarning
                   className={`group flex-shrink-0 snap-start w-[240px] sm:w-[270px] md:w-[295px] flex flex-col gap-2.5 p-2.5 sm:p-3 rounded-2xl border text-left transition-all duration-300 relative cursor-pointer overflow-hidden ${
@@ -305,13 +321,13 @@ export default function FeaturedProjects() {
                       ))}
                     </div>
                   </div>
-                </button>
+                </motion.button>
               );
             })}
           </div>
-        </div>
+        </motion.div>
 
-      </motion.div>
+      </div>
     </section>
   );
 }

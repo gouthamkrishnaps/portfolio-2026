@@ -198,25 +198,29 @@ export default function Navbar() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
             transition={{ duration: 0.25 }}
-            className={`absolute left-4 right-4 md:hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-xl overflow-hidden p-5 z-50 flex flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`pointer-events-auto absolute left-4 right-4 md:hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-xl overflow-hidden p-5 z-50 flex flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isScrolled ? "top-16 sm:top-18" : "top-20 sm:top-24"
             }`}
           >
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`px-4 py-2.5 text-sm font-medium rounded-xl transition-colors focus-ring ${
-                    activeSection === link.id 
-                      ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20" 
-                      : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
-                  }`}
-                >
-                  {link.label}
-                </a>
-              ))}
+            <div className="flex flex-col gap-1.5">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium rounded-xl transition-colors focus-ring ${
+                      activeSection === link.id 
+                        ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20" 
+                        : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
+                    }`}
+                  >
+                    <Icon size={16} className="shrink-0 opacity-80" />
+                    <span>{link.label}</span>
+                  </a>
+                );
+              })}
             </div>
 
             <a
